@@ -3,7 +3,6 @@ package ru.dm.projects.vote_and_eat.entity;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.util.Set;
 
 @MappedSuperclass
 @Access(AccessType.FIELD) //??
@@ -20,19 +19,21 @@ public abstract class AbstractEntity {
     @Column(name = "name", nullable = false)
     protected String name;
 
-    protected AbstractEntity(){}
+    protected AbstractEntity() {
+    }
+
     protected AbstractEntity(int id, String name) {
         this.id = id;
         this.name = name;
     }
 
-
-
-
     public int getId() {
         return id;
     }
 
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getName() {
         return name;
