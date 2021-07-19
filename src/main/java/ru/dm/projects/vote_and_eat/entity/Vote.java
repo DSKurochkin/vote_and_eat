@@ -1,5 +1,9 @@
 package ru.dm.projects.vote_and_eat.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,12 +22,16 @@ public class Vote {
     private LocalTime time;
 
     @JoinColumn(name = "restaurant_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @JsonManagedReference
+    @JsonIgnore
     private Restaurant restaurant;
 
 
     @JoinColumn(name = "user_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+//    @JsonBackReference
+    @JsonIgnore
     private User user;
 
 
@@ -66,7 +74,7 @@ public class Vote {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setAdmin(User user) {
         this.user = user;
     }
 }

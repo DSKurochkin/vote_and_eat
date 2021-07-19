@@ -1,5 +1,6 @@
 package ru.dm.projects.vote_and_eat.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -20,7 +21,8 @@ public class Dish extends AbstractEntity {
     //uni or be directional??
     @NotNull
     @JoinColumn(name = "restaurant_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonManagedReference
     private Restaurant restaurant;
 
     public int getPrice() {
@@ -45,5 +47,13 @@ public class Dish extends AbstractEntity {
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    @Override
+    public String toString() {
+        return "Dish{" +
+                "date=" + date +
+                ", price=" + price +
+                '}';
     }
 }

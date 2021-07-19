@@ -9,12 +9,11 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.util.Set;
-
 @Entity
-@Table(name = "users")
-public class User extends AbstractEntity {
+@Table(name="admin")
+public class Admin extends AbstractEntity{
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     @Email
     @NotBlank
     @Size(max = 50)
@@ -26,10 +25,11 @@ public class User extends AbstractEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "admin", fetch = FetchType.LAZY)
 //    @JsonManagedReference
     @JsonIgnore
-    private Set<Vote> votes;
+    private Set<Restaurant> restaurants;
+
 
     public String getEmail() {
         return email;
@@ -47,11 +47,11 @@ public class User extends AbstractEntity {
         this.password = password;
     }
 
-    public Set<Vote> getVotes() {
-        return votes;
+    public Set<Restaurant> getRestaurants() {
+        return restaurants;
     }
 
-    public void setVotes(Set<Vote> votes) {
-        this.votes = votes;
+    public void setRestaurants(Set<Restaurant> restaurants) {
+        this.restaurants = restaurants;
     }
 }

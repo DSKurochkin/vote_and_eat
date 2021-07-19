@@ -1,18 +1,20 @@
-DELETE FROM dishes;
-DELETE FROM restaurants;
-DELETE FROM users;
-DELETE FROM votes;
+DELETE FROM DISHES;
+DELETE FROM RESTAURANTS;
+DELETE FROM USERS;
+DELETE FROM VOTES;
 ALTER SEQUENCE global_seq RESTART WITH 10000;
 
-INSERT INTO users (name, email, password, isAdmin)
-VALUES ('admin1', 'admin1@vote.com', 'admin1', true),
-       ('admin2', 'admin2@vote.com', 'admin2', true),
-       ('Angus', 'angus@vote.com', 'angus', false),
-       ('David ', 'david@vote.com', 'david', false),
-       ('user', 'user@vote.com', 'user', false),
-       ('Janis', 'janis@vote.com', 'janis', false);
+INSERT INTO USERS (name, email, password)
+VALUES ('Angus', 'angus@vote.com', 'angus'),
+       ('David ', 'david@vote.com', 'david'),
+       ('user', 'user@vote.com', 'user'),
+       ('Janis', 'janis@vote.com', 'janis');
 
-INSERT INTO restaurants(name, user_id)
+INSERT INTO ADMINS (name, email, password)
+VALUES ('admin1', 'admin1@vote.com', 'admin1'),
+       ('admin2', 'admin2@vote.com', 'admin2');
+
+INSERT INTO RESTAURANTS(name, ADMIN_ID)
 VALUES ('Kurskiy', 1),
        ('Tsarskiy', 1),
        ('Krusty Krab', 2);
@@ -35,6 +37,5 @@ VALUES ( '09:00:00' , '2021-07-16', 1, 1 ),
        ( '08:00:00' , '2021-07-16', 2, 3 ),
        ( '07:00:00' , '2021-07-16', 3, 3 ),
        ( '12:00:00' , '2021-07-16', 4, 1 );
-
 
 
