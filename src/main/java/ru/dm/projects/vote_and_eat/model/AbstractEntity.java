@@ -43,8 +43,8 @@ public abstract class AbstractEntity {
         this.name = name;
     }
 
-    boolean isNew(){
-        return id==null;
+    boolean isNew() {
+        return id == null;
     }
 
 }

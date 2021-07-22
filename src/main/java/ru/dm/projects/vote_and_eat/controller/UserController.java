@@ -15,7 +15,7 @@ public class UserController {
     private UserRepository repository;
 
     @GetMapping("/users")
-    List<User>  getAll(){
+    List<User> getAll() {
         return repository.findAll();
     }
 

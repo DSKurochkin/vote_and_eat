@@ -2,8 +2,10 @@ package ru.dm.projects.vote_and_eat.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.Set;
 
 @Entity
@@ -16,14 +18,6 @@ public class Restaurant extends AbstractEntity {
     @JsonIgnore
     private Set<Dish> dishes;
 
-
-    //uni or be directional??
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "admin_id")
-    @NotNull
-//    @JsonBackReference
-    @JsonIgnore
-    private Admin admin;
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 //    @JsonBackReference
     @JsonIgnore
@@ -36,14 +30,6 @@ public class Restaurant extends AbstractEntity {
 
     public void setDishes(Set<Dish> dishes) {
         this.dishes = dishes;
-    }
-
-    public Admin getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Admin admin) {
-        this.admin = admin;
     }
 
     public Set<Vote> getVotes() {

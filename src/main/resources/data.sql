@@ -4,20 +4,18 @@ DELETE FROM USERS;
 DELETE FROM VOTES;
 ALTER SEQUENCE global_seq RESTART WITH 10000;
 
-INSERT INTO USERS (name, email, password)
-VALUES ('Angus', 'angus@vote.com', 'angus'),
-       ('David ', 'david@vote.com', 'david'),
-       ('user', 'user@vote.com', 'user'),
-       ('Janis', 'janis@vote.com', 'janis');
+INSERT INTO USERS (name, email, password, isAdmin)
+VALUES ('admin1', 'admin1@vote.com', 'admin1', true),
+       ('admin2', 'admin2@vote.com', 'admin2', true),
+       ('Angus', 'angus@vote.com', 'angus', false),
+       ('David ', 'david@vote.com', 'david', false),
+       ('user', 'user@vote.com', 'user', false),
+       ('Janis', 'janis@vote.com', 'janis', false);
 
-INSERT INTO ADMINS (name, email, password)
-VALUES ('admin1', 'admin1@vote.com', 'admin1'),
-       ('admin2', 'admin2@vote.com', 'admin2');
-
-INSERT INTO RESTAURANTS(name, ADMIN_ID)
-VALUES ('Kurskiy', 1),
-       ('Tsarskiy', 1),
-       ('Krusty Krab', 2);
+INSERT INTO RESTAURANTS(name)
+VALUES ('Kurskiy'),
+       ('Tsarskiy'),
+       ('Krusty Krab');
 
 INSERT INTO DISHES(name, date, price, restaurant_id)
 VALUES ('Befstroganov', '2021-07-16', 1000, 1),

@@ -15,19 +15,18 @@ public class DishController {
     private DishRepository repository;
 
     @GetMapping("/dishesall")
-    List<Dish> getAll(){
+    List<Dish> getAll() {
 
-        List<Dish> list=repository.findAll();
+        List<Dish> list = repository.findAll();
         list.forEach(System.out::println);
         return list;
-       // return repository.findAll();
+        // return repository.findAll();
     }
+
     @GetMapping("/dishes")
-    List<Dish> currentVotes(){
+    List<Dish> currentVotes() {
         return repository.getCurrent(LocalDate.now());
     }
-
-
 
 
 }

@@ -14,14 +14,15 @@ import java.util.List;
 public class VoteController {
     @Autowired
     private VoteRepository repository;
+
     @GetMapping("/votes")
-    List<Vote> getAll(){
+    List<Vote> getAll() {
         return repository.findAll();
     }
 
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void toVote(Vote vote){
+    public void toVote(Vote vote) {
         //logic 11.00<>
         repository.save(vote);
     }
