@@ -1,4 +1,4 @@
-package ru.dm.projects.vote_and_eat.entity;
+package ru.dm.projects.vote_and_eat.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.validator.constraints.Range;
@@ -21,7 +21,7 @@ public class Dish extends AbstractEntity {
     //uni or be directional??
     @NotNull
     @JoinColumn(name = "restaurant_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonManagedReference
     private Restaurant restaurant;
 

@@ -1,9 +1,11 @@
 package ru.dm.projects.vote_and_eat.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.dm.projects.vote_and_eat.entity.Vote;
+import ru.dm.projects.vote_and_eat.model.Vote;
 import ru.dm.projects.vote_and_eat.repository.VoteRepository;
 
 import java.util.List;
@@ -15,5 +17,12 @@ public class VoteController {
     @GetMapping("/votes")
     List<Vote> getAll(){
         return repository.findAll();
+    }
+
+
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void toVote(Vote vote){
+        //logic 11.00<>
+        repository.save(vote);
     }
 }

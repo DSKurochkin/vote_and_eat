@@ -1,4 +1,4 @@
-package ru.dm.projects.vote_and_eat.entity;
+package ru.dm.projects.vote_and_eat.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -12,7 +12,7 @@ public abstract class AbstractEntity {
     @Id
     @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
-    protected int id;
+    protected Integer id;
 
     @NotBlank
     @Size(min = 2, max = 50)
@@ -27,11 +27,11 @@ public abstract class AbstractEntity {
         this.name = name;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -41,6 +41,10 @@ public abstract class AbstractEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    boolean isNew(){
+        return id==null;
     }
 
 }

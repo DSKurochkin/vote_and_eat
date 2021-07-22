@@ -1,7 +1,6 @@
-package ru.dm.projects.vote_and_eat.entity;
+package ru.dm.projects.vote_and_eat.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;

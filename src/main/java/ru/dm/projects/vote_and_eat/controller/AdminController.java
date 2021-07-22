@@ -10,4 +10,5 @@ public class AdminController {
     private AdminRepository repository;
 
 
+
 }

@@ -21,10 +21,10 @@ VALUES ('Kurskiy', 1),
 
 INSERT INTO DISHES(name, date, price, restaurant_id)
 VALUES ('Befstroganov', '2021-07-16', 1000, 1),
-       ('Heres', '2021-07-16', 800, 1),
+       ('Heres', '2021-07-19', 800, 1),
        ('Vimya', '2021-07-16', 1000, 1),
 
-       ('Ikra chernaya', '2021-07-16', 1000, 2),
+       ('Ikra chernaya', '2021-07-19', 1000, 2),
        ('Ikra krasnaya', '2021-07-16', 1000, 2),
        ('Ikra baklazhannaya', '2021-07-16', 1000, 2),
 
