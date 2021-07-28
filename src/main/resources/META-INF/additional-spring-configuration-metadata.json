@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "datetime.start",
+      "type": "java.lang.String",
+      "description": "Description for datetime.start."
+    },
+    {
+      "name": "my.property",
+      "type": "java.lang.String",
+      "description": "Description for my.property."
+    }
+  ] }

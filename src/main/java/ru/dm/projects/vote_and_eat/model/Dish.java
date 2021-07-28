@@ -12,18 +12,24 @@ import java.time.LocalDate;
 public class Dish extends AbstractEntity {
 
     @Column(name = "date")
-    @NotNull
     LocalDate date;
     @Column(name = "price", nullable = false)
     @NotNull
     @Range(min = 1, max = 100)
     private int price;
-    //uni or be directional??
+
     @NotNull
     @JoinColumn(name = "restaurant_id")
     @ManyToOne(fetch = FetchType.EAGER)
     @JsonManagedReference
     private Restaurant restaurant;
+
+    public Dish() {
+    }
+
+//    public Dish(){
+//
+//    }
 
     public int getPrice() {
         return price;

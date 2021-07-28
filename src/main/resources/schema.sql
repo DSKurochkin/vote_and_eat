@@ -15,7 +15,7 @@ CREATE TABLE USERS
     name     VARCHAR(255) NOT NULL,
     email    VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    isAdmin  boolean DEFAULT false
+    isadmin  boolean
 );
 CREATE UNIQUE INDEX users_unique_email_idx
     ON USERS (email);

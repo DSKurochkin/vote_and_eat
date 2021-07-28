@@ -1,4 +1,4 @@
-package ru.dm.projects.vote_and_eat.controller;
+package ru.dm.projects.vote_and_eat.controller.restaurant;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,17 +13,19 @@ import ru.dm.projects.vote_and_eat.repository.RestaurantRepository;
 import java.net.URI;
 import java.util.List;
 
+import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
+
 @RestController
-@RequestMapping(value = RestaurantController.REST_RESTAURANT_URL
+@RequestMapping(value = RestaurantController.RESTAURANT_URL
         , produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController {
-    static final String REST_RESTAURANT_URL = "/restaurants";
+    static final String RESTAURANT_URL = ADMIN_URL + "restaurants";
 
     @Autowired
     private RestaurantRepository repository;
 
     @GetMapping
-    List<Restaurant> getAll() {
+    public List<Restaurant> getAll() {
         return repository.findAll();
     }
 
@@ -32,7 +34,7 @@ public class RestaurantController {
         Assert.notNull(restaurant, "restaurant must not be null");
         Restaurant created = repository.save(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(REST_RESTAURANT_URL + "/{id}")
+                .path(RESTAURANT_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
@@ -41,13 +43,14 @@ public class RestaurantController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(Restaurant restaurant, @PathVariable int id) {
         Assert.notNull(restaurant, "restaurant must not be null");
+        //chek id=bean.id
         repository.save(restaurant);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable int id) {
-
+        repository.deleteById(id);
     }
 
 }

@@ -1,6 +1,6 @@
 package ru.dm.projects.vote_and_eat.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,14 +13,14 @@ import java.util.Set;
 public class Restaurant extends AbstractEntity {
 
 
-    @OneToMany(mappedBy = "restaurant")
-//    @JsonBackReference
-    @JsonIgnore
+    @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
+    @JsonBackReference
+//    @JsonIgnore
     private Set<Dish> dishes;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-//    @JsonBackReference
-    @JsonIgnore
+    @JsonBackReference
+//    @JsonIgnore
     private Set<Vote> votes;
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)

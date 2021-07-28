@@ -25,7 +25,7 @@ public class User extends AbstractEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column(name = "isAdmin")
+    @Column(name = "isadmin")
     private boolean isAdmin;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -55,5 +55,13 @@ public class User extends AbstractEntity {
 
     public void setVotes(Set<Vote> votes) {
         this.votes = votes;
+    }
+
+    public boolean isAdmin() {
+        return isAdmin;
+    }
+
+    public void setAdmin(boolean admin) {
+        isAdmin = admin;
     }
 }

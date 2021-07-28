@@ -11,5 +11,5 @@ public interface DishRepository extends JpaRepository<Dish, Integer> {
     Dish findByName(String name);
 
     @Query("SELECT d FROM Dish d WHERE d.date=?1 GROUP BY d.restaurant ")
-    List<Dish> getCurrent(LocalDate date);
+    List<Dish> getForToday(LocalDate date);
 }

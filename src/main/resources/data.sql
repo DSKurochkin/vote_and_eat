@@ -4,7 +4,7 @@ DELETE FROM USERS;
 DELETE FROM VOTES;
 ALTER SEQUENCE global_seq RESTART WITH 10000;
 
-INSERT INTO USERS (name, email, password, isAdmin)
+INSERT INTO USERS (name, email, password, isadmin)
 VALUES ('admin1', 'admin1@vote.com', 'admin1', true),
        ('admin2', 'admin2@vote.com', 'admin2', true),
        ('Angus', 'angus@vote.com', 'angus', false),
@@ -32,7 +32,7 @@ VALUES ('Befstroganov', '2021-07-16', 1000, 1),
 
 INSERT INTO VOTES(time, date, user_id, restaurant_id)
 VALUES ( '09:00:00' , '2021-07-16', 1, 1 ),
-       ( '08:00:00' , '2021-07-16', 2, 3 ),
+       ( '08:00:00' , '2021-07-16', 2, 2 ),
        ( '07:00:00' , '2021-07-16', 3, 3 ),
        ( '12:00:00' , '2021-07-16', 4, 1 );
 
