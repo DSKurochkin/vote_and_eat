@@ -1,27 +1,33 @@
 package ru.dm.projects.vote_and_eat.controller.user;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dm.projects.vote_and_eat.model.User;
+import ru.dm.projects.vote_and_eat.util.UserUtil;
 
+import java.net.URI;
 import java.util.List;
 
-import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
-import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.USER_URL;
+
 
 @RestController
-@RequestMapping(value = ADMIN_URL + USER_URL)
+@RequestMapping(value = AdminController.ADMIN_USERS_URL)
 public class AdminController extends AbstractUserController {
+    static final String ADMIN_USERS_URL = "/admin/users";
 
-    @Override
-    @PostMapping()
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<User> create(User user) {
-        return super.create(user);
+    public ResponseEntity<User> create(@RequestBody User user) {
+        User created = repository.save(user);
+        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+                .path(ADMIN_USERS_URL).build().toUri();
+        return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
-    @PutMapping(value = "/{id}")
+    @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(User user, @PathVariable int id) {
         //chek user id
@@ -29,12 +35,12 @@ public class AdminController extends AbstractUserController {
     }
 
     @GetMapping
-    public List<User> showAll() {
+    public List<User> getAll() {
         return repository.findAll();
     }
 
     @GetMapping("/{id}")
-    public User show(@PathVariable int id) {
+    public User get(@PathVariable int id) {
         return repository.getById(id);
 
     }

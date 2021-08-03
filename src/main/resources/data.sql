@@ -18,17 +18,17 @@ VALUES ('Kurskiy'),
        ('Krusty Krab');
 
 INSERT INTO DISHES(name, date, price, restaurant_id)
-VALUES ('Befstroganov', '2021-07-16', 1000, 1),
-       ('Heres', '2021-07-19', 800, 1),
-       ('Vimya', '2021-07-16', 1000, 1),
+VALUES ('Befstroganov', '2021-07-16', 80, 1),
+       ('Heres', '2021-07-19', 30, 1),
+       ('Vimya', '2021-07-16', 90, 1),
 
-       ('Ikra chernaya', '2021-07-19', 1000, 2),
-       ('Ikra krasnaya', '2021-07-16', 1000, 2),
-       ('Ikra baklazhannaya', '2021-07-16', 1000, 2),
+       ('Ikra chernaya', '2021-07-19', 80, 2),
+       ('Ikra krasnaya', '2021-07-16', 70, 2),
+       ('Ikra baklazhannaya', '2021-07-16', 99, 2),
 
-       ('Krabby Patty 1', '2021-07-16', 900, 3),
-       ('Krabby Patty 2', '2021-07-16', 800, 3),
-       ('Krabby Patty 3', '2021-07-16', 1100, 3);
+       ('Krabby Patty 1', '2021-07-16', 30, 3),
+       ('Krabby Patty 2', '2021-07-16', 40, 3),
+       ('Krabby Patty 3', '2021-07-16', 50, 3);
 
 INSERT INTO VOTES(time, date, user_id, restaurant_id)
 VALUES ( '09:00:00' , '2021-07-16', 1, 1 ),

@@ -33,6 +33,16 @@ public class User extends AbstractEntity {
     @JsonIgnore
     private Set<Vote> votes;
 
+    public User(){}
+
+
+    public User(Integer id, String name, String email, String password, boolean isAdmin) {
+        super(id, name);
+        this.email = email;
+        this.password = password;
+        this.isAdmin = isAdmin;
+    }
+
     public String getEmail() {
         return email;
     }

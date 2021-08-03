@@ -1,6 +1,9 @@
 package ru.dm.projects.vote_and_eat.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
@@ -9,6 +12,7 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "dishes")
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class Dish extends AbstractEntity {
 
     @Column(name = "date")
@@ -21,15 +25,11 @@ public class Dish extends AbstractEntity {
     @NotNull
     @JoinColumn(name = "restaurant_id")
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference
+   // @JsonManagedReference
     private Restaurant restaurant;
 
     public Dish() {
     }
-
-//    public Dish(){
-//
-//    }
 
     public int getPrice() {
         return price;

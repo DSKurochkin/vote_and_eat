@@ -19,7 +19,7 @@ import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController
 @RequestMapping(value = RestaurantController.RESTAURANT_URL
         , produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController {
-    static final String RESTAURANT_URL = ADMIN_URL + "restaurants";
+    static final String RESTAURANT_URL = ADMIN_URL + "/restaurants";
 
     @Autowired
     private RestaurantRepository repository;
@@ -30,7 +30,7 @@ public class RestaurantController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Restaurant> create(Restaurant restaurant) {
+    public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
         Restaurant created = repository.save(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -41,7 +41,7 @@ public class RestaurantController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(Restaurant restaurant, @PathVariable int id) {
+    public void update(@RequestBody Restaurant restaurant, @PathVariable int id) {
         Assert.notNull(restaurant, "restaurant must not be null");
         //chek id=bean.id
         repository.save(restaurant);

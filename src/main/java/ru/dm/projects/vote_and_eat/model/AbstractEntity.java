@@ -5,13 +5,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @MappedSuperclass
-@Access(AccessType.FIELD) //??
+@Access(AccessType.FIELD)
 public abstract class AbstractEntity {
-    public static final int START_SEQ = 100000;
+
 
     @Id
-//    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = START_SEQ)
-//    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Integer id;
 
@@ -23,7 +21,7 @@ public abstract class AbstractEntity {
     protected AbstractEntity() {
     }
 
-    protected AbstractEntity(int id, String name) {
+    protected AbstractEntity(Integer id, String name) {
         this.id = id;
         this.name = name;
     }

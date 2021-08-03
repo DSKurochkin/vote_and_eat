@@ -1,6 +1,7 @@
 package ru.dm.projects.vote_and_eat.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
@@ -22,14 +23,15 @@ public class Vote {
 
     @JoinColumn(name = "restaurant_id")
     @ManyToOne(fetch = FetchType.EAGER)
-    @JsonManagedReference
-
+//    @JsonManagedReference
+    @JsonIgnore
     private Restaurant restaurant;
 
 
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JsonBackReference
+//    @JsonBackReference
+    @JsonIgnore
     private User user;
 
 
