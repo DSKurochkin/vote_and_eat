@@ -2,23 +2,29 @@ package ru.dm.projects.vote_and_eat.controller.vote;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.model.Vote;
-import ru.dm.projects.vote_and_eat.util.VoteUtil;
 
-import java.util.List;
+import java.util.Map;
 
 import static ru.dm.projects.vote_and_eat.controller.vote.AbstractVoteController.VOTE_URL;
-import static ru.dm.projects.vote_and_eat.util.VoteUtil.*;
+import static ru.dm.projects.vote_and_eat.util.VoteUtil.checkVoteTime;
 
 @RestController
 @RequestMapping(value = VOTE_URL)
 public class UserVoteController extends AbstractVoteController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void toVote(@RequestBody  Vote vote) {
+    public void toVote(@RequestBody Vote vote) {
         checkVoteTime(vote);
-        repository.save(vote);
+        service.createOrUpdate(vote);
 
+    }
+
+    @GetMapping("/result")
+    public Map<Restaurant, Integer> getResult() {
+
+        return service.resultFromToday();
     }
 
 }

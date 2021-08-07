@@ -7,10 +7,10 @@ import java.time.LocalTime;
 
 public class DishUtil {
 
-    public static void isAdmissibleTimeToChange (Dish dish){
+    public static void isAdmissibleTimeToChange(Dish dish) {
 
         if (!dish.getDate().equals(LocalDate.now())
-                &&(LocalTime.now().isAfter(LocalTime.parse("08:00:00")))){
+                && (LocalTime.now().isAfter(LocalTime.parse("08:00:00")))) {
             throw new RuntimeException("?????");
         }
     }

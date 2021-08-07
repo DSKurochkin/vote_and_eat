@@ -8,7 +8,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dm.projects.vote_and_eat.model.Restaurant;
-import ru.dm.projects.vote_and_eat.repository.RestaurantRepository;
+import ru.dm.projects.vote_and_eat.service.RestaurantService;
 
 import java.net.URI;
 import java.util.List;
@@ -22,17 +22,22 @@ public class RestaurantController {
     static final String RESTAURANT_URL = ADMIN_URL + "/restaurants";
 
     @Autowired
-    private RestaurantRepository repository;
+    private RestaurantService service;
 
     @GetMapping
     public List<Restaurant> getAll() {
-        return repository.findAll();
+        return service.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public Restaurant get(@PathVariable int id) throws Exception {
+        return service.get(id);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@RequestBody Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        Restaurant created = repository.save(restaurant);
+        Restaurant created = service.createOrUpdate(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(RESTAURANT_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -42,15 +47,14 @@ public class RestaurantController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody Restaurant restaurant, @PathVariable int id) {
-        Assert.notNull(restaurant, "restaurant must not be null");
         //chek id=bean.id
-        repository.save(restaurant);
+        service.createOrUpdate(restaurant);
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) {
-        repository.deleteById(id);
+    public void delete(@PathVariable int id) throws Exception {
+        service.delete(id);
     }
 
 }

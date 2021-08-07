@@ -10,21 +10,22 @@ import java.util.Map;
 
 public class VoteUtil {
 
-    public static void checkVoteTime(Vote vote){
-        if(vote.getTime().isAfter(getEndOfVote())){
+    public static void checkVoteTime(Vote vote) {
+        if (vote.getTime().isAfter(getEndOfVote())) {
             throw new RuntimeException("??????????");
         }
     }
 
-    public  static void setExtremeValues(LocalDate start,LocalDate end){
+    public static void setExtremeValues(LocalDate start, LocalDate end) {
 
     }
-    private static LocalTime getEndOfVote(){
+
+    private static LocalTime getEndOfVote() {
         return LocalTime.parse("11:00:00");
     }
 
-    public static Map<String, LocalDate> getExternal(@Nullable LocalDate start, @Nullable LocalDate end){
-        Map<String, LocalDate> map=new HashMap<>();
+    public static Map<String, LocalDate> getExternal(@Nullable LocalDate start, @Nullable LocalDate end) {
+        Map<String, LocalDate> map = new HashMap<>();
         if (start == null) {
             start = LocalDate.parse("2021-01-01");
         }

@@ -1,8 +1,8 @@
 package ru.dm.projects.vote_and_eat.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -10,6 +10,7 @@ import java.time.LocalTime;
 
 @Entity
 @Table(name = "votes")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Vote {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +25,7 @@ public class Vote {
     @JoinColumn(name = "restaurant_id")
     @ManyToOne(fetch = FetchType.EAGER)
 //    @JsonManagedReference
-    @JsonIgnore
+//    @JsonIgnore
     private Restaurant restaurant;
 
 
@@ -74,7 +75,16 @@ public class Vote {
         return user;
     }
 
-    public void setAdmin(User user) {
+    public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Vote{" +
+                "id=" + id +
+                ", date=" + date +
+                ", time=" + time +
+                '}';
     }
 }

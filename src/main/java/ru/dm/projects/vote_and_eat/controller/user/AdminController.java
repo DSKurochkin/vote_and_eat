@@ -6,11 +6,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dm.projects.vote_and_eat.model.User;
-import ru.dm.projects.vote_and_eat.util.UserUtil;
 
 import java.net.URI;
 import java.util.List;
-
 
 
 @RestController
@@ -21,7 +19,7 @@ public class AdminController extends AbstractUserController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> create(@RequestBody User user) {
-        User created = repository.save(user);
+        User created = service.createOrUpdate(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(ADMIN_USERS_URL).build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
@@ -31,18 +29,24 @@ public class AdminController extends AbstractUserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(User user, @PathVariable int id) {
         //chek user id
-        repository.save(user);
+        service.createOrUpdate(user);
     }
 
     @GetMapping
     public List<User> getAll() {
-        return repository.findAll();
+        return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public User get(@PathVariable int id) {
-        return repository.getById(id);
+    public User get(@PathVariable int id) throws Exception {
+        return service.get(id);
 
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable int id) throws Exception {
+        service.delete(id);
     }
 
 
