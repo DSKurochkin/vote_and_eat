@@ -17,7 +17,7 @@ public class RestaurantService {
     @Autowired
     RestaurantRepository repository;
 
-    public Restaurant get(int id) throws Exception {
+    public Restaurant get(Long id) throws Exception {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(notFoundMessage(id)));
     }
 
@@ -30,7 +30,7 @@ public class RestaurantService {
         return repository.save(restaurant);
     }
 
-    public void delete(int id) throws Exception {
+    public void delete(Long id) throws Exception {
         repository.delete(get(id));
     }
 }

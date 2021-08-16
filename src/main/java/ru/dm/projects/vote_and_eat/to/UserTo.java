@@ -1,44 +1,23 @@
 package ru.dm.projects.vote_and_eat.to;
 
-import java.io.Serial;
-import java.io.Serializable;
-
-public class UserTo implements Serializable {
-    @Serial
-    private static final long serialVersionUID = 1L;
-    private Integer id;
-
-    private String name;
+public class UserTo extends AbstractTo {
 
     private String email;
 
     private String password;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public UserTo(){
+    public UserTo() {
 
     }
 
-    public UserTo(Integer id, String name, String email, String password) {
-        this.id = id;
-        this.name = name;
+    public UserTo(Long id, String name, String email, String password) {
+        super(id, name);
         this.email = email;
         this.password = password;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public Long getId() {
+        return id;
     }
 
     public String getEmail() {

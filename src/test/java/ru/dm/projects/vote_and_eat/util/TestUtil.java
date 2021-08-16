@@ -1,9 +1,8 @@
 package ru.dm.projects.vote_and_eat.util;
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
-import ru.dm.projects.vote_and_eat.controller.JsonUtil;
+import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 
 import java.util.List;
 

@@ -10,7 +10,6 @@ import ru.dm.projects.vote_and_eat.repository.VoteRepository;
 import ru.dm.projects.vote_and_eat.util.VoteUtil;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +20,7 @@ public class VoteService {
     @Autowired
     VoteRepository repository;
 
-    public Vote get(int id) throws Exception {
+    public Vote get(Long id) throws Exception {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(notFoundMessage(id)));
     }
 
@@ -34,7 +33,7 @@ public class VoteService {
         return repository.save(vote);
     }
 
-    public void delete(int id) throws Exception {
+    public void delete(Long id) throws Exception {
         repository.delete(get(id));
     }
 
@@ -47,18 +46,8 @@ public class VoteService {
         return repository.getByUser(email);
     }
 
-    public Map<Restaurant, Integer> resultFromToday() {
-        //only today!!
-        Map<Restaurant, Integer> result = new HashMap<>();
-        List<Vote> votes = repository.getAll();
-        for (Vote v : votes) {
-            Restaurant restaurant = v.getRestaurant();
-            if (result.containsKey(restaurant)) {
-                result.put(v.getRestaurant(), result.get(restaurant) + 1);
-            }
-            result.put(restaurant, 1);
-        }
-        return result;
-
+    public Map<Integer, Restaurant> resultFromToday() {
+        return VoteUtil.getRatingOfRestaurants(repository.getForToday(LocalDate.now()));
     }
+
 }

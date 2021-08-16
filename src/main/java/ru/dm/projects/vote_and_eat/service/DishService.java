@@ -6,8 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.dm.projects.vote_and_eat.model.Dish;
 import ru.dm.projects.vote_and_eat.repository.DishRepository;
+import ru.dm.projects.vote_and_eat.util.DateTimeUtil;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static ru.dm.projects.vote_and_eat.util.ValidationUtil.notFoundMessage;
@@ -17,7 +17,7 @@ public class DishService {
     @Autowired
     DishRepository repository;
 
-    public Dish get(int id) throws Exception {
+    public Dish get(Long id) throws Exception {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(notFoundMessage(id)));
     }
 
@@ -30,11 +30,11 @@ public class DishService {
         return repository.save(dish);
     }
 
-    public void delete(int id) throws Exception {
+    public void delete(Long id) throws Exception {
         repository.delete(get(id));
     }
 
     public List<Dish> getForToday() {
-        return repository.getForToday(LocalDate.now());
+        return repository.getForToday(DateTimeUtil.getToday());
     }
 }

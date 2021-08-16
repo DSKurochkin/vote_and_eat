@@ -27,8 +27,8 @@ public class AdminController extends AbstractUserController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(User user, @PathVariable int id) {
-        //chek user id
+    public void update(@RequestBody User user, @PathVariable int id) {
+        //check user id
         service.createOrUpdate(user);
     }
 
@@ -38,14 +38,14 @@ public class AdminController extends AbstractUserController {
     }
 
     @GetMapping("/{id}")
-    public User get(@PathVariable int id) throws Exception {
+    public User get(@PathVariable Long id) throws Exception {
         return service.get(id);
 
     }
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) throws Exception {
+    public void delete(@PathVariable Long id) throws Exception {
         service.delete(id);
     }
 

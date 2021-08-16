@@ -11,7 +11,7 @@ public abstract class AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected Integer id;
+    protected Long id;
 
     @NotBlank
     @Size(min = 2, max = 50)
@@ -21,16 +21,16 @@ public abstract class AbstractEntity {
     protected AbstractEntity() {
     }
 
-    protected AbstractEntity(Integer id, String name) {
+    protected AbstractEntity(Long id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

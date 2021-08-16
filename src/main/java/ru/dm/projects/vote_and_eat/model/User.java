@@ -1,7 +1,9 @@
 package ru.dm.projects.vote_and_eat.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -11,6 +13,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = User.class)
 public class User extends AbstractEntity {
 
     @Column(name = "email")
@@ -25,23 +28,31 @@ public class User extends AbstractEntity {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column(name = "isadmin")
-    private boolean isAdmin;
+    @Column(name = "admin")
+    private boolean admin;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-//    @JsonManagedReference
+
     @JsonIgnore
     private Set<Vote> votes;
 
-    public User() {
-    }
-
-
-    public User(Integer id, String name, String email, String password, boolean isAdmin) {
+    public User(Long id, String name, String email, String password, boolean admin) {
         super(id, name);
         this.email = email;
         this.password = password;
-        this.isAdmin = isAdmin;
+        this.admin = admin;
+    }
+
+    public User(User user) {
+        this.id = user.id;
+        this.name = user.name;
+        this.password = user.password;
+        this.email = user.email;
+        this.admin = user.admin;
+    }
+
+    public User() {
+
     }
 
     public String getEmail() {
@@ -69,10 +80,21 @@ public class User extends AbstractEntity {
     }
 
     public boolean isAdmin() {
-        return isAdmin;
+        return admin;
     }
 
     public void setAdmin(boolean admin) {
-        isAdmin = admin;
+        this.admin = admin;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", isAdmin=" + admin +
+                '}';
     }
 }

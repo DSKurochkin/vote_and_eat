@@ -27,7 +27,6 @@ public class ProfileController extends AbstractUserController {
 
     }
 
-
     @PostMapping(value = "/register" +
             "", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)

@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dm.projects.vote_and_eat.model.Dish;
+import ru.dm.projects.vote_and_eat.to.DishTo;
 import ru.dm.projects.vote_and_eat.util.DishUtil;
 
 import java.net.URI;
@@ -26,7 +27,7 @@ public class AdminDishController extends AbstractDishController {
 
 
     @GetMapping("/{id}")
-    public Dish get(@PathVariable int id) throws Exception {
+    public Dish get(@PathVariable Long id) throws Exception {
         return service.get(id);
     }
 
@@ -45,14 +46,16 @@ public class AdminDishController extends AbstractDishController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody Dish dish, @PathVariable int id) {
-        DishUtil.isAdmissibleTimeToChange(dish);
+    public void update(@RequestBody DishTo dishTo, @PathVariable int id) throws Exception {
+        //DishUtil.isAdmissibleTimeToChange(dish);
         //check id=bean.id
-        service.createOrUpdate(dish);
+        Dish dish = service.get(dishTo.getId());
+        service.createOrUpdate(DishUtil.updateFromTo(dish, dishTo));
     }
 
     @DeleteMapping(value = {"/{id}"})
-    public void delete(@PathVariable int id) throws Exception {
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long id) throws Exception {
         service.delete(id);
     }
 

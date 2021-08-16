@@ -30,7 +30,7 @@ public class RestaurantController {
     }
 
     @GetMapping("/{id}")
-    public Restaurant get(@PathVariable int id) throws Exception {
+    public Restaurant get(@PathVariable Long id) throws Exception {
         return service.get(id);
     }
 
@@ -53,7 +53,7 @@ public class RestaurantController {
 
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable int id) throws Exception {
+    public void delete(@PathVariable Long id) throws Exception {
         service.delete(id);
     }
 

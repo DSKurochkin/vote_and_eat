@@ -21,7 +21,7 @@ public class AdminVoteController extends AbstractVoteController {
         return service.getAll();
     }
 
-    @GetMapping("/between")
+    @GetMapping("/filter")
     public List<Vote> getBetween(@Nullable @RequestParam LocalDate start,
                                  @Nullable @RequestParam LocalDate end) {
         Map<String, LocalDate> dateMap = VoteUtil.getExternal(start, end);
@@ -29,11 +29,12 @@ public class AdminVoteController extends AbstractVoteController {
     }
 
     @GetMapping("/{id}")
-    public Vote get(@PathVariable int id) throws Exception {
+    public Vote get(@PathVariable Long id) throws Exception {
         return service.get(id);
     }
 
-    public List<Vote> getByUser(String email) {
+    @GetMapping("/by")
+    public List<Vote> getByUser(@RequestParam String email) {
         return service.getByUsersEmail(email);
     }
 

@@ -16,7 +16,7 @@ public class UserService {
     @Autowired
     UserRepository repository;
 
-    public User get(int id) throws Exception {
+    public User get(Long id) throws Exception {
         return repository.findById(id).orElseThrow(() -> new NotFoundException(notFoundMessage(id)));
     }
 
@@ -29,7 +29,7 @@ public class UserService {
         return repository.save(user);
     }
 
-    public void delete(int id) throws Exception {
+    public void delete(Long id) throws Exception {
         repository.delete(get(id));
     }
 }

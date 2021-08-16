@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "restaurants")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Restaurant.class)
 public class Restaurant extends AbstractEntity {
 
 
@@ -32,7 +32,7 @@ public class Restaurant extends AbstractEntity {
     public Restaurant() {
     }
 
-    public Restaurant(Integer id, String name) {
+    public Restaurant(Long id, String name) {
         super(id, name);
     }
 
