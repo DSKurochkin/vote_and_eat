@@ -15,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name = "restaurants")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Restaurant.class)
-public class Restaurant extends AbstractEntity {
+public class Restaurant extends AbstractNamedEntity {
 
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)

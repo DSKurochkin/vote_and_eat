@@ -6,8 +6,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dm.projects.vote_and_eat.model.User;
+import ru.dm.projects.vote_and_eat.security.SecurityUtil;
 import ru.dm.projects.vote_and_eat.to.UserTo;
 import ru.dm.projects.vote_and_eat.util.UserUtil;
+import ru.dm.projects.vote_and_eat.util.ValidationUtil;
 
 import java.net.URI;
 
@@ -21,7 +23,7 @@ public class ProfileController extends AbstractUserController {
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody UserTo userTo) throws Exception {
-        //chek bean.id=id
+        ValidationUtil.assureIdConsistent(userTo, SecurityUtil.authUserId());
         User user = service.get(userTo.getId());
         service.createOrUpdate(UserUtil.updateFromTo(user, userTo));
 

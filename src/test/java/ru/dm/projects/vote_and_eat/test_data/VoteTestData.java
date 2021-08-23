@@ -1,6 +1,7 @@
 package ru.dm.projects.vote_and_eat.test_data;
 
 import ru.dm.projects.vote_and_eat.model.Restaurant;
+import ru.dm.projects.vote_and_eat.model.Role;
 import ru.dm.projects.vote_and_eat.model.User;
 import ru.dm.projects.vote_and_eat.model.Vote;
 
@@ -33,13 +34,13 @@ public class VoteTestData {
         assertThat(actual).usingRecursiveComparison().ignoringFields("votes").isEqualTo(expected);
     }
 
-    public static final User testUser = new User(FIRST_USER_ID + 2, "testUser", "testUser@vote.com", "testUser@vote.com", false);
+    public static final User testUser = new User(FIRST_USER_ID + 2, "testUser", "testUser@vote.com", "testUser@vote.com", Role.USER);
 
     public static Vote todayVote1 = new Vote(null, getToday(), getTime("09:00:00"), restaurant1, user1);
     public static Vote todayVote2 = new Vote(null, getToday(), getTime("08:00:00"), restaurant2, user2);
     public static Vote todayVote3 = new Vote(null, getToday(), getTime("10:00:00"), restaurant1, testUser);
 
-    public static final User lateVoteUser = new User(FIRST_USER_ID + 3, "lateVoteUser", "lateVoteUser@vote.com", "testUser@vote.com", false);
+    public static final User lateVoteUser = new User(FIRST_USER_ID + 3, "lateVoteUser", "lateVoteUser@vote.com", "testUser@vote.com", Role.USER);
     public static Vote lateVote = new Vote(null, getToday(), getTime("12:00:00"), restaurant2, lateVoteUser);
 
     public static List<Vote> newVotes = List.of(todayVote1, todayVote2, todayVote3);

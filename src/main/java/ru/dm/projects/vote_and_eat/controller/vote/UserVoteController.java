@@ -16,6 +16,8 @@ import java.net.URI;
 import java.util.Map;
 
 import static ru.dm.projects.vote_and_eat.controller.vote.AbstractVoteController.VOTE_URL;
+import static ru.dm.projects.vote_and_eat.security.SecurityUtil.get;
+import static ru.dm.projects.vote_and_eat.util.UserUtil.createNewFromTo;
 import static ru.dm.projects.vote_and_eat.util.VoteUtil.checkVoteTime;
 
 @RestController
@@ -24,8 +26,7 @@ public class UserVoteController extends AbstractVoteController {
 
     @Autowired
     RestaurantService restaurantService;
-    /// !!!!!!
-    // hardcode-delete
+
     @Autowired
     UserService userService;
 
@@ -35,7 +36,7 @@ public class UserVoteController extends AbstractVoteController {
                 , DateTimeUtil.getToday()
                 , DateTimeUtil.getNow()
                 , restaurantService.get(voteTo.getRestaurant_id())
-                , userService.get(1L));///// hardcode-delete
+                , createNewFromTo(get().getUserTo()));
         checkVoteTime(created);
         created = service.createOrUpdate(created);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -47,7 +48,11 @@ public class UserVoteController extends AbstractVoteController {
 
     @GetMapping("/result")
     public Map<Integer, Restaurant> getResult() {
-        return service.resultFromToday();
+        Map<Integer, Restaurant> result = service.resultFromToday();
+        if (result.isEmpty()) {
+            throw new RuntimeException("??? Today no result");
+        }
+        return result;
     }
 
 }

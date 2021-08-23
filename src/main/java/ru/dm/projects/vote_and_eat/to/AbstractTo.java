@@ -1,6 +1,8 @@
 package ru.dm.projects.vote_and_eat.to;
 
-public abstract class AbstractTo {
+import ru.dm.projects.vote_and_eat.HasId;
+
+public abstract class AbstractTo implements HasId {
     Long id;
     String name;
 
@@ -12,10 +14,12 @@ public abstract class AbstractTo {
         this.name = name;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

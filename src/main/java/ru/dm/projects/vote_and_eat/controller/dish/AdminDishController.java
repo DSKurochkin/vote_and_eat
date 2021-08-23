@@ -7,6 +7,7 @@ import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dm.projects.vote_and_eat.model.Dish;
+import ru.dm.projects.vote_and_eat.security.SecurityUtil;
 import ru.dm.projects.vote_and_eat.to.DishTo;
 import ru.dm.projects.vote_and_eat.util.DishUtil;
 
@@ -22,6 +23,7 @@ public class AdminDishController extends AbstractDishController {
     ///
     @GetMapping
     List<Dish> getAll() {
+        System.out.println("Id is = " + SecurityUtil.authUserId());
         return service.getAll();
     }
 

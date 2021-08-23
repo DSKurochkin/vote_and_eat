@@ -10,10 +10,7 @@ import java.time.LocalTime;
 @Entity
 @Table(name = "votes")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Vote.class)
-public class Vote {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+public class Vote extends AbstractBaseEntity {
 
     @Column(name = "date", nullable = false, columnDefinition = "timestamp default now()")
     private LocalDate date;
@@ -41,7 +38,7 @@ public class Vote {
     }
 
     public Vote(Long id, LocalDate date, LocalTime time, Restaurant restaurant, User user) {
-        this.id = id;
+        super(id);
         this.date = date;
         this.time = time;
         this.restaurant = restaurant;

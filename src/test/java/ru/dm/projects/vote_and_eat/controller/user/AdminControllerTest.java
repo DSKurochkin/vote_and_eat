@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.dm.projects.vote_and_eat.controller.AbstractControllerTest;
+import ru.dm.projects.vote_and_eat.model.Role;
 import ru.dm.projects.vote_and_eat.model.User;
 import ru.dm.projects.vote_and_eat.service.UserService;
 
@@ -68,7 +69,7 @@ public class AdminControllerTest extends AbstractControllerTest {
     }
     @Test
     void update() throws Exception {
-        User updated= new User(FIRST_USER_ID,  "Testuser", "testuser@vote.com","testuser@vote.com",false);
+        User updated= new User(FIRST_USER_ID,  "Testuser", "testuser@vote.com","testuser@vote.com", Role.USER);
         perform(MockMvcRequestBuilders.put(ADMIN_USER_URL + "/"+FIRST_USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
 //                .with(userHttpBasic(admin))

@@ -11,7 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "dishes")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-public class Dish extends AbstractEntity {
+public class Dish extends AbstractNamedEntity {
 
     @Column(name = "date")
     LocalDate date;
