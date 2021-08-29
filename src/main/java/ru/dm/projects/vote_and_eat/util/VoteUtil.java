@@ -12,8 +12,8 @@ import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.*;
 
 public class VoteUtil {
 
-    public static void checkVoteTime(Vote vote) {
-        if (vote.getTime().isAfter(getEndOfVote())) {
+    public static void checkVoteTime(Vote vote, LocalTime getEndOfVote) {
+        if (vote.getTime().isAfter(getEndOfVote)) {
             throw new RuntimeException("it's to late to vote, try again tomorrow");
         }
         if (!vote.getDate().equals(getToday())) {
@@ -21,17 +21,16 @@ public class VoteUtil {
         }
     }
 
-    private static LocalTime getEndOfVote() {
-        return getTime("11:00:00");
-    }
-
-    public static Map<String, LocalDate> getExternal(@Nullable LocalDate start, @Nullable LocalDate end) {
+    public static Map<String, LocalDate> getExternal(@Nullable LocalDate start
+            , @Nullable LocalDate end
+            , LocalDate min
+            ,LocalDate max) {
         Map<String, LocalDate> map = new HashMap<>();
         if (start == null) {
-            start = getDate("2021-01-01");
+            start = min;
         }
         if (end == null) {
-            end = getDate("3021-01-01");
+            end = max;
         }
         map.put("start", start);
         map.put("end", end);

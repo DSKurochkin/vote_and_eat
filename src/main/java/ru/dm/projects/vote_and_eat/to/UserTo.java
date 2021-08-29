@@ -2,6 +2,8 @@ package ru.dm.projects.vote_and_eat.to;
 
 public class UserTo extends AbstractTo {
 
+    private String name;
+
     private String email;
 
     private String password;
@@ -11,9 +13,18 @@ public class UserTo extends AbstractTo {
     }
 
     public UserTo(Long id, String name, String email, String password) {
-        super(id, name);
+        super(id);
+        this.name=name;
         this.email = email;
         this.password = password;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Long getId() {

@@ -10,18 +10,16 @@ import ru.dm.projects.vote_and_eat.model.Vote;
 import ru.dm.projects.vote_and_eat.service.UserService;
 import ru.dm.projects.vote_and_eat.service.VoteService;
 import ru.dm.projects.vote_and_eat.to.VoteTo;
-import ru.dm.projects.vote_and_eat.util.DateTimeUtil;
 import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.dm.projects.vote_and_eat.test_data.RestaurantTestData.assertRestaurant;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.setPassToActual;
+import static ru.dm.projects.vote_and_eat.test_data.UserTestData.user1;
 import static ru.dm.projects.vote_and_eat.test_data.VoteTestData.*;
 import static ru.dm.projects.vote_and_eat.util.TestUtil.assertMvcResult;
+import static ru.dm.projects.vote_and_eat.util.TestUtil.userHttpBasic;
 import static ru.dm.projects.vote_and_eat.util.json.JsonUtil.readFromJson;
 
 public class UserVoteControllerTest extends AbstractControllerTest {
@@ -35,16 +33,14 @@ public class UserVoteControllerTest extends AbstractControllerTest {
         VoteTo voteTo = new VoteTo(1L, 1L);
         ResultActions action = perform(MockMvcRequestBuilders.post(AbstractVoteController.VOTE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(voteTo)));
-//                .with(userHttpBasic(user)));
-        if (DateTimeUtil.getNow().isBefore(DateTimeUtil.getTime("11:00"))) {
-            Vote created = readFromJson(action, Vote.class);
-            Vote fromDb = voteService.get(created.getId());
-            assertVote(created, fromDb);
-            assertRestaurant(created.getRestaurant(), fromDb.getRestaurant());
-            setPassToActual(created.getUser(), fromDb.getUser());
-            assertUser(created.getUser(), fromDb.getUser());
-        }
+                .content(JsonUtil.writeValue(voteTo))
+                .with(userHttpBasic(user1)));
+        Vote created = readFromJson(action, Vote.class);
+        Vote fromDb = voteService.get(created.getId());
+        assertVote(created, fromDb);
+        assertRestaurant(created.getRestaurant(), fromDb.getRestaurant());
+        setPassToActual(created.getUser(), fromDb.getUser());
+        assertUser(created.getUser(), fromDb.getUser());
 
     }
 
@@ -52,10 +48,9 @@ public class UserVoteControllerTest extends AbstractControllerTest {
     @Test
     void getResult() throws Exception {
         userService.createOrUpdate(testUser);
-        userService.createOrUpdate(lateVoteUser);
-        newVotes.forEach(v-> voteService.createOrUpdate(v));
-        perform(MockMvcRequestBuilders.get(AbstractVoteController.VOTE_URL+"/result"))
-//                .with(userHttpBasic(admin)))
+        newVotes.forEach(v -> voteService.createOrUpdate(v));
+        perform(MockMvcRequestBuilders.get(AbstractVoteController.VOTE_URL + "/result")
+                .with(userHttpBasic(user1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(assertMvcResult(resultMap));

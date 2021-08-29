@@ -1,7 +1,10 @@
 package ru.dm.projects.vote_and_eat.util;
 
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultMatcher;
+import org.springframework.test.web.servlet.request.RequestPostProcessor;
+import ru.dm.projects.vote_and_eat.model.User;
 import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 
 import java.util.List;
@@ -23,8 +26,12 @@ public class TestUtil {
         return new ResultMatcher() {
             @Override
             public void match(MvcResult mvcResult) throws Exception {
-                assertEquals(mvcResult.getResponse().getContentAsString(), JsonUtil.writeValue(t));
+                assertEquals(JsonUtil.writeValue(t), mvcResult.getResponse().getContentAsString());
             }
         };
+    }
+
+    public static RequestPostProcessor userHttpBasic(User user) {
+        return SecurityMockMvcRequestPostProcessors.httpBasic(user.getEmail(), user.getPassword());
     }
 }

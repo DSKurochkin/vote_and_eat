@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.service.RestaurantService;
+import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 
 import java.net.URI;
 import java.util.List;

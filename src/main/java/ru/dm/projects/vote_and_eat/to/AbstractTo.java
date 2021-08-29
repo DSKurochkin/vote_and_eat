@@ -4,14 +4,12 @@ import ru.dm.projects.vote_and_eat.HasId;
 
 public abstract class AbstractTo implements HasId {
     Long id;
-    String name;
 
     public AbstractTo() {
     }
 
-    public AbstractTo(Long id, String name) {
+    public AbstractTo(Long id) {
         this.id = id;
-        this.name = name;
     }
 
     @Override
@@ -24,11 +22,4 @@ public abstract class AbstractTo implements HasId {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

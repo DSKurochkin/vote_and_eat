@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Access(AccessType.FIELD)
 public class AbstractBaseEntity implements HasId {
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     protected Long id;

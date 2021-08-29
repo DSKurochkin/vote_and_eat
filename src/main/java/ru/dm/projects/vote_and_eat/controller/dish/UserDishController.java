@@ -11,7 +11,7 @@ public class UserDishController extends AbstractDishController {
 
     @GetMapping("DISH_URL")
     List<Dish> dishesForToday() {
-        return service.getForToday();
+        return dishService.getForToday();
     }
 
 }

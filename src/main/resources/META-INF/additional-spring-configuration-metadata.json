@@ -1,13 +1,24 @@
 {
   "properties": [
     {
-      "name": "datetime.start",
-      "type": "java.lang.String",
-      "description": "Description for datetime.start."
+      "name": "datetime.startOfVote",
+      "type": "java.time.LocalTime",
+      "description": "Time from which users can vote."
     },
     {
-      "name": "my.property",
+      "name": "datetime.endOfVote",
+      "type": "java.time.LocalTime",
+      "description": "End time of voting."
+    },
+    {
+      "name": "datetime.startAppDate",
       "type": "java.lang.String",
-      "description": "Description for my.property."
+      "description": "Extreme min app date."
+    },
+    {
+      "name": "datetime.endAppDate",
+      "type": "java.lang.String",
+      "description": "Extreme max app date."
     }
-  ] }
+  ]
+}

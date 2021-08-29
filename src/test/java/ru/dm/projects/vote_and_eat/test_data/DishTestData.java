@@ -1,6 +1,8 @@
 package ru.dm.projects.vote_and_eat.test_data;
 
 import ru.dm.projects.vote_and_eat.model.Dish;
+import ru.dm.projects.vote_and_eat.model.Restaurant;
+import ru.dm.projects.vote_and_eat.to.DishTo;
 
 import static ru.dm.projects.vote_and_eat.test_data.RestaurantTestData.*;
 
@@ -26,11 +28,16 @@ public class DishTestData {
 
 
     public static Dish getNew(){
-        return new Dish(null, "New Test Dish", LocalDate.parse("2021-07-18"), 33, restaurant1);
+        return new Dish(null, "New Test Dish", LocalDate.parse("2022-07-18"), 33, restaurant1);
     }
 
     public static <T>  void assertDish(T actual, T expected){
         assertThat(actual).usingRecursiveComparison().ignoringFields("restaurant").isEqualTo(expected);
+    }
+
+    public static Dish createFromTo(DishTo dishTo, Restaurant restaurant){
+        return new Dish(null, dishTo.getName(), dishTo.getDate(), dishTo. getPrice(), restaurant);
+
     }
 
 

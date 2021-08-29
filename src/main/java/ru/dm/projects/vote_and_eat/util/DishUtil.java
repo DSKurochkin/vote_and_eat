@@ -1,21 +1,27 @@
 package ru.dm.projects.vote_and_eat.util;
 
 import ru.dm.projects.vote_and_eat.model.Dish;
+import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.to.DishTo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.getNow;
+import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.getToday;
+
 public class DishUtil {
 
-    public static void isAdmissibleTimeToChange(Dish dish) {
+    public static void checkPossibilityOfAction(DishTo dishTo, LocalTime endOfChangeDish) {
 
-        if (!dish.getDate().equals(LocalDate.now())
-                && (LocalTime.now().isAfter(LocalTime.parse("08:00:00")))) {
+        if (dishTo.getDate().isBefore(LocalDate.now())
+                || (getNow().isAfter(endOfChangeDish)&&dishTo.getDate().isEqual(getToday()))) {
             throw new RuntimeException("it's to late to update dish");
         }
     }
-
+    public static Dish createNewFromTo(DishTo dishTo, Restaurant restaurant) {
+        return new Dish(null, dishTo.getName(), dishTo.getDate(), dishTo.getPrice(), restaurant);
+    }
     public static Dish updateFromTo(Dish dish, DishTo dishTo) {
         dish.setName(dishTo.getName());
         dish.setPrice(dishTo.getPrice());

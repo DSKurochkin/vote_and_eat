@@ -8,6 +8,7 @@ import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.model.Vote;
 import ru.dm.projects.vote_and_eat.repository.VoteRepository;
 import ru.dm.projects.vote_and_eat.util.VoteUtil;
+import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,8 +38,8 @@ public class VoteService {
         repository.delete(get(id));
     }
 
-    public List<Vote> getBetween(LocalDate start, LocalDate end) {
-        Map<String, LocalDate> dateMap = VoteUtil.getExternal(start, end);
+    public List<Vote> getBetween(LocalDate start, LocalDate end, LocalDate min, LocalDate  max) {
+        Map<String, LocalDate> dateMap = VoteUtil.getExternal(start, end, min, max);
         return repository.getBetween(dateMap.get("start"), dateMap.get("end"));
     }
 

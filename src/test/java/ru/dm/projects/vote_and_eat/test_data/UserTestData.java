@@ -13,9 +13,9 @@ public class UserTestData {
     public static final Long ADMIN_ID=1L;
     public static final Long FIRST_USER_ID=2L;
 
-    public static final User admin = new User(ADMIN_ID, "Admin", "admin1@vote.com", "admin1@vote.com", Role.ADMIN );
-    public static final User user1 = new User(FIRST_USER_ID, "User1","user1@vote.com" ,"user1@vote.com", Role.USER);
-    public static final User user2 = new User(FIRST_USER_ID+1, "User2","user2@vote.com","user2@vote.com",Role.USER);
+    public static final User admin = new User(ADMIN_ID, "Admin", "admin@vote.com", "admin", Role.ADMIN );
+    public static final User user1 = new User(FIRST_USER_ID, "User1","user1@vote.com" ,"user1", Role.USER);
+    public static final User user2 = new User(FIRST_USER_ID+1, "User2","user2@vote.com","user2",Role.USER);
 
     public static List<User> restaurants= List.of(admin,user1,user2);
 

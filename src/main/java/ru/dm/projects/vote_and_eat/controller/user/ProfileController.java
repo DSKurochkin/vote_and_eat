@@ -24,8 +24,9 @@ public class ProfileController extends AbstractUserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody UserTo userTo) throws Exception {
         ValidationUtil.assureIdConsistent(userTo, SecurityUtil.authUserId());
-        User user = service.get(userTo.getId());
-        service.createOrUpdate(UserUtil.updateFromTo(user, userTo));
+//        User user = service.get(userTo.getId());
+        User user = UserUtil.createFromTo(SecurityUtil.get().getUserTo());
+        userService.createOrUpdate(UserUtil.updateFromTo(user, userTo));
 
     }
 
@@ -33,7 +34,7 @@ public class ProfileController extends AbstractUserController {
             "", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> create(@RequestBody UserTo userTo) {
-        User created = service.createOrUpdate(UserUtil.createNewFromTo(userTo));
+        User created = userService.createOrUpdate(UserUtil.createNewFromTo(userTo));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(PROFILE_URL).build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);

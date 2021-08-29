@@ -10,7 +10,7 @@ FROM VOTES;
 INSERT INTO USERS (name, email, password, enabled)
 VALUES ('Admin', 'admin@vote.com', '$2a$12$3SylX11BsbC2icIbTsnYUuBxdiw2F.mGB5a9c.QR7gBMdvHPYoi.O', true),
        ('User1', 'user1@vote.com', '$2a$12$yFwzAoaFJ3jNUNbZAeG/ku.aa9w581whoIuNHf4o6c5NDxFrUuXqa', true),
-       ('User2 ', 'user2@vote.com', '$2a$12$sydiGyh.FIiQi5bcGh3ElOC6W849SF7Pi/d6keEvegZvS1aiYiiAa', true);
+       ('User2', 'user2@vote.com', '$2a$12$sydiGyh.FIiQi5bcGh3ElOC6W849SF7Pi/d6keEvegZvS1aiYiiAa', true);
 
 INSERT INTO USER_ROLES(role, user_id)
 values ('ADMIN', 1),

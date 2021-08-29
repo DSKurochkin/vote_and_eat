@@ -6,6 +6,6 @@ import ru.dm.projects.vote_and_eat.service.DishService;
 public abstract class AbstractDishController {
     static final String DISH_URL = "/dishes";
     @Autowired
-    DishService service;
+    DishService dishService;
 
 }

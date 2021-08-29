@@ -7,9 +7,8 @@ public class AbstractUserController {
 
     public static final String ADMIN_URL = "/admin";
 
-
     @Autowired
-    UserService service;
+    UserService userService;
 
 
 }
