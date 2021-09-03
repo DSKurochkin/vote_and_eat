@@ -1,6 +1,7 @@
 package ru.dm.projects.vote_and_eat.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.Range;
 
@@ -23,7 +24,7 @@ public class Dish extends AbstractNamedEntity {
     @NotNull
     @JoinColumn(name = "restaurant_id")
     @ManyToOne(fetch = FetchType.EAGER)
-    // @JsonManagedReference
+//     @JsonManagedReference
     private Restaurant restaurant;
 
     public Dish() {

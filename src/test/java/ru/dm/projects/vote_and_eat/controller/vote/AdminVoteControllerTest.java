@@ -3,12 +3,10 @@ package ru.dm.projects.vote_and_eat.controller.vote;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.dm.projects.vote_and_eat.controller.AbstractControllerTest;
 import ru.dm.projects.vote_and_eat.model.Vote;
 import ru.dm.projects.vote_and_eat.service.VoteService;
-import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 
 import java.util.List;
 
@@ -29,21 +27,24 @@ public class AdminVoteControllerTest extends AbstractControllerTest {
 
     @Autowired
     private VoteService voteService;
+
     @Test
     void getAll() throws Exception {
         perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL)
-            .with(userHttpBasic(admin)))
+                .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(assertMvcResult(votes));
     }
+
     @Test
-    void getBetween() throws Exception  {
+    void getBetween() throws Exception {
 //        perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL+"/filter")
 //                .param()
 
     }
+
     @Test
     void get() throws Exception {
         perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL + "/" + FIRST_VOTE_ID)
@@ -54,21 +55,22 @@ public class AdminVoteControllerTest extends AbstractControllerTest {
                 .andExpect(assertMvcResult(vote1));
 
     }
+
     @Test
     void getByUserEmail() throws Exception {
         Vote testVoteOfUser1 = getNew();
         voteService.createOrUpdate(testVoteOfUser1);
-//        perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL + "/by?email=" + user1.getEmail())
-//                .with(userHttpBasic(admin)))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-//                .andExpect(assertMvcResult(List.of(vote1, testVoteOfUser1)));
-        ResultActions action=perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL + "/by?email=" + user1.getEmail())
+        perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL + "/by?email=" + user1.getEmail())
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-        String s =action.andReturn().getResponse().getContentAsString();
-        System.out.println("!!!!!!!!!!!!!! "  + s);
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(assertMvcResult(List.of(vote1, testVoteOfUser1)));
+//        ResultActions action=perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL + "/by?email=" + user1.getEmail())
+//                .with(userHttpBasic(admin)))
+//                .andExpect(status().isOk())
+//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
+//        String s =action.andReturn().getResponse().getContentAsString();
+//        System.out.println("!!!!!!!!!!!!!! "  + s);
 
     }
 

@@ -19,6 +19,11 @@
       "name": "datetime.endAppDate",
       "type": "java.lang.String",
       "description": "Extreme max app date."
+    },
+    {
+      "name": "spring.datasource.test-on-borrow",
+      "type": "java.lang.String",
+      "description": "Description for spring.datasource.test-on-borrow."
     }
   ]
 }

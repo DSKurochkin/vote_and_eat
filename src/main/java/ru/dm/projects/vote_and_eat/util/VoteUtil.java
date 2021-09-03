@@ -21,22 +21,6 @@ public class VoteUtil {
         }
     }
 
-    public static Map<String, LocalDate> getExternal(@Nullable LocalDate start
-            , @Nullable LocalDate end
-            , LocalDate min
-            ,LocalDate max) {
-        Map<String, LocalDate> map = new HashMap<>();
-        if (start == null) {
-            start = min;
-        }
-        if (end == null) {
-            end = max;
-        }
-        map.put("start", start);
-        map.put("end", end);
-        return map;
-    }
-
     public static Map<Integer, Restaurant> getRatingOfRestaurants(List<Vote> votes) {
         Map<Restaurant, Integer> result = new HashMap<>();
         votes.forEach(v -> result.merge(v.getRestaurant(), 1, Integer::sum));

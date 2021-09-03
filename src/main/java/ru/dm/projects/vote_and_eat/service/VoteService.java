@@ -38,9 +38,8 @@ public class VoteService {
         repository.delete(get(id));
     }
 
-    public List<Vote> getBetween(LocalDate start, LocalDate end, LocalDate min, LocalDate  max) {
-        Map<String, LocalDate> dateMap = VoteUtil.getExternal(start, end, min, max);
-        return repository.getBetween(dateMap.get("start"), dateMap.get("end"));
+    public List<Vote> getBetween(LocalDate start, LocalDate end) {
+        return repository.getBetween(start, end);
     }
 
     public List<Vote> getByUsersEmail(String email) {

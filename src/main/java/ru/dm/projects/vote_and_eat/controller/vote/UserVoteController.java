@@ -50,11 +50,5 @@ public class UserVoteController extends AbstractVoteController {
         }
         return result;
     }
-    ///////////DELETE
-
-    @GetMapping("/test")
-    public void test(){
-        System.out.println("TEST");
-    }
 
 }

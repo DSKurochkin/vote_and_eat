@@ -20,7 +20,6 @@ import static ru.dm.projects.vote_and_eat.test_data.UserTestData.*;
 import static ru.dm.projects.vote_and_eat.util.TestUtil.assertMvcResult;
 import static ru.dm.projects.vote_and_eat.util.TestUtil.userHttpBasic;
 import static ru.dm.projects.vote_and_eat.util.json.JsonUtil.readFromJson;
-import static ru.dm.projects.vote_and_eat.test_data.UserTestData.jsonWithPassword;
 
 public class AdminControllerTest extends AbstractControllerTest {
     private final String ADMIN_USER_URL = ADMIN_URL + "/users";
@@ -31,7 +30,7 @@ public class AdminControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_USER_URL +"/"+ FIRST_USER_ID)
+        perform(MockMvcRequestBuilders.get(ADMIN_USER_URL + "/" + FIRST_USER_ID)
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -42,7 +41,7 @@ public class AdminControllerTest extends AbstractControllerTest {
 
     @Test
     void create() throws Exception {
-        User newUser= getNew();
+        User newUser = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(ADMIN_USER_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(newUser, "testuser@vote.com"))
@@ -64,10 +63,11 @@ public class AdminControllerTest extends AbstractControllerTest {
         assertThrows(NotFoundException.class, () -> service.get(FIRST_USER_ID));
 
     }
+
     @Test
     void update() throws Exception {
-        User updated= new User(FIRST_USER_ID,  "Testuser", "testuser@vote.com","testuser@vote.com", Role.USER);
-        perform(MockMvcRequestBuilders.put(ADMIN_USER_URL + "/"+FIRST_USER_ID)
+        User updated = new User(FIRST_USER_ID, "Testuser", "testuser@vote.com", "testuser@vote.com", Role.USER);
+        perform(MockMvcRequestBuilders.put(ADMIN_USER_URL + "/" + FIRST_USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
                 .content(jsonWithPassword(updated, "testuser@vote.com")))

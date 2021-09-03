@@ -22,7 +22,7 @@ public class AdminVoteController extends AbstractVoteController {
     @GetMapping("/filter")
     public List<Vote> getBetween(@Nullable @RequestParam LocalDate start,
                                  @Nullable @RequestParam LocalDate end) {
-        return voteService.getBetween(start, end, dateTimeUtil.getStartAppDate(), dateTimeUtil.getEndAppDate());
+        return voteService.getBetween(dateTimeUtil.chekStartDate(start), dateTimeUtil.chekEndDate(end));
     }
 
     @GetMapping("/{id}")
@@ -34,5 +34,6 @@ public class AdminVoteController extends AbstractVoteController {
     public List<Vote> getByUser(@RequestParam String email) {
         return voteService.getByUsersEmail(email);
     }
+
 
 }

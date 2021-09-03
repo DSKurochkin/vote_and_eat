@@ -4,17 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dm.projects.vote_and_eat.model.Dish;
-import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.service.RestaurantService;
 import ru.dm.projects.vote_and_eat.to.DishTo;
 import ru.dm.projects.vote_and_eat.util.DateTimeUtil;
 import ru.dm.projects.vote_and_eat.util.DishUtil;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 import static ru.dm.projects.vote_and_eat.controller.dish.AbstractDishController.DISH_URL;
@@ -41,13 +42,19 @@ public class AdminDishController extends AbstractDishController {
         return dishService.get(id);
     }
 
+    @GetMapping("/byRestaurantName")
+    public List<Dish> getByRestaurantName(@RequestParam String name,
+                                          @Nullable @RequestParam LocalDate start,
+                                          @Nullable @RequestParam LocalDate end) throws Exception {
+        return dishService.getByRestaurantName(name, dateTimeUtil.chekStartDate(start), dateTimeUtil.chekStartDate(end));
+    }
 
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Dish> create(@RequestBody DishTo dishTo) throws Exception {
         Assert.notNull(dishTo, "dish must not be null");
         DishUtil.checkPossibilityOfAction(dishTo, dateTimeUtil.getStartOfVote());
-        Dish dish=createNewFromTo(dishTo, restaurantService.get(dishTo.getRestaurant_id()));
+        Dish dish = createNewFromTo(dishTo, restaurantService.get(dishTo.getRestaurant_id()));
         Dish created = dishService.createOrUpdate(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(DISH_URL + "{id}")

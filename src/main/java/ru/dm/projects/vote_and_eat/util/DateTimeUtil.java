@@ -55,4 +55,12 @@ public class DateTimeUtil {
         return LocalTime.parse(time);
     }
 
+    public LocalDate chekStartDate(LocalDate start){
+        return start==null?getStartAppDate():start;
+    }
+
+    public LocalDate chekEndDate(LocalDate end){
+        return end==null?getEndAppDate():end;
+    }
+
 }

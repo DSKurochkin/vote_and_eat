@@ -28,4 +28,8 @@ public class DishUtil {
         dish.setDate(dishTo.getDate());
         return dish;
     }
+
+    public static DishTo asTo(Dish dish){
+        return new DishTo(dish.getId(), dish.getName(), dish.getDate(), dish.getPrice(), dish.getRestaurant().id());
+    }
 }

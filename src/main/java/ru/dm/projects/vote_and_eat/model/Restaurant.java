@@ -14,14 +14,14 @@ import java.util.List;
 
 @Entity
 @Table(name = "restaurants")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Restaurant.class)
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Restaurant.class)
 public class Restaurant extends AbstractNamedEntity {
 
 
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-    @JsonBackReference
+//    @JsonBackReference
 //    @JsonManagedReference
-//    @JsonIgnore
+    @JsonIgnore
     private List<Dish> dishes;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)

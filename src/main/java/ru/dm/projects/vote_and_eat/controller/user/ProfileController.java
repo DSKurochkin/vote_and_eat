@@ -24,7 +24,6 @@ public class ProfileController extends AbstractUserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody UserTo userTo) throws Exception {
         ValidationUtil.assureIdConsistent(userTo, SecurityUtil.authUserId());
-//        User user = service.get(userTo.getId());
         User user = UserUtil.createFromTo(SecurityUtil.get().getUserTo());
         userService.createOrUpdate(UserUtil.updateFromTo(user, userTo));
 
