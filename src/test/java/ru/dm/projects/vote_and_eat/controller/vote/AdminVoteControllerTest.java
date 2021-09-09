@@ -1,14 +1,8 @@
 package ru.dm.projects.vote_and_eat.controller.vote;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.dm.projects.vote_and_eat.controller.AbstractControllerTest;
-import ru.dm.projects.vote_and_eat.model.Vote;
-import ru.dm.projects.vote_and_eat.service.VoteService;
-
-import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -18,15 +12,13 @@ import static ru.dm.projects.vote_and_eat.controller.vote.AbstractVoteController
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.admin;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.user1;
 import static ru.dm.projects.vote_and_eat.test_data.VoteTestData.*;
-import static ru.dm.projects.vote_and_eat.util.TestUtil.assertMvcResult;
-import static ru.dm.projects.vote_and_eat.util.TestUtil.userHttpBasic;
+import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.getStringFromDate;
+import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
+import static ru.dm.projects.vote_and_eat.util.TestUtil.*;
 
-public class AdminVoteControllerTest extends AbstractControllerTest {
+public class AdminVoteControllerTest extends AbstractVoteControllerTest {
 
     private final String ADMIN_VOTE_URL = ADMIN_URL + VOTE_URL;
-
-    @Autowired
-    private VoteService voteService;
 
     @Test
     void getAll() throws Exception {
@@ -40,9 +32,23 @@ public class AdminVoteControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetween() throws Exception {
-//        perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL+"/filter")
-//                .param()
+        populateVote();
+        String date = getStringFromDate(today());
+        perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL + "/filter?" + "start=" + date + "&end=" + date)
+                .with(userHttpBasic(admin)))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(assertMvcResult(newVotes));
 
+    }
+
+    @Test
+    void getNotFound() throws Exception {
+        perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL + NOT_FOUND)
+                .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 
     @Test
@@ -57,21 +63,16 @@ public class AdminVoteControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getByUserEmail() throws Exception {
-        Vote testVoteOfUser1 = getNew();
-        voteService.createOrUpdate(testVoteOfUser1);
-        perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL + "/by?email=" + user1.getEmail())
-                .with(userHttpBasic(admin)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(assertMvcResult(List.of(vote1, testVoteOfUser1)));
-//        ResultActions action=perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL + "/by?email=" + user1.getEmail())
-//                .with(userHttpBasic(admin)))
-//                .andExpect(status().isOk())
-//                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON));
-//        String s =action.andReturn().getResponse().getContentAsString();
-//        System.out.println("!!!!!!!!!!!!!! "  + s);
+    void getUnAuth() throws Exception {
+        perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL + "/" + FIRST_VOTE_ID))
+                .andExpect(status().isUnauthorized());
+    }
 
+    @Test
+    void getForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL + "/" + FIRST_VOTE_ID)
+                .with(userHttpBasic(user1)))
+                .andExpect(status().isForbidden());
     }
 
 }

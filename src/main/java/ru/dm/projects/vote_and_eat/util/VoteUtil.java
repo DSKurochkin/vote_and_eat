@@ -1,23 +1,22 @@
 package ru.dm.projects.vote_and_eat.util;
 
-import org.springframework.lang.Nullable;
 import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.model.Vote;
+import ru.dm.projects.vote_and_eat.util.exception.UnsupportedTimeOperationException;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.*;
+import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
 
 public class VoteUtil {
 
     public static void checkVoteTime(Vote vote, LocalTime getEndOfVote) {
         if (vote.getTime().isAfter(getEndOfVote)) {
-            throw new RuntimeException("it's to late to vote, try again tomorrow");
+            throw new UnsupportedTimeOperationException("it's to late to vote, try again tomorrow");
         }
-        if (!vote.getDate().equals(getToday())) {
-            throw new RuntimeException("unsupported date of vote");
+        if (!vote.getDate().equals(today())) {
+            throw new UnsupportedTimeOperationException("unsupported date of vote");
         }
     }
 
@@ -32,6 +31,5 @@ public class VoteUtil {
         sourceMap.forEach((k, v) -> resultMap.put(v, k));
         return resultMap;
     }
-
 
 }

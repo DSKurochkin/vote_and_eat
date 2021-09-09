@@ -19,18 +19,15 @@ import java.net.URI;
 public class ProfileController extends AbstractUserController {
     static final String PROFILE_URL = "/profile";
 
-    //only own id
     @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody UserTo userTo) throws Exception {
         ValidationUtil.assureIdConsistent(userTo, SecurityUtil.authUserId());
         User user = UserUtil.createFromTo(SecurityUtil.get().getUserTo());
         userService.createOrUpdate(UserUtil.updateFromTo(user, userTo));
-
     }
 
-    @PostMapping(value = "/register" +
-            "", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> create(@RequestBody UserTo userTo) {
         User created = userService.createOrUpdate(UserUtil.createNewFromTo(userTo));

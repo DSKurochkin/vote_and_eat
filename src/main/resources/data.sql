@@ -36,7 +36,6 @@ VALUES ('A_dish first', '2021-09-01', 80, 1),
 
 INSERT INTO VOTES(time, date, user_id, restaurant_id)
 VALUES ('09:00:00', '2021-09-01', 2, 1),
-    ('09:00:00', '2021-09-03', 2, 1),
        ('08:00:00', '2021-09-01', 3, 2);
 
 

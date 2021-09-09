@@ -9,13 +9,15 @@ import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.model.Vote;
 import ru.dm.projects.vote_and_eat.service.RestaurantService;
 import ru.dm.projects.vote_and_eat.to.VoteTo;
-import ru.dm.projects.vote_and_eat.util.DateTimeUtil;
+import ru.dm.projects.vote_and_eat.util.exception.UnsupportedTimeOperationException;
 
 import java.net.URI;
 import java.util.Map;
 
 import static ru.dm.projects.vote_and_eat.controller.vote.AbstractVoteController.VOTE_URL;
 import static ru.dm.projects.vote_and_eat.security.SecurityUtil.get;
+import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.now;
+import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
 import static ru.dm.projects.vote_and_eat.util.UserUtil.createFromTo;
 import static ru.dm.projects.vote_and_eat.util.VoteUtil.checkVoteTime;
 
@@ -26,27 +28,30 @@ public class UserVoteController extends AbstractVoteController {
     @Autowired
     RestaurantService restaurantService;
 
-        @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Vote> toVote(@RequestBody VoteTo voteTo) throws Exception {
-        Vote created = new Vote(null
-                , DateTimeUtil.getToday()
-                , DateTimeUtil.getNow()
+        Vote vote = new Vote(voteService.getIdIfTodayVoteExist(get().getId(), today())
+                , today()
+                , now()
                 , restaurantService.get(voteTo.getRestaurant_id())
                 , createFromTo(get().getUserTo()));
-        checkVoteTime(created, dateTimeUtil.getEndOfVote());
-        created = voteService.createOrUpdate(created);
-        URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
+        checkVoteTime(vote, dateTimeUtil.getEndOfVote());
+        vote = voteService.createOrUpdate(vote);
+        URI uriOfResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(VOTE_URL + "{id}")
-                .buildAndExpand(created.getId()).toUri();
-        return ResponseEntity.created(uriOfNewResource).body(created);
+                .buildAndExpand(vote.getId()).toUri();
+        return ResponseEntity.created(uriOfResource).body(vote);
 
     }
 
     @GetMapping("/result")
     public Map<Integer, Restaurant> getResult() {
-        Map<Integer, Restaurant> result = voteService.resultFromToday();
+        if (now().isBefore(dateTimeUtil.getEndOfVote())) {
+            throw new UnsupportedTimeOperationException("The vote is still in progress. Try after " + dateTimeUtil.getEndOfVote() + " o'clock");
+        }
+        Map<Integer, Restaurant> result = voteService.getRating();
         if (result.isEmpty()) {
-            throw new RuntimeException("??? Today no result");
+            throw new RuntimeException("Nobody voted today");
         }
         return result;
     }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.service.RestaurantService;
-import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
+import ru.dm.projects.vote_and_eat.util.ValidationUtil;
 
 import java.net.URI;
 import java.util.List;
@@ -48,7 +48,7 @@ public class RestaurantController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody Restaurant restaurant, @PathVariable int id) {
-        //chek id=bean.id
+        ValidationUtil.assureIdConsistent(restaurant, id);
         service.createOrUpdate(restaurant);
     }
 

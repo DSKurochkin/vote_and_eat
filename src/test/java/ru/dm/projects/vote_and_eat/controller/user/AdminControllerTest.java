@@ -2,31 +2,24 @@ package ru.dm.projects.vote_and_eat.controller.user;
 
 import javassist.NotFoundException;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.dm.projects.vote_and_eat.controller.AbstractControllerTest;
 import ru.dm.projects.vote_and_eat.model.Role;
 import ru.dm.projects.vote_and_eat.model.User;
-import ru.dm.projects.vote_and_eat.service.UserService;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
+import static ru.dm.projects.vote_and_eat.test_data.DishTestData.FIRST_DISH_ID;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.*;
-import static ru.dm.projects.vote_and_eat.util.TestUtil.assertMvcResult;
-import static ru.dm.projects.vote_and_eat.util.TestUtil.userHttpBasic;
+import static ru.dm.projects.vote_and_eat.util.TestUtil.*;
 import static ru.dm.projects.vote_and_eat.util.json.JsonUtil.readFromJson;
 
-public class AdminControllerTest extends AbstractControllerTest {
+public class AdminControllerTest extends AbstractUserControllerTest {
     private final String ADMIN_USER_URL = ADMIN_URL + "/users";
-
-    @Autowired
-    private UserService service;
-
 
     @Test
     void get() throws Exception {
@@ -36,6 +29,14 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
                 .andExpect(assertMvcResult(user1));
+    }
+
+    @Test
+    void getNotFound() throws Exception {
+        perform(MockMvcRequestBuilders.get(ADMIN_URL + NOT_FOUND)
+                .with(userHttpBasic(admin)))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
     }
 
 
@@ -50,8 +51,8 @@ public class AdminControllerTest extends AbstractControllerTest {
         Long newId = db.getId();
         db.setPassword(newUser.getPassword());
         newUser.setId(newId);
-        assertUser(newUser, service.get(newId));
-        assertUser(db, service.get(newId));
+        assertUser(newUser, userService.get(newId));
+        assertUser(db, userService.get(newId));
     }
 
     @Test
@@ -60,7 +61,7 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        assertThrows(NotFoundException.class, () -> service.get(FIRST_USER_ID));
+        assertThrows(NotFoundException.class, () -> userService.get(FIRST_USER_ID));
 
     }
 
@@ -72,7 +73,20 @@ public class AdminControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(admin))
                 .content(jsonWithPassword(updated, "testuser@vote.com")))
                 .andExpect(status().isNoContent());
-        assertUser(service.get(FIRST_USER_ID), updated);
+        assertUser(userService.get(FIRST_USER_ID), updated);
 
+    }
+
+    @Test
+    void getUnAuth() throws Exception {
+        perform(MockMvcRequestBuilders.get(ADMIN_URL + "/" + FIRST_DISH_ID))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void getForbidden() throws Exception {
+        perform(MockMvcRequestBuilders.get(ADMIN_URL + "/" + FIRST_DISH_ID)
+                .with(userHttpBasic(user1)))
+                .andExpect(status().isForbidden());
     }
 }

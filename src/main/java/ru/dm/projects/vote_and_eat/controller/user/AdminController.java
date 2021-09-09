@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dm.projects.vote_and_eat.model.User;
+import ru.dm.projects.vote_and_eat.util.ValidationUtil;
 
 import java.net.URI;
 import java.util.List;
@@ -28,7 +29,7 @@ public class AdminController extends AbstractUserController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody User user, @PathVariable int id) {
-        //check user id
+        ValidationUtil.assureIdConsistent(user, id);
         userService.createOrUpdate(user);
     }
 

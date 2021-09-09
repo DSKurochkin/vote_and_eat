@@ -3,12 +3,17 @@ package ru.dm.projects.vote_and_eat.util;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+
 @Component
 public class DateTimeUtil {
+
+    public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+
+    private static Clock CLOCK = Clock.systemDefaultZone();
     @Value("${datetime.startOfVote}")
     private LocalTime startOfVote;
 
@@ -20,6 +25,39 @@ public class DateTimeUtil {
 
     @Value("${datetime.endAppDate}")
     private String endAppDate;
+
+    public static LocalDate getDate(String date) {
+        return LocalDate.parse(date);
+    }
+
+    public static LocalDate today() {
+        return LocalDate.now(getClock());
+    }
+
+    public static LocalTime now() {
+        return LocalTime.now(getClock()).truncatedTo(ChronoUnit.MINUTES);
+    }
+
+    public static String getStringFromDate(LocalDate ld) {
+        return ld.format(DATE_FORMATTER);
+    }
+
+    public static LocalTime getTime(String time) {
+        return LocalTime.parse(time);
+    }
+
+    private static Clock getClock() {
+        return CLOCK;
+    }
+
+    public static void useMockTime(LocalDateTime dateTime) {
+        Instant instant = dateTime.atZone(ZoneId.systemDefault()).toInstant();
+        CLOCK = Clock.fixed(instant, ZoneId.systemDefault());
+    }
+
+    public static void useSystemDefaultClock() {
+        CLOCK = Clock.systemDefaultZone();
+    }
 
     public LocalTime getStartOfVote() {
         return startOfVote;
@@ -37,30 +75,12 @@ public class DateTimeUtil {
         return getDate(endAppDate);
     }
 
-    private static final DateTimeFormatter tf = DateTimeFormatter.ISO_LOCAL_TIME;
-
-    public static LocalDate getDate(String date) {
-        return LocalDate.parse(date);
+    public LocalDate chekStartDate(LocalDate start) {
+        return start == null ? getStartAppDate() : start;
     }
 
-    public static LocalDate getToday() {
-        return LocalDate.now();
-    }
-
-    public static LocalTime getNow() {
-        return LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
-    }
-
-    public static LocalTime getTime(String time) {
-        return LocalTime.parse(time);
-    }
-
-    public LocalDate chekStartDate(LocalDate start){
-        return start==null?getStartAppDate():start;
-    }
-
-    public LocalDate chekEndDate(LocalDate end){
-        return end==null?getEndAppDate():end;
+    public LocalDate chekEndDate(LocalDate end) {
+        return end == null ? getEndAppDate() : end;
     }
 
 }

@@ -5,18 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.dm.projects.vote_and_eat.model.Dish;
-import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.repository.DishRepository;
 import ru.dm.projects.vote_and_eat.to.DishTo;
-import ru.dm.projects.vote_and_eat.util.DateTimeUtil;
 import ru.dm.projects.vote_and_eat.util.DishUtil;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.stream.Collectors;
 
+import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
 import static ru.dm.projects.vote_and_eat.util.ValidationUtil.notFoundMessage;
 
 @Service
@@ -41,11 +40,16 @@ public class DishService {
         repository.delete(get(id));
     }
 
-    public Map <String, DishTo> todayMenu() {
-        return repository.getForToday(DateTimeUtil.getToday()).stream().collect(Collectors.toMap(
-                dish -> dish.getRestaurant().getName()
-                , DishUtil::asTo)
-        );
+    public Map<String, List<DishTo>> todayMenu() {
+        Map<String, List<DishTo>> result = new TreeMap<>();
+        for (Dish dish : repository.getForToday(today())) {
+            String restaurantName = dish.getRestaurant().getName();
+            if (!result.containsKey(restaurantName)) {
+                result.put(restaurantName, new ArrayList<DishTo>());
+            }
+            result.get(restaurantName).add(DishUtil.asTo(dish));
+        }
+        return result;
     }
 
     public List<Dish> getByRestaurantName(String name, LocalDate start, LocalDate end) {

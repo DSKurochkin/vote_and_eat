@@ -12,17 +12,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestUtil {
-    public static final Integer NOT_FOUND =404;
+    public static final String NOT_FOUND = "/404";
 
-    public static <T> ResultMatcher assertMvcResult(List<T> list){
+    public static <T> ResultMatcher assertMvcResult(List<T> list) {
         return new ResultMatcher() {
             @Override
             public void match(MvcResult mvcResult) throws Exception {
-                assertEquals(mvcResult.getResponse().getContentAsString(), JsonUtil.writeValue(list));
+                assertEquals(JsonUtil.writeValue(list), mvcResult.getResponse().getContentAsString());
             }
         };
     }
-    public static <T> ResultMatcher assertMvcResult(T t){
+
+    public static <T> ResultMatcher assertMvcResult(T t) {
         return new ResultMatcher() {
             @Override
             public void match(MvcResult mvcResult) throws Exception {

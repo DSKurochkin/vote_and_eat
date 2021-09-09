@@ -8,12 +8,12 @@ import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.model.Vote;
 import ru.dm.projects.vote_and_eat.repository.VoteRepository;
 import ru.dm.projects.vote_and_eat.util.VoteUtil;
-import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
+import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
 import static ru.dm.projects.vote_and_eat.util.ValidationUtil.notFoundMessage;
 
 @Service
@@ -42,12 +42,17 @@ public class VoteService {
         return repository.getBetween(start, end);
     }
 
-    public List<Vote> getByUsersEmail(String email) {
-        return repository.getByUser(email);
+    public Map<Integer, Restaurant> getRating(LocalDate start, LocalDate end) {
+        return VoteUtil.getRatingOfRestaurants(repository.getBetween(start, end));
     }
 
-    public Map<Integer, Restaurant> resultFromToday() {
-        return VoteUtil.getRatingOfRestaurants(repository.getForToday(LocalDate.now()));
+    public Map<Integer, Restaurant> getRating() {
+        return VoteUtil.getRatingOfRestaurants(repository.getForToday(today()));
+    }
+
+    public Long getIdIfTodayVoteExist(Long id, LocalDate date) {
+        Vote vote = repository.getIfTodayVoteExist(id, date);
+        return vote == null ? null : vote.getId();
     }
 
 }

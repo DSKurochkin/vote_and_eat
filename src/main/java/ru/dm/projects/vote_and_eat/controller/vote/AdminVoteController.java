@@ -2,10 +2,12 @@ package ru.dm.projects.vote_and_eat.controller.vote;
 
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
+import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.model.Vote;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
 import static ru.dm.projects.vote_and_eat.controller.vote.AbstractVoteController.VOTE_URL;
@@ -25,15 +27,15 @@ public class AdminVoteController extends AbstractVoteController {
         return voteService.getBetween(dateTimeUtil.chekStartDate(start), dateTimeUtil.chekEndDate(end));
     }
 
+    @GetMapping("/rating")
+    public Map<Integer, Restaurant> getRatingByInterval(@Nullable @RequestParam LocalDate start,
+                                                        @Nullable @RequestParam LocalDate end) {
+        return voteService.getRating(start, end);
+    }
+
     @GetMapping("/{id}")
     public Vote get(@PathVariable Long id) throws Exception {
         return voteService.get(id);
     }
-
-    @GetMapping("/by")
-    public List<Vote> getByUser(@RequestParam String email) {
-        return voteService.getByUsersEmail(email);
-    }
-
 
 }

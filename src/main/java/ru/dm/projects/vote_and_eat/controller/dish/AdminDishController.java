@@ -13,6 +13,7 @@ import ru.dm.projects.vote_and_eat.service.RestaurantService;
 import ru.dm.projects.vote_and_eat.to.DishTo;
 import ru.dm.projects.vote_and_eat.util.DateTimeUtil;
 import ru.dm.projects.vote_and_eat.util.DishUtil;
+import ru.dm.projects.vote_and_eat.util.ValidationUtil;
 
 import java.net.URI;
 import java.time.LocalDate;
@@ -65,8 +66,8 @@ public class AdminDishController extends AbstractDishController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@RequestBody DishTo dishTo, @PathVariable int id) throws Exception {
-        //DishUtil.isAdmissibleTimeToChange(dish);
-        //check id=bean.id
+        DishUtil.checkPossibilityOfAction(dishTo, dateTimeUtil.getStartOfVote());
+        ValidationUtil.assureIdConsistent(dishTo, id);
         Dish dish = dishService.get(dishTo.getId());
         dishService.createOrUpdate(DishUtil.updateFromTo(dish, dishTo));
     }

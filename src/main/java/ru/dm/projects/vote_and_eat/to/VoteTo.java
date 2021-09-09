@@ -7,9 +7,9 @@ public class VoteTo {
     public VoteTo() {
     }
 
-    public VoteTo(Long restaurant_id, Long user_id) {
+    public VoteTo(Long restaurant_id) {
         this.restaurant_id = restaurant_id;
-           }
+    }
 
     public Long getRestaurant_id() {
         return restaurant_id;
