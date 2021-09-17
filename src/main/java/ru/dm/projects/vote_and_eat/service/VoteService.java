@@ -1,6 +1,5 @@
 package ru.dm.projects.vote_and_eat.service;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -8,12 +7,14 @@ import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.model.Vote;
 import ru.dm.projects.vote_and_eat.repository.VoteRepository;
 import ru.dm.projects.vote_and_eat.util.VoteUtil;
+import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
+import static ru.dm.projects.vote_and_eat.util.ValidationUtil.checkNew;
 import static ru.dm.projects.vote_and_eat.util.ValidationUtil.notFoundMessage;
 
 @Service
@@ -31,6 +32,7 @@ public class VoteService {
 
     public Vote createOrUpdate(Vote vote) {
         Assert.notNull(vote, "vote must not be null");
+        checkNew(vote);
         return repository.save(vote);
     }
 

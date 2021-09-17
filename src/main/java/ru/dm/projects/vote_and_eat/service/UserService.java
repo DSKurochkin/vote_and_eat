@@ -1,6 +1,5 @@
 package ru.dm.projects.vote_and_eat.service;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -10,9 +9,11 @@ import org.springframework.util.Assert;
 import ru.dm.projects.vote_and_eat.model.User;
 import ru.dm.projects.vote_and_eat.repository.UserRepository;
 import ru.dm.projects.vote_and_eat.security.AuthorizedUser;
+import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
 
 import java.util.List;
 
+import static ru.dm.projects.vote_and_eat.util.ValidationUtil.checkNew;
 import static ru.dm.projects.vote_and_eat.util.ValidationUtil.notFoundMessage;
 
 @Service("userService")
@@ -30,6 +31,7 @@ public class UserService implements UserDetailsService {
 
     public User createOrUpdate(User user) {
         Assert.notNull(user, "user must not be null");
+        checkNew(user);
         return repository.save(user);
     }
 

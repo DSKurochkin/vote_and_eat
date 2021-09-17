@@ -13,9 +13,8 @@ import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
 public class DishUtil {
 
     public static void checkPossibilityOfAction(DishTo dishTo, LocalTime endOfChangeDish) {
-
-        if (dishTo.getDate().isBefore(today())
-                || (now().isAfter(endOfChangeDish) && dishTo.getDate().isEqual(today()))) {
+        String message;
+        if (now().isAfter(endOfChangeDish) && dishTo.getDate().isEqual(today())) {
             throw new UnsupportedTimeOperationException("now is unsupported time for change dish");
         }
     }

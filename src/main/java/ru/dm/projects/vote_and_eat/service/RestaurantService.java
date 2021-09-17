@@ -1,14 +1,15 @@
 package ru.dm.projects.vote_and_eat.service;
 
-import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.repository.RestaurantRepository;
+import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
 
 import java.util.List;
 
+import static ru.dm.projects.vote_and_eat.util.ValidationUtil.checkNew;
 import static ru.dm.projects.vote_and_eat.util.ValidationUtil.notFoundMessage;
 
 @Service
@@ -27,6 +28,7 @@ public class RestaurantService {
 
     public Restaurant createOrUpdate(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
+        checkNew(restaurant);
         return repository.save(restaurant);
     }
 

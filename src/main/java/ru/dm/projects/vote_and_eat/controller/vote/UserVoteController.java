@@ -9,8 +9,10 @@ import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.model.Vote;
 import ru.dm.projects.vote_and_eat.service.RestaurantService;
 import ru.dm.projects.vote_and_eat.to.VoteTo;
+import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
 import ru.dm.projects.vote_and_eat.util.exception.UnsupportedTimeOperationException;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.Map;
 
@@ -29,7 +31,7 @@ public class UserVoteController extends AbstractVoteController {
     RestaurantService restaurantService;
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Vote> toVote(@RequestBody VoteTo voteTo) throws Exception {
+    public ResponseEntity<Vote> toVote(@Valid @RequestBody VoteTo voteTo) throws Exception {
         Vote vote = new Vote(voteService.getIdIfTodayVoteExist(get().getId(), today())
                 , today()
                 , now()
@@ -51,7 +53,7 @@ public class UserVoteController extends AbstractVoteController {
         }
         Map<Integer, Restaurant> result = voteService.getRating();
         if (result.isEmpty()) {
-            throw new RuntimeException("Nobody voted today");
+            throw new NotFoundException("Nobody voted today");
         }
         return result;
     }

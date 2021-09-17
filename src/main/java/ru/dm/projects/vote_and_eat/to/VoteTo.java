@@ -1,7 +1,9 @@
 package ru.dm.projects.vote_and_eat.to;
 
-public class VoteTo {
+import javax.validation.constraints.NotNull;
 
+public class VoteTo {
+    @NotNull
     private Long restaurant_id;
 
     public VoteTo() {

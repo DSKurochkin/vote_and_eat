@@ -33,7 +33,7 @@ public class AdminControllerTest extends AbstractUserControllerTest {
 
     @Test
     void getNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_URL + NOT_FOUND)
+        perform(MockMvcRequestBuilders.get(ADMIN_USER_URL + NOT_FOUND)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());

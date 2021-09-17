@@ -1,11 +1,11 @@
 package ru.dm.projects.vote_and_eat.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
@@ -14,17 +14,14 @@ import java.time.LocalDate;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope=Dish.class)
 public class Dish extends AbstractNamedEntity {
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     LocalDate date;
     @Column(name = "price", nullable = false)
-    @NotNull
-    @Range(min = 1, max = 100)
     private int price;
 
-    @NotNull
     @JoinColumn(name = "restaurant_id")
     @ManyToOne(fetch = FetchType.EAGER)
-//     @JsonManagedReference
+
     private Restaurant restaurant;
 
     public Dish() {

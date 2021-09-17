@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import javax.validation.constraints.FutureOrPresent;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -12,25 +14,25 @@ import java.time.LocalTime;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Vote.class)
 public class Vote extends AbstractBaseEntity {
 
-    @Column(name = "date", nullable = false, columnDefinition = "timestamp default now()")
+    @Column(name = "date", nullable = false)
+    @NotNull
+    @FutureOrPresent
     private LocalDate date;
 
-    @Column(name = "time", nullable = false, columnDefinition = "timestamp default now()")
+    @NotNull
+    @FutureOrPresent
+    @Column(name = "time", nullable = false)
     private LocalTime time;
 
     @JoinColumn(name = "restaurant_id")
     @ManyToOne(fetch = FetchType.EAGER)
-//    @JsonBackReference
-//    @JsonManagedReference
-//    @JsonIgnore
+
     private Restaurant restaurant;
 
 
     @JoinColumn(name = "user_id")
     @ManyToOne(fetch = FetchType.EAGER)
-//    @JsonBackReference
-//    @JsonManagedReference
-//    @JsonIgnore
+
     private User user;
 
 

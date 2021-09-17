@@ -15,6 +15,7 @@ import ru.dm.projects.vote_and_eat.util.DateTimeUtil;
 import ru.dm.projects.vote_and_eat.util.DishUtil;
 import ru.dm.projects.vote_and_eat.util.ValidationUtil;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
@@ -52,7 +53,7 @@ public class AdminDishController extends AbstractDishController {
 
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Dish> create(@RequestBody DishTo dishTo) throws Exception {
+    public ResponseEntity<Dish> create(@Valid @RequestBody DishTo dishTo) throws Exception {
         Assert.notNull(dishTo, "dish must not be null");
         DishUtil.checkPossibilityOfAction(dishTo, dateTimeUtil.getStartOfVote());
         Dish dish = createNewFromTo(dishTo, restaurantService.get(dishTo.getRestaurant_id()));
@@ -65,7 +66,7 @@ public class AdminDishController extends AbstractDishController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody DishTo dishTo, @PathVariable int id) throws Exception {
+    public void update(@Valid @RequestBody DishTo dishTo, @PathVariable int id) throws Exception {
         DishUtil.checkPossibilityOfAction(dishTo, dateTimeUtil.getStartOfVote());
         ValidationUtil.assureIdConsistent(dishTo, id);
         Dish dish = dishService.get(dishTo.getId());

@@ -21,8 +21,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.dm.projects.vote_and_eat.controller.dish.AbstractDishController.DISH_URL;
 import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
-import static ru.dm.projects.vote_and_eat.test_data.DateTimeTestData.dbTestDateTime;
-import static ru.dm.projects.vote_and_eat.test_data.DateTimeTestData.goodTestTimeToChangeDish;
+import static ru.dm.projects.vote_and_eat.test_data.DateTimeTestData.*;
 import static ru.dm.projects.vote_and_eat.test_data.DishTestData.*;
 import static ru.dm.projects.vote_and_eat.test_data.RestaurantTestData.restaurant1;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.admin;
@@ -123,26 +122,28 @@ public class DishControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isForbidden());
     }
-//    @Test
-//    void createInUnsupportedDate() throws Exception {
-//        useMockTime(badTestDate);
-//        perform(MockMvcRequestBuilders.post(ADMIN_DISH_URL)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .with(userHttpBasic(admin)))
-//                //.andExpect(UnsupportedOperationException.class)
-//                ;
-//
-//    }
-//
-//        @Test
-//        void updateInUnsupportedTime() throws Exception {
-//            useMockTime(lateTestTime);
-//            perform(MockMvcRequestBuilders.put(ADMIN_DISH_URL + "/" + FIRST_DISH_ID)
-//                    .contentType(MediaType.APPLICATION_JSON)
-//                    .with(userHttpBasic(admin))
-//                    .content(JsonUtil.writeValue(updated)))
-//                    .andExpect(status().isNoContent());
-//        }
+
+    @Test
+    void createInUnsupportedDate() throws Exception {
+        useMockTime(badTestDate);
+        perform(MockMvcRequestBuilders.post(ADMIN_DISH_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(JsonUtil.writeValue(dishTo)))
+                .andExpect(status().isUnprocessableEntity());
+
+
+    }
+
+    @Test
+    void updateInUnsupportedTime() throws Exception {
+        useMockTime(lateTestTime);
+        perform(MockMvcRequestBuilders.put(ADMIN_DISH_URL + "/" + FIRST_DISH_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(admin))
+                .content(JsonUtil.writeValue(updated)))
+                .andExpect(status().isUnprocessableEntity());
+    }
 
     @Test
     void dishesForToday() throws Exception {

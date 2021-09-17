@@ -19,7 +19,7 @@ import java.util.Set;
 //@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = User.class)
 public class User extends AbstractNamedEntity {
 
-    @Column(name = "email")
+    @Column(name = "email", nullable = false)
     @Email
     @NotBlank
     @Size(max = 50)
@@ -27,7 +27,7 @@ public class User extends AbstractNamedEntity {
 
     @Column(name = "password", nullable = false)
     @NotBlank
-    @Size(min = 5, max = 100)
+    @Size(min = 5, max = 30)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 

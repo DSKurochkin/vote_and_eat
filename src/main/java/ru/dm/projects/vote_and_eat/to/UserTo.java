@@ -1,11 +1,22 @@
 package ru.dm.projects.vote_and_eat.to;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class UserTo extends AbstractTo {
 
+    @NotBlank
+    @Size(min = 2, max = 50)
     private String name;
 
+    @Email
+    @NotBlank
+    @Size(max = 50)
     private String email;
 
+    @NotBlank
+    @Size(min = 5, max = 30)
     private String password;
 
     public UserTo() {
@@ -14,7 +25,7 @@ public class UserTo extends AbstractTo {
 
     public UserTo(Long id, String name, String email, String password) {
         super(id);
-        this.name=name;
+        this.name = name;
         this.email = email;
         this.password = password;
     }
