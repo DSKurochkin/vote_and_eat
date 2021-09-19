@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.Map;
 
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
-import static ru.dm.projects.vote_and_eat.util.ValidationUtil.checkNew;
 import static ru.dm.projects.vote_and_eat.util.ValidationUtil.notFoundMessage;
 
 @Service
@@ -32,7 +31,6 @@ public class VoteService {
 
     public Vote createOrUpdate(Vote vote) {
         Assert.notNull(vote, "vote must not be null");
-        checkNew(vote);
         return repository.save(vote);
     }
 
@@ -52,8 +50,8 @@ public class VoteService {
         return VoteUtil.getRatingOfRestaurants(repository.getForToday(today()));
     }
 
-    public Long getIdIfTodayVoteExist(Long id, LocalDate date) {
-        Vote vote = repository.getIfTodayVoteExist(id, date);
+    public Long getIdIfTodayVoteExist(Long id) {
+        Vote vote = repository.getIfTodayVoteExist(id, today());
         return vote == null ? null : vote.getId();
     }
 

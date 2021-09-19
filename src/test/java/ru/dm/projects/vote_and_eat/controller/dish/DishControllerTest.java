@@ -1,6 +1,6 @@
 package ru.dm.projects.vote_and_eat.controller.dish;
 
-import javassist.NotFoundException;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +11,7 @@ import ru.dm.projects.vote_and_eat.controller.AbstractControllerTest;
 import ru.dm.projects.vote_and_eat.model.Dish;
 import ru.dm.projects.vote_and_eat.service.DishService;
 import ru.dm.projects.vote_and_eat.util.DishUtil;
+import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
 import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 
 import java.util.List;
@@ -46,7 +47,7 @@ public class DishControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_DISH_URL + "/" + FIRST_DISH_ID + 1)
+        perform(MockMvcRequestBuilders.get(ADMIN_DISH_URL + "/" + dish2.getId())
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -67,12 +68,12 @@ public class DishControllerTest extends AbstractControllerTest {
         useMockTime(goodTestTimeToChangeDish);
         ResultActions action = perform(MockMvcRequestBuilders.post(ADMIN_DISH_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(dishTo))
+                .content(JsonUtil.writeValue(getDishTo()))
                 .with(userHttpBasic(admin)));
 
         Dish created = readFromJson(action, Dish.class);
         Long newId = created.getId();
-        Dish newDish = createFromTo(dishTo, restaurant1);
+        Dish newDish = createFromTo(getDishTo(), restaurant1);
         newDish.setId(newId);
         assertDish(newDish, created);
         assertDish(newDish, dishService.get(newId));
@@ -103,11 +104,11 @@ public class DishControllerTest extends AbstractControllerTest {
     void getByRestaurantName() throws Exception {
         perform(MockMvcRequestBuilders.get(ADMIN_DISH_URL
                 + "/byRestaurantName"
-                + "?name=Restaurant A&start=2021-09-01&end=2021-09-01")
+                + "?name=Restaurant B&start=2021-09-01&end=2021-09-01")
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(assertMvcResult(List.of(dish1, dish2, dish3)));
+                .andExpect(assertMvcResult(List.of(dish4, dish5, dish6)));
     }
 
     @Test
@@ -125,11 +126,11 @@ public class DishControllerTest extends AbstractControllerTest {
 
     @Test
     void createInUnsupportedDate() throws Exception {
-        useMockTime(badTestDate);
+        useMockTime(lateTestTime);
         perform(MockMvcRequestBuilders.post(ADMIN_DISH_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
-                .content(JsonUtil.writeValue(dishTo)))
+                .content(JsonUtil.writeValue(getDishTo())))
                 .andExpect(status().isUnprocessableEntity());
 
 

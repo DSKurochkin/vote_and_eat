@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.service.RestaurantService;
-import ru.dm.projects.vote_and_eat.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -39,7 +38,7 @@ public class RestaurantController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@Valid @RequestBody Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
-        Restaurant created = service.createOrUpdate(restaurant);
+        Restaurant created = service.create(restaurant);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(RESTAURANT_URL + "/{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -48,9 +47,8 @@ public class RestaurantController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid  @RequestBody Restaurant restaurant, @PathVariable int id) {
-        ValidationUtil.assureIdConsistent(restaurant, id);
-        service.createOrUpdate(restaurant);
+    public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
+        service.update(restaurant, id);
     }
 
     @DeleteMapping(value = "/{id}")

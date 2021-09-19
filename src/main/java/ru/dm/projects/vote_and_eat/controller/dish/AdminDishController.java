@@ -13,7 +13,6 @@ import ru.dm.projects.vote_and_eat.service.RestaurantService;
 import ru.dm.projects.vote_and_eat.to.DishTo;
 import ru.dm.projects.vote_and_eat.util.DateTimeUtil;
 import ru.dm.projects.vote_and_eat.util.DishUtil;
-import ru.dm.projects.vote_and_eat.util.ValidationUtil;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -57,7 +56,7 @@ public class AdminDishController extends AbstractDishController {
         Assert.notNull(dishTo, "dish must not be null");
         DishUtil.checkPossibilityOfAction(dishTo, dateTimeUtil.getStartOfVote());
         Dish dish = createNewFromTo(dishTo, restaurantService.get(dishTo.getRestaurant_id()));
-        Dish created = dishService.createOrUpdate(dish);
+        Dish created = dishService.create(dish);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(DISH_URL + "{id}")
                 .buildAndExpand(created.getId()).toUri();
@@ -66,11 +65,10 @@ public class AdminDishController extends AbstractDishController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@Valid @RequestBody DishTo dishTo, @PathVariable int id) throws Exception {
+    public void update(@Valid @RequestBody DishTo dishTo, @PathVariable long id) throws Exception {
         DishUtil.checkPossibilityOfAction(dishTo, dateTimeUtil.getStartOfVote());
-        ValidationUtil.assureIdConsistent(dishTo, id);
         Dish dish = dishService.get(dishTo.getId());
-        dishService.createOrUpdate(DishUtil.updateFromTo(dish, dishTo));
+        dishService.update(DishUtil.updateFromTo(dish, dishTo), id);
     }
 
     @DeleteMapping(value = {"/{id}"})

@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.dm.projects.vote_and_eat.model.User;
-import ru.dm.projects.vote_and_eat.util.ValidationUtil;
 
 import java.net.URI;
 import java.util.List;
@@ -20,7 +19,7 @@ public class AdminController extends AbstractUserController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> create(@RequestBody User user) {
-        User created = userService.createOrUpdate(user);
+        User created = userService.create(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(ADMIN_USERS_URL).build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
@@ -28,9 +27,8 @@ public class AdminController extends AbstractUserController {
 
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody User user, @PathVariable int id) {
-        ValidationUtil.assureIdConsistent(user, id);
-        userService.createOrUpdate(user);
+    public void update(@RequestBody User user, @PathVariable long id) {
+        userService.update(user, id);
     }
 
     @GetMapping

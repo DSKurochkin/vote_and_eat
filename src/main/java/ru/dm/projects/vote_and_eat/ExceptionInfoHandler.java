@@ -63,12 +63,16 @@ public class ExceptionInfoHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)// 422
     @ExceptionHandler(UnsupportedTimeOperationException.class)
     public ErrorInfo unsupportedTimeError(HttpServletRequest req, UnsupportedTimeOperationException e) {
-        return logAndGetErrorInfo(req, e, false, DATA_ERROR);
+        ///
+        System.out.println("YYYYY UnsupportedTimeOperationException");
+        return logAndGetErrorInfo(req, e, false, OPERATION_TIME_ERROR);
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
     @ExceptionHandler(BindException.class)
     public ErrorInfo bindValidationError(HttpServletRequest req, BindException e) {
+        ///
+        System.out.println("YYYYY bindValidationError");
         String[] details = e.getBindingResult().getFieldErrors().stream()
                 .map(field -> "[" + field.getField() + "] " + field.getDefaultMessage())
                 .toArray(String[]::new);
@@ -78,6 +82,7 @@ public class ExceptionInfoHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)  // 422
     @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
     public ErrorInfo illegalRequestDataError(HttpServletRequest req, Exception e) {
+        System.out.println("YYYYY illegalRequestDataError");
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
     }
 

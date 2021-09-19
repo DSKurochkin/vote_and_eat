@@ -32,7 +32,7 @@ public class UserVoteController extends AbstractVoteController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Vote> toVote(@Valid @RequestBody VoteTo voteTo) throws Exception {
-        Vote vote = new Vote(voteService.getIdIfTodayVoteExist(get().getId(), today())
+        Vote vote = new Vote(voteService.getIdIfTodayVoteExist(get().getId())
                 , today()
                 , now()
                 , restaurantService.get(voteTo.getRestaurant_id())

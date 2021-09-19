@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -16,11 +15,11 @@ public class Vote extends AbstractBaseEntity {
 
     @Column(name = "date", nullable = false)
     @NotNull
-    @FutureOrPresent
+//    @FutureOrPresent
     private LocalDate date;
 
     @NotNull
-    @FutureOrPresent
+//    @FutureOrPresent
     @Column(name = "time", nullable = false)
     private LocalTime time;
 

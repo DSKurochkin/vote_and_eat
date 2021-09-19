@@ -1,6 +1,5 @@
 package ru.dm.projects.vote_and_eat.controller.restaurant;
 
-import javassist.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -9,6 +8,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.dm.projects.vote_and_eat.controller.AbstractControllerTest;
 import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.service.RestaurantService;
+import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
 import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;

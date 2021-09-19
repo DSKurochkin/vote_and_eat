@@ -1,12 +1,12 @@
 package ru.dm.projects.vote_and_eat.controller.user;
 
-import javassist.NotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.dm.projects.vote_and_eat.model.Role;
 import ru.dm.projects.vote_and_eat.model.User;
+import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;

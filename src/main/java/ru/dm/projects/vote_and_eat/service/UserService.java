@@ -13,8 +13,7 @@ import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
 
 import java.util.List;
 
-import static ru.dm.projects.vote_and_eat.util.ValidationUtil.checkNew;
-import static ru.dm.projects.vote_and_eat.util.ValidationUtil.notFoundMessage;
+import static ru.dm.projects.vote_and_eat.util.ValidationUtil.*;
 
 @Service("userService")
 public class UserService implements UserDetailsService {
@@ -29,9 +28,15 @@ public class UserService implements UserDetailsService {
         return repository.findAll();
     }
 
-    public User createOrUpdate(User user) {
+    public User create(User user) {
         Assert.notNull(user, "user must not be null");
         checkNew(user);
+        return repository.save(user);
+    }
+
+    public User update(User user, long id) {
+        Assert.notNull(user, "user must not be null");
+        assureIdConsistent(user, id);
         return repository.save(user);
     }
 

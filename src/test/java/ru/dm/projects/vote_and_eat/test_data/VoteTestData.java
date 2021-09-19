@@ -23,15 +23,14 @@ public class VoteTestData {
             = new Vote(FIRST_VOTE_ID, getDate("2021-09-01"), getTime("09:00:00"), restaurant1, user1);
     public static final Vote vote2
             = new Vote(FIRST_VOTE_ID + 1, getDate("2021-09-01"), getTime("08:00:00"), restaurant2, user2);
-    public static final User testUser = new User(FIRST_USER_ID + 2, "testUser", "testUser@vote.com", "testUser@vote.com", Role.USER);
     public static final User lateVoteUser = new User(FIRST_USER_ID + 3, "lateVoteUser", "lateVoteUser@vote.com", "testUser@vote.com", Role.USER);
     public static final Map<Integer, Restaurant> resultMap = new LinkedHashMap<>();
     public static List<Vote> votes = List.of(vote1, vote2);
-    public static Vote todayVote1 = new Vote(null, today(), getTime("09:00:00"), restaurant1, user1);
-    public static Vote todayVote2 = new Vote(null, today(), getTime("08:00:00"), restaurant2, user2);
-    public static Vote todayVote3 = new Vote(null, today(), getTime("10:00:00"), restaurant1, testUser);
-    public static Vote lateVote = new Vote(null, today(), getTime("12:00:00"), restaurant2, lateVoteUser);
+    public static Vote todayVote1 = new Vote(null, today(), now().plusMinutes(1), restaurant1, user1);
+    public static Vote todayVote2 = new Vote(null, today(), now().plusMinutes(2), restaurant2, user2);
     public static List<Vote> newVotes = List.of(todayVote1, todayVote2, todayVote3);
+    private static final User testUser = new User(null, "testUser", "testUser@vote.com", "testUser@vote.com", Role.USER);
+    public static Vote todayVote3 = new Vote(null, today(), now().plusMinutes(3), restaurant1, testUser);
 
     static {
         resultMap.put(2, restaurant1);
@@ -48,6 +47,13 @@ public class VoteTestData {
 
     public static <T> void assertVote(T actual, T expected) {
         assertThat(actual).usingRecursiveComparison().ignoringFields("restaurant", "user").isEqualTo(expected);
+    }
+
+    public static User getTestUser() {
+        if (testUser.getId() != null) {
+            testUser.setId(null);
+        }
+        return testUser;
     }
 
 

@@ -9,8 +9,7 @@ import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
 
 import java.util.List;
 
-import static ru.dm.projects.vote_and_eat.util.ValidationUtil.checkNew;
-import static ru.dm.projects.vote_and_eat.util.ValidationUtil.notFoundMessage;
+import static ru.dm.projects.vote_and_eat.util.ValidationUtil.*;
 
 @Service
 public class RestaurantService {
@@ -26,9 +25,15 @@ public class RestaurantService {
         return repository.findAll();
     }
 
-    public Restaurant createOrUpdate(Restaurant restaurant) {
+    public Restaurant create(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
         checkNew(restaurant);
+        return repository.save(restaurant);
+    }
+
+    public Restaurant update(Restaurant restaurant, long id) {
+        Assert.notNull(restaurant, "restaurant must not be null");
+        assureIdConsistent(restaurant, id);
         return repository.save(restaurant);
     }
 

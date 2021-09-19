@@ -15,8 +15,7 @@ import java.time.LocalDateTime;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.dm.projects.vote_and_eat.controller.vote.AbstractVoteController.VOTE_URL;
-import static ru.dm.projects.vote_and_eat.test_data.DateTimeTestData.goodTestTimeToVote;
-import static ru.dm.projects.vote_and_eat.test_data.DateTimeTestData.lateTestTime;
+import static ru.dm.projects.vote_and_eat.test_data.DateTimeTestData.*;
 import static ru.dm.projects.vote_and_eat.test_data.RestaurantTestData.assertRestaurant;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.setPassToActual;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.user1;
@@ -25,6 +24,7 @@ import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.useMockTime;
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.useSystemDefaultClock;
 import static ru.dm.projects.vote_and_eat.util.TestUtil.assertMvcResult;
 import static ru.dm.projects.vote_and_eat.util.TestUtil.userHttpBasic;
+import static ru.dm.projects.vote_and_eat.util.exception.ErrorType.OPERATION_TIME_ERROR;
 import static ru.dm.projects.vote_and_eat.util.json.JsonUtil.readFromJson;
 
 public class UserVoteControllerTest extends AbstractVoteControllerTest {
@@ -64,13 +64,15 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
         perform(MockMvcRequestBuilders.post(VOTE_URL)
                 .with(userHttpBasic(user1))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newVote)));
-        //expected Exception!!
+                .content(JsonUtil.writeValue(newVote)))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(OPERATION_TIME_ERROR));
     }
 
     @Test
     void getResult() throws Exception {
         populateVote();
+        useMockTime(goodTestTimeToLookResult);
         perform(MockMvcRequestBuilders.get(VOTE_URL + "/result")
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isOk())
@@ -83,9 +85,8 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
         populateVote();
         perform(MockMvcRequestBuilders.get(VOTE_URL + "/result")
                 .with(userHttpBasic(user1)))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(assertMvcResult(resultMap));
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(OPERATION_TIME_ERROR));
     }
 
     @Test
@@ -105,7 +106,8 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
                 .content(JsonUtil.writeValue(changeMind))
                 .with(userHttpBasic(user1)));
         Assertions.assertEquals(numberOfVotes + 1, voteService.getAll().size());
-        Assertions.assertEquals(newDateTime.toLocalTime(), voteService.get(FIRST_VOTE_ID + 2).getTime());
+        Long idOfLastVote = voteService.getAll().get(numberOfVotes).getId();
+        Assertions.assertEquals(newDateTime.toLocalTime(), voteService.get(idOfLastVote).getTime());
     }
 
 }

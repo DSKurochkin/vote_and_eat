@@ -2,16 +2,13 @@ package ru.dm.projects.vote_and_eat.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
-import javax.validation.constraints.FutureOrPresent;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "dishes")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope=Dish.class)
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Dish.class)
 public class Dish extends AbstractNamedEntity {
 
     @Column(name = "date", nullable = false)
@@ -61,7 +58,8 @@ public class Dish extends AbstractNamedEntity {
     @Override
     public String toString() {
         return "Dish{" +
-                "date=" + date +
+                "name=" + name +
+                ", date=" + date +
                 ", price=" + price +
                 '}';
     }

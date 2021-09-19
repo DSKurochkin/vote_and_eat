@@ -16,8 +16,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
-import static ru.dm.projects.vote_and_eat.util.ValidationUtil.checkNew;
-import static ru.dm.projects.vote_and_eat.util.ValidationUtil.notFoundMessage;
+import static ru.dm.projects.vote_and_eat.util.ValidationUtil.*;
 
 @Service
 public class DishService {
@@ -32,9 +31,15 @@ public class DishService {
         return repository.findAll();
     }
 
-    public Dish createOrUpdate(Dish dish) {
+    public Dish create(Dish dish) {
         Assert.notNull(dish, "dish must not be null");
         checkNew(dish);
+        return repository.save(dish);
+    }
+
+    public Dish update(Dish dish, long id) {
+        Assert.notNull(dish, "dish must not be null");
+        assureIdConsistent(dish, id);
         return repository.save(dish);
     }
 
