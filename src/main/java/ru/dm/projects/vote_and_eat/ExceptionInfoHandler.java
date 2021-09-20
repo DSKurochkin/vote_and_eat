@@ -28,6 +28,7 @@ public class ExceptionInfoHandler {
     public static final String EXCEPTION_DUPLICATE_EMAIL = "exception.user.duplicateEmail";
     public static final String EXCEPTION_DUPLICATE_DATE_DISH = "exception.dish.duplicateDate";
     public static final String EXCEPTION_DUPLICATE_VOTE = "exception.vote.duplicateByUser";
+    public static final String EXCEPTION_DUPLICATE_RESTAURANT = "exception.restaurant.duplicateName";
     private static final Logger log = LoggerFactory.getLogger(ExceptionInfoHandler.class);
 
     private static ErrorInfo logAndGetErrorInfo(HttpServletRequest req, Exception e, boolean logStackTrace, ErrorType errorType, String... details) {
@@ -54,6 +55,8 @@ public class ExceptionInfoHandler {
                 lowerCaseMsg = EXCEPTION_DUPLICATE_EMAIL;
             } else if (lowerCaseMsg.contains("vote_unique_user_date")) {
                 lowerCaseMsg = EXCEPTION_DUPLICATE_VOTE;
+            } else if (lowerCaseMsg.contains("restaurants_unique_name")) {
+                lowerCaseMsg = EXCEPTION_DUPLICATE_RESTAURANT;
             }
             return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR, lowerCaseMsg);
         }
@@ -63,16 +66,12 @@ public class ExceptionInfoHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)// 422
     @ExceptionHandler(UnsupportedTimeOperationException.class)
     public ErrorInfo unsupportedTimeError(HttpServletRequest req, UnsupportedTimeOperationException e) {
-        ///
-        System.out.println("YYYYY UnsupportedTimeOperationException");
         return logAndGetErrorInfo(req, e, false, OPERATION_TIME_ERROR);
     }
 
     @ResponseStatus(value = HttpStatus.UNPROCESSABLE_ENTITY)  // 422
     @ExceptionHandler(BindException.class)
     public ErrorInfo bindValidationError(HttpServletRequest req, BindException e) {
-        ///
-        System.out.println("YYYYY bindValidationError");
         String[] details = e.getBindingResult().getFieldErrors().stream()
                 .map(field -> "[" + field.getField() + "] " + field.getDefaultMessage())
                 .toArray(String[]::new);
@@ -82,7 +81,6 @@ public class ExceptionInfoHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)  // 422
     @ExceptionHandler({IllegalRequestDataException.class, MethodArgumentTypeMismatchException.class, HttpMessageNotReadableException.class})
     public ErrorInfo illegalRequestDataError(HttpServletRequest req, Exception e) {
-        System.out.println("YYYYY illegalRequestDataError");
         return logAndGetErrorInfo(req, e, false, VALIDATION_ERROR);
     }
 

@@ -6,14 +6,16 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.dm.projects.vote_and_eat.model.Role;
 import ru.dm.projects.vote_and_eat.model.User;
+import ru.dm.projects.vote_and_eat.util.exception.ErrorType;
 import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
+
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
-import static ru.dm.projects.vote_and_eat.test_data.DishTestData.FIRST_DISH_ID;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.*;
 import static ru.dm.projects.vote_and_eat.util.TestUtil.*;
 import static ru.dm.projects.vote_and_eat.util.json.JsonUtil.readFromJson;
@@ -79,14 +81,49 @@ public class AdminControllerTest extends AbstractUserControllerTest {
 
     @Test
     void getUnAuth() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_URL + "/" + FIRST_DISH_ID))
+        perform(MockMvcRequestBuilders.get(ADMIN_USER_URL + "/" + FIRST_USER_ID))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     void getForbidden() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_URL + "/" + FIRST_DISH_ID)
+        perform(MockMvcRequestBuilders.get(ADMIN_USER_URL + "/" + FIRST_USER_ID)
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void createInvalid() throws Exception {
+        User invalid = new User(null, "TestName", "invalid email", "password", true, Set.of(Role.USER));
+        perform(MockMvcRequestBuilders.post(ADMIN_USER_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonWithPassword(invalid, "password"))
+                .with(userHttpBasic(admin)))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR));
+    }
+
+    @Test
+    void updateInvalid() throws Exception {
+        User invalid = new User(FIRST_USER_ID, "Y", "test@test.test", "x", true, Set.of(Role.USER));
+        perform((MockMvcRequestBuilders.put(ADMIN_USER_URL + "/" + FIRST_USER_ID)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonWithPassword(invalid, "x"))
+                .with(userHttpBasic(admin))))
+                .andExpect(status().isUnprocessableEntity())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR));
+    }
+
+    @Test
+    void createDuplicateEmail() throws Exception {
+        User duplicate = new User(null, "TestName", "user1@vote.com", "password", true, Set.of(Role.USER));
+        perform(MockMvcRequestBuilders.post(ADMIN_USER_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(jsonWithPassword(duplicate, "password"))
+                .with(userHttpBasic(admin)))
+                .andExpect(status().isConflict())
+                .andExpect(errorType(ErrorType.VALIDATION_ERROR))
+                .andExpect(checkDetailMessage("exception.user.duplicateEmail"));
+
     }
 }
