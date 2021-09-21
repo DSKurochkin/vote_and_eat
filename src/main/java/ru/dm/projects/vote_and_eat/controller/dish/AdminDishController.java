@@ -34,12 +34,14 @@ public class AdminDishController extends AbstractDishController {
 
     @GetMapping
     List<Dish> getAll() {
+        log.info("get all dishes");
         return dishService.getAll();
     }
 
 
     @GetMapping("/{id}")
     public Dish get(@PathVariable Long id) throws Exception {
+        log.info("get dish with id ={}", id);
         return dishService.get(id);
     }
 
@@ -47,12 +49,14 @@ public class AdminDishController extends AbstractDishController {
     public List<Dish> getByRestaurantName(@RequestParam String name,
                                           @Nullable @RequestParam LocalDate start,
                                           @Nullable @RequestParam LocalDate end) throws Exception {
+        log.info("get all dishes by restaurant name {} between dates {} and {}", name, start, end);
         return dishService.getByRestaurantName(name, dateTimeUtil.chekStartDate(start), dateTimeUtil.chekStartDate(end));
     }
 
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Dish> create(@Valid @RequestBody DishTo dishTo) throws Exception {
+        log.info("create dish {}", dishTo);
         Assert.notNull(dishTo, "dish must not be null");
         DishUtil.checkPossibilityOfAction(dishTo, dateTimeUtil.getStartOfVote());
         Dish dish = createNewFromTo(dishTo, restaurantService.get(dishTo.getRestaurant_id()));
@@ -66,6 +70,7 @@ public class AdminDishController extends AbstractDishController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody DishTo dishTo, @PathVariable long id) throws Exception {
+        log.info("update dish {}", dishTo);
         DishUtil.checkPossibilityOfAction(dishTo, dateTimeUtil.getStartOfVote());
         Dish dish = dishService.get(dishTo.getId());
         dishService.update(DishUtil.updateFromTo(dish, dishTo), id);
@@ -74,6 +79,7 @@ public class AdminDishController extends AbstractDishController {
     @DeleteMapping(value = {"/{id}"})
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) throws Exception {
+        log.info("delete dish with id={}", id);
         dishService.delete(id);
     }
 

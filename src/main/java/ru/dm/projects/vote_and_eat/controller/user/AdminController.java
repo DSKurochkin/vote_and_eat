@@ -20,6 +20,7 @@ public class AdminController extends AbstractUserController {
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<User> create(@Valid @RequestBody User user) {
+        log.info("create {}", user);
         User created = userService.create(user);
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(ADMIN_USERS_URL).build().toUri();
@@ -29,16 +30,19 @@ public class AdminController extends AbstractUserController {
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody User user, @PathVariable long id) {
+        log.info("update user with id = {}", id);
         userService.update(user, id);
     }
 
     @GetMapping
     public List<User> getAll() {
+        log.info("get all users");
         return userService.getAll();
     }
 
     @GetMapping("/{id}")
     public User get(@PathVariable Long id) throws Exception {
+        log.info("get user with id = {}", id);
         return userService.get(id);
 
     }
@@ -46,6 +50,7 @@ public class AdminController extends AbstractUserController {
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) throws Exception {
+        log.info("delete user with id = {}", id);
         userService.delete(id);
     }
 

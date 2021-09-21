@@ -50,6 +50,17 @@ public class ProfileControllerTest extends AbstractUserControllerTest {
     }
 
     @Test
+    void updateNotOwn() throws Exception {
+        UserTo toForUpdate = new UserTo(FIRST_USER_ID + 1, "Testuser", "testuser@vote.com", "testuser@vote.com");
+        perform(MockMvcRequestBuilders.put(PROFILE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user1))
+                .content(JsonUtil.writeValue(toForUpdate)))
+                .andExpect(status().isUnprocessableEntity());
+
+    }
+
+    @Test
     void getUnAuth() throws Exception {
         perform(MockMvcRequestBuilders.get(ADMIN_URL))
                 .andExpect(status().isUnauthorized());

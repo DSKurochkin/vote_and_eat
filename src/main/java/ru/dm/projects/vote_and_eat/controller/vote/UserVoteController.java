@@ -32,6 +32,7 @@ public class UserVoteController extends AbstractVoteController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Vote> toVote(@Valid @RequestBody VoteTo voteTo) throws Exception {
+        log.info("vote by user with id={}", get().getId());
         Vote vote = new Vote(voteService.getIdIfTodayVoteExist(get().getId())
                 , today()
                 , now()
@@ -48,6 +49,7 @@ public class UserVoteController extends AbstractVoteController {
 
     @GetMapping("/result")
     public Map<Integer, Restaurant> getResult() {
+        log.info("get result for today by user with id={}", get().getId());
         if (now().isBefore(dateTimeUtil.getEndOfVote())) {
             throw new UnsupportedTimeOperationException("The vote is still in progress. Try after " + dateTimeUtil.getEndOfVote() + " o'clock");
         }
@@ -56,6 +58,7 @@ public class UserVoteController extends AbstractVoteController {
             throw new NotFoundException("Nobody voted today");
         }
         return result;
+
     }
 
 }

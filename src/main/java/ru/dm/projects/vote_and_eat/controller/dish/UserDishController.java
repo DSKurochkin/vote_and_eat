@@ -7,11 +7,14 @@ import ru.dm.projects.vote_and_eat.to.DishTo;
 import java.util.List;
 import java.util.Map;
 
+import static ru.dm.projects.vote_and_eat.security.SecurityUtil.get;
+
 @RestController
 public class UserDishController extends AbstractDishController {
 
     @GetMapping(DISH_URL)
     Map<String, List<DishTo>> dishesForToday() {
+        log.info("take dish menu for today by user with id={}", get().getId());
         return dishService.todayMenu();
     }
 

@@ -9,6 +9,7 @@ import ru.dm.projects.vote_and_eat.model.User;
 import ru.dm.projects.vote_and_eat.util.exception.ErrorType;
 import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
 
+import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -24,14 +25,15 @@ public class AdminControllerTest extends AbstractUserControllerTest {
     private final String ADMIN_USER_URL = ADMIN_URL + "/users";
 
     @Test
-    void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_USER_URL + "/" + FIRST_USER_ID)
+    void getAll() throws Exception {
+        perform(MockMvcRequestBuilders.get(ADMIN_USER_URL)
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(assertMvcResult(user1));
+                .andExpect(assertMvcResult(List.of(admin, user1, user2)));
     }
+
 
     @Test
     void getNotFound() throws Exception {
