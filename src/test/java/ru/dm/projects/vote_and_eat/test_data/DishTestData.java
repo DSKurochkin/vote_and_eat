@@ -29,9 +29,13 @@ public class DishTestData {
             = new Dish(FIRST_DISH_ID + 4, "B_dish second", getDate("2021-09-01"), 50, restaurant2);
     public static final Dish dish6
             = new Dish(FIRST_DISH_ID + 5, "B_ice_cream", getDate("2021-09-01"), 10, restaurant2);
+    public static final Dish dish7
+            = new Dish(FIRST_DISH_ID + 6, "A_2nd Sep", getDate("2021-09-02"), 98, restaurant2);
+    public static final Dish dish8
+            = new Dish(FIRST_DISH_ID + 7, "B_2nd Sep", getDate("2021-09-02"), 99, restaurant2);
+    private static final DishTo dishTo = new DishTo(null, "Test Dish", today(), 50, 1L);
     public static DishTo updated = new DishTo(FIRST_DISH_ID, "Test Dish", today(), 10, FIRST_RESTAURANT_ID);
     public static Map<String, List<DishTo>> testMenu = new TreeMap<>();
-    private static final DishTo dishTo = new DishTo(null, "Test Dish", today(), 50, 1L);
 
     static {
         testMenu.put(restaurant1.getName(), List.of(asTo(dish1), asTo(dish2), asTo(dish3)));

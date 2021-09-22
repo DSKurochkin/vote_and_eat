@@ -75,11 +75,11 @@ public class DateTimeUtil {
         return getDate(endAppDate);
     }
 
-    public LocalDate chekStartDate(LocalDate start) {
+    public LocalDate checkStartDate(LocalDate start) {
         return start == null ? getStartAppDate() : start;
     }
 
-    public LocalDate chekEndDate(LocalDate end) {
+    public LocalDate checkEndDate(LocalDate end) {
         return end == null ? getEndAppDate() : end;
     }
 

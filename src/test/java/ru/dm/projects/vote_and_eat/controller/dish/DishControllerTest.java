@@ -105,7 +105,7 @@ public class DishControllerTest extends AbstractControllerTest {
     void getByRestaurantName() throws Exception {
         perform(MockMvcRequestBuilders.get(ADMIN_DISH_URL
                 + "/byRestaurantName"
-                + "?name=Restaurant B&start=2021-09-01&end=2021-09-01")
+                + "?name=RestaurantB&start=2021-09-01&end=2021-09-01")
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

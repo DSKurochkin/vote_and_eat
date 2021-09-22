@@ -50,7 +50,7 @@ public class AdminDishController extends AbstractDishController {
                                           @Nullable @RequestParam LocalDate start,
                                           @Nullable @RequestParam LocalDate end) throws Exception {
         log.info("get all dishes by restaurant name {} between dates {} and {}", name, start, end);
-        return dishService.getByRestaurantName(name, dateTimeUtil.chekStartDate(start), dateTimeUtil.chekStartDate(end));
+        return dishService.getByRestaurantName(name, dateTimeUtil.checkStartDate(start), dateTimeUtil.checkEndDate(end));
     }
 
 

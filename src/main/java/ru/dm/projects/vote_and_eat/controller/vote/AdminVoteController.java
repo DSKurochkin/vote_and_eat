@@ -26,7 +26,7 @@ public class AdminVoteController extends AbstractVoteController {
     public List<Vote> getBetween(@Nullable @RequestParam LocalDate start,
                                  @Nullable @RequestParam LocalDate end) {
         log.info("vote all votes between dates {} and {}", start, end);
-        return voteService.getBetween(dateTimeUtil.chekStartDate(start), dateTimeUtil.chekEndDate(end));
+        return voteService.getBetween(dateTimeUtil.checkStartDate(start), dateTimeUtil.checkEndDate(end));
     }
 
     @GetMapping("/rating")
