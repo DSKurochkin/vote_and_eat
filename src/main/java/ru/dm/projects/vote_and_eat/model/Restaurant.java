@@ -1,31 +1,26 @@
 package ru.dm.projects.vote_and_eat.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.ArrayList;
 import java.util.List;
+
 
 @Entity
 @Table(name = "restaurants")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Restaurant.class)
 public class Restaurant extends AbstractNamedEntity {
 
-
+    @ApiModelProperty(notes = "dishes served in the restaurant")
     @OneToMany(mappedBy = "restaurant", fetch = FetchType.LAZY)
-//    @JsonBackReference
-//    @JsonManagedReference
     @JsonIgnore
     private List<Dish> dishes;
 
+    @ApiModelProperty(notes = "restaurant votes list")
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-//    @JsonBackReference
     @JsonIgnore
     private List<Vote> votes;
 
@@ -41,7 +36,6 @@ public class Restaurant extends AbstractNamedEntity {
         return dishes;
     }
 
-    //    public Restaurant(Restaurant restaurant)
     public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
     }
@@ -52,13 +46,6 @@ public class Restaurant extends AbstractNamedEntity {
 
     public void setVotes(List<Vote> votes) {
         this.votes = votes;
-    }
-
-    public void addVoteToRestaurant(Vote vote) {
-        if (votes == null) {
-            votes = new ArrayList<>();
-        }
-        votes.add(vote);
     }
 
     @Override

@@ -42,11 +42,11 @@ public class VoteService {
         return repository.getBetween(start, end);
     }
 
-    public Map<Integer, Restaurant> getRating(LocalDate start, LocalDate end) {
+    public Map<Restaurant, Integer> getRating(LocalDate start, LocalDate end) {
         return VoteUtil.getRatingOfRestaurants(repository.getBetween(start, end));
     }
 
-    public Map<Integer, Restaurant> getRating() {
+    public Map<Restaurant, Integer> getRating() {
         return VoteUtil.getRatingOfRestaurants(repository.getForToday(today()));
     }
 

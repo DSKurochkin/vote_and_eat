@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -24,8 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
 
     @Autowired
-    public SecurityConfig(@Qualifier("userService") UserService userService){
-        this.userService=userService;
+    public SecurityConfig(@Qualifier("userService") UserService userService) {
+        this.userService = userService;
     }
 
     @Override
@@ -33,17 +32,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/profile/register").anonymous()
-                .antMatchers("/admin/**").hasRole(Role.ADMIN.name())
-                .antMatchers("/**").hasRole(Role.USER.name())
-                .and().httpBasic()
-//                .antMatchers("/**").hasAnyRole(Role.ADMIN.name(), Role.USER.name())
-
-//                .anyRequest()
-//                .authenticated()
-
-                ;
-//                .
+                .antMatchers(
+                        "/v2/api-docs",
+                        "/swagger-resources/**",
+                        "/swagger-ui.html",
+                        "/swagger-ui.html#/",
+                        "/webjars/**")
+                .permitAll()
+                .antMatchers("/register").anonymous()
+                .antMatchers("/auth/admin/**").hasRole(Role.ADMIN.name())
+                .antMatchers("/auth/**").hasRole(Role.USER.name())
+                .and().httpBasic();
     }
 
     @Override
@@ -52,11 +51,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    protected PasswordEncoder passwordEncoder(){
+    protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
+
     @Bean
-    protected DaoAuthenticationProvider daoAuthenticationProvider(){
+    protected DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userService);

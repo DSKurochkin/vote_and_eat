@@ -134,7 +134,7 @@ public class RestaurantControllerTest extends AbstractControllerTest {
 
     @Test
     void createDuplicateName() throws Exception {
-        Restaurant duplicate = new Restaurant(null, "Restaurant A");
+        Restaurant duplicate = new Restaurant(null, restaurant1.getName());
         perform(MockMvcRequestBuilders.post(RESTAURANT_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(duplicate))

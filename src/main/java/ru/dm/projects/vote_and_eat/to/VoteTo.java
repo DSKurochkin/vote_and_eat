@@ -1,8 +1,13 @@
 package ru.dm.projects.vote_and_eat.to;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.constraints.NotNull;
 
+@ApiModel(value = "Vote transfer object", description = "Object sent from the client's side to make a vote")
 public class VoteTo {
+    @ApiModelProperty(notes = "restaurant id for which the vote was cast. NotNull")
     @NotNull
     private Long restaurant_id;
 

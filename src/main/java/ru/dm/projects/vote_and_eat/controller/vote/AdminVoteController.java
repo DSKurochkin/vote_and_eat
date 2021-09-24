@@ -1,5 +1,6 @@
 package ru.dm.projects.vote_and_eat.controller.vote;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import ru.dm.projects.vote_and_eat.model.Restaurant;
@@ -16,12 +17,7 @@ import static ru.dm.projects.vote_and_eat.controller.vote.AbstractVoteController
 @RequestMapping(value = ADMIN_URL + VOTE_URL)
 public class AdminVoteController extends AbstractVoteController {
 
-    @GetMapping
-    public List<Vote> getAll() {
-        log.info("get all votes");
-        return voteService.getAll();
-    }
-
+    @ApiOperation(value = "get votes between given dates", response = Iterable.class)
     @GetMapping("/filter")
     public List<Vote> getBetween(@Nullable @RequestParam LocalDate start,
                                  @Nullable @RequestParam LocalDate end) {
@@ -29,13 +25,15 @@ public class AdminVoteController extends AbstractVoteController {
         return voteService.getBetween(dateTimeUtil.checkStartDate(start), dateTimeUtil.checkEndDate(end));
     }
 
+    @ApiOperation(value = "get rating of restaurants for an interval as map, key - restaurant, value count of votes", response = Map.class)
     @GetMapping("/rating")
-    public Map<Integer, Restaurant> getRatingByInterval(@Nullable @RequestParam LocalDate start,
-                                                        @Nullable @RequestParam LocalDate end) {
-        log.info("getRatingByInterval - {} and {}", start, end);
+    public Map<Restaurant, Integer> getRatingForAnInterval(@Nullable @RequestParam LocalDate start,
+                                                           @Nullable @RequestParam LocalDate end) {
+        log.info("getRatingForAnInterval - {} and {}", start, end);
         return voteService.getRating(start, end);
     }
 
+    @ApiOperation(value = "get vote by id", response = Vote.class)
     @GetMapping("/{id}")
     public Vote get(@PathVariable Long id) throws Exception {
         log.info("get vote with id ={}", id);

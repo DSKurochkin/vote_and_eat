@@ -1,5 +1,6 @@
 package ru.dm.projects.vote_and_eat.controller.restaurant;
 
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,18 +29,21 @@ public class RestaurantController {
     @Autowired
     private RestaurantService service;
 
+    @ApiOperation(value = "get all restaurants", response = Iterable.class)
     @GetMapping
     public List<Restaurant> getAll() {
         log.info("get all restaurant");
         return service.getAll();
     }
 
+    @ApiOperation(value = "get restaurant by id", response = Restaurant.class)
     @GetMapping("/{id}")
     public Restaurant get(@PathVariable Long id) throws Exception {
         log.info("get restaurant with id={}", id);
         return service.get(id);
     }
 
+    @ApiOperation(value = "create restaurant", response = Restaurant.class)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Restaurant> create(@Valid @RequestBody Restaurant restaurant) {
         log.info("create restaurant {}", restaurant);
@@ -51,6 +55,7 @@ public class RestaurantController {
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 
+    @ApiOperation(value = "update restaurant")
     @PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody Restaurant restaurant, @PathVariable int id) {
@@ -58,6 +63,7 @@ public class RestaurantController {
         service.update(restaurant, id);
     }
 
+    @ApiOperation(value = "delete restaurant by id")
     @DeleteMapping(value = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long id) throws Exception {

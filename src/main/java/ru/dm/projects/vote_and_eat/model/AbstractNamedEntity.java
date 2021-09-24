@@ -1,5 +1,7 @@
 package ru.dm.projects.vote_and_eat.model;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
@@ -11,6 +13,7 @@ public abstract class AbstractNamedEntity extends AbstractBaseEntity {
     @NotBlank
     @Size(min = 2, max = 50)
     @Column(name = "name", nullable = false)
+    @ApiModelProperty(notes = "the name of this entity. may be between 2 to 50 characters and notblank")
     protected String name;
 
     protected AbstractNamedEntity() {

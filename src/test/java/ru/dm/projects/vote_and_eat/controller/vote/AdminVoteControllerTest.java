@@ -21,16 +21,6 @@ public class AdminVoteControllerTest extends AbstractVoteControllerTest {
     private final String ADMIN_VOTE_URL = ADMIN_URL + VOTE_URL;
 
     @Test
-    void getAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_VOTE_URL)
-                .with(userHttpBasic(admin)))
-                .andExpect(status().isOk())
-                .andDo(print())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(assertMvcResult(votes));
-    }
-
-    @Test
     void getBetween() throws Exception {
         populateVote();
         String date = getStringFromDate(today());

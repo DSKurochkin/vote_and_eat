@@ -1,20 +1,27 @@
 package ru.dm.projects.vote_and_eat.to;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
+@ApiModel(value = "User transfer object", description = "Object sent from the client's side to create or update User")
 public class UserTo extends AbstractTo {
 
+    @ApiModelProperty(notes = "user's name. may be between 2 to 50 characters and notblank")
     @NotBlank
     @Size(min = 2, max = 50)
     private String name;
 
+    @ApiModelProperty(notes = "user's email. may be email up to 50 characters")
     @Email
     @NotBlank
     @Size(max = 50)
     private String email;
 
+    @ApiModelProperty(notes = "user's password. may be between 5 to 30 characters and notblank")
     @NotBlank
     @Size(min = 5, max = 30)
     private String password;

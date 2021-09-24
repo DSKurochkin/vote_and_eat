@@ -1,5 +1,6 @@
 package ru.dm.projects.vote_and_eat.controller.vote;
 
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ public class UserVoteController extends AbstractVoteController {
     @Autowired
     RestaurantService restaurantService;
 
+    @ApiOperation(value = "create vote by user", response = Vote.class)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Vote> toVote(@Valid @RequestBody VoteTo voteTo) throws Exception {
         log.info("vote by user with id={}", get().getId());
@@ -47,13 +49,14 @@ public class UserVoteController extends AbstractVoteController {
 
     }
 
+    @ApiOperation(value = "get rating of restaurants for current day as map, key - restaurant, value count of votes", response = Map.class)
     @GetMapping("/result")
-    public Map<Integer, Restaurant> getResult() {
+    public Map<Restaurant, Integer> getResult() {
         log.info("get result for today by user with id={}", get().getId());
         if (now().isBefore(dateTimeUtil.getEndOfVote())) {
             throw new UnsupportedTimeOperationException("The vote is still in progress. Try after " + dateTimeUtil.getEndOfVote() + " o'clock");
         }
-        Map<Integer, Restaurant> result = voteService.getRating();
+        Map<Restaurant, Integer> result = voteService.getRating();
         if (result.isEmpty()) {
             throw new NotFoundException("Nobody voted today");
         }

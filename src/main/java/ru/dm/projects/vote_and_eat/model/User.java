@@ -1,9 +1,8 @@
 package ru.dm.projects.vote_and_eat.model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -16,28 +15,31 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = User.class)
 public class User extends AbstractNamedEntity {
-
+    @ApiModelProperty(notes = "user's unique email")
     @Column(name = "email", nullable = false)
     @Email
     @NotBlank
     @Size(max = 50)
     private String email;
 
+    @ApiModelProperty(notes = "user's password")
     @Column(name = "password", nullable = false)
     @NotBlank
     @Size(min = 5, max = 30)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @ApiModelProperty(notes = "user votes list")
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Vote> votes;
 
+    @ApiModelProperty(notes = "sign of service availability for the user")
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled = true;
 
+    @ApiModelProperty(notes = "collection of user's roles")
     @Enumerated(EnumType.STRING)
     @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "user_roles_unique_idx")})

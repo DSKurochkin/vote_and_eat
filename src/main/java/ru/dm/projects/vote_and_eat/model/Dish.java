@@ -2,6 +2,7 @@ package ru.dm.projects.vote_and_eat.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -11,14 +12,17 @@ import java.time.LocalDate;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Dish.class)
 public class Dish extends AbstractNamedEntity {
 
+    @ApiModelProperty(notes = "date when the dish will be available for order")
     @Column(name = "date", nullable = false)
     LocalDate date;
+
+    @ApiModelProperty(notes = "price per dish")
     @Column(name = "price", nullable = false)
     private int price;
 
+    @ApiModelProperty(notes = "restaurant serving the dish")
     @JoinColumn(name = "restaurant_id")
     @ManyToOne(fetch = FetchType.EAGER)
-
     private Restaurant restaurant;
 
     public Dish() {

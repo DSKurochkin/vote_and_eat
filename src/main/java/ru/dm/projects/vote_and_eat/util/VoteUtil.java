@@ -6,6 +6,7 @@ import ru.dm.projects.vote_and_eat.util.exception.UnsupportedTimeOperationExcept
 
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
 
@@ -20,16 +21,12 @@ public class VoteUtil {
         }
     }
 
-    public static Map<Integer, Restaurant> getRatingOfRestaurants(List<Vote> votes) {
+    public static Map<Restaurant, Integer> getRatingOfRestaurants(List<Vote> votes) {
         Map<Restaurant, Integer> result = new HashMap<>();
         votes.forEach(v -> result.merge(v.getRestaurant(), 1, Integer::sum));
-        return swapMap(result);
+        return result.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
     }
 
-    private static Map<Integer, Restaurant> swapMap(Map<Restaurant, Integer> sourceMap) {
-        Map<Integer, Restaurant> resultMap = new TreeMap<>(Collections.reverseOrder());
-        sourceMap.forEach((k, v) -> resultMap.put(v, k));
-        return resultMap;
-    }
 
 }
