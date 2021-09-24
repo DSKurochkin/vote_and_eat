@@ -16,17 +16,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
+import static ru.dm.projects.vote_and_eat.controller.user.AdminController.ADMIN_USERS_URL;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.*;
 import static ru.dm.projects.vote_and_eat.util.TestUtil.*;
 import static ru.dm.projects.vote_and_eat.util.json.JsonUtil.readFromJson;
 
 public class AdminControllerTest extends AbstractUserControllerTest {
-    private final String ADMIN_USER_URL = ADMIN_URL + "/users";
+
 
     @Test
     void getAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_USER_URL)
+        perform(MockMvcRequestBuilders.get(ADMIN_USERS_URL)
                 .with(userHttpBasic(admin)))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -37,7 +37,7 @@ public class AdminControllerTest extends AbstractUserControllerTest {
 
     @Test
     void getNotFound() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_USER_URL + NOT_FOUND)
+        perform(MockMvcRequestBuilders.get(ADMIN_USERS_URL + NOT_FOUND)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
@@ -47,7 +47,7 @@ public class AdminControllerTest extends AbstractUserControllerTest {
     @Test
     void create() throws Exception {
         User newUser = getNew();
-        ResultActions action = perform(MockMvcRequestBuilders.post(ADMIN_USER_URL)
+        ResultActions action = perform(MockMvcRequestBuilders.post(ADMIN_USERS_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(newUser, "testuser@vote.com"))
                 .with(userHttpBasic(admin)));
@@ -61,7 +61,7 @@ public class AdminControllerTest extends AbstractUserControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(ADMIN_USER_URL + "/" + FIRST_USER_ID)
+        perform(MockMvcRequestBuilders.delete(ADMIN_USERS_URL + "/" + FIRST_USER_ID)
                 .with(userHttpBasic(admin)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -72,7 +72,7 @@ public class AdminControllerTest extends AbstractUserControllerTest {
     @Test
     void update() throws Exception {
         User updated = new User(FIRST_USER_ID, "Testuser", "testuser@vote.com", "testuser@vote.com", Role.USER);
-        perform(MockMvcRequestBuilders.put(ADMIN_USER_URL + "/" + FIRST_USER_ID)
+        perform(MockMvcRequestBuilders.put(ADMIN_USERS_URL + "/" + FIRST_USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .with(userHttpBasic(admin))
                 .content(jsonWithPassword(updated, "testuser@vote.com")))
@@ -83,13 +83,13 @@ public class AdminControllerTest extends AbstractUserControllerTest {
 
     @Test
     void getUnAuth() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_USER_URL + "/" + FIRST_USER_ID))
+        perform(MockMvcRequestBuilders.get(ADMIN_USERS_URL + "/" + FIRST_USER_ID))
                 .andExpect(status().isUnauthorized());
     }
 
     @Test
     void getForbidden() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_USER_URL + "/" + FIRST_USER_ID)
+        perform(MockMvcRequestBuilders.get(ADMIN_USERS_URL + "/" + FIRST_USER_ID)
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isForbidden());
     }
@@ -97,7 +97,7 @@ public class AdminControllerTest extends AbstractUserControllerTest {
     @Test
     void createInvalid() throws Exception {
         User invalid = new User(null, "TestName", "invalid email", "password", true, Set.of(Role.USER));
-        perform(MockMvcRequestBuilders.post(ADMIN_USER_URL)
+        perform(MockMvcRequestBuilders.post(ADMIN_USERS_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(invalid, "password"))
                 .with(userHttpBasic(admin)))
@@ -108,7 +108,7 @@ public class AdminControllerTest extends AbstractUserControllerTest {
     @Test
     void updateInvalid() throws Exception {
         User invalid = new User(FIRST_USER_ID, "Y", "test@test.test", "x", true, Set.of(Role.USER));
-        perform((MockMvcRequestBuilders.put(ADMIN_USER_URL + "/" + FIRST_USER_ID)
+        perform((MockMvcRequestBuilders.put(ADMIN_USERS_URL + "/" + FIRST_USER_ID)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(invalid, "x"))
                 .with(userHttpBasic(admin))))
@@ -119,7 +119,7 @@ public class AdminControllerTest extends AbstractUserControllerTest {
     @Test
     void createDuplicateEmail() throws Exception {
         User duplicate = new User(null, "TestName", "user1@vote.com", "password", true, Set.of(Role.USER));
-        perform(MockMvcRequestBuilders.post(ADMIN_USER_URL)
+        perform(MockMvcRequestBuilders.post(ADMIN_USERS_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(jsonWithPassword(duplicate, "password"))
                 .with(userHttpBasic(admin)))

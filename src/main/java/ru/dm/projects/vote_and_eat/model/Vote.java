@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.annotations.ApiModelProperty;
 
 import javax.persistence.*;
-import javax.validation.constraints.FutureOrPresent;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -15,15 +14,13 @@ import java.time.LocalTime;
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Vote.class)
 public class Vote extends AbstractBaseEntity {
 
-    @ApiModelProperty(notes = "voting date, cannot be in the past")
+    @ApiModelProperty(notes = "voting date")
     @Column(name = "date", nullable = false)
     @NotNull
-    @FutureOrPresent
     private LocalDate date;
 
-    @ApiModelProperty(notes = "voting time, cannot be in the past")
+    @ApiModelProperty(notes = "voting time")
     @NotNull
-    @FutureOrPresent
     @Column(name = "time", nullable = false)
     private LocalTime time;
 

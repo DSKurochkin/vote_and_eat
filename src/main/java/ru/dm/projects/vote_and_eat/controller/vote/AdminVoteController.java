@@ -11,11 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
-import static ru.dm.projects.vote_and_eat.controller.vote.AbstractVoteController.VOTE_URL;
+import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.AUTH_URL;
 
 @RestController
-@RequestMapping(value = ADMIN_URL + VOTE_URL)
+@RequestMapping(value = AdminVoteController.ADMIN_VOTE_URL)
 public class AdminVoteController extends AbstractVoteController {
+
+    static final String ADMIN_VOTE_URL = AUTH_URL + ADMIN_URL + VOTE_URL;
 
     @ApiOperation(value = "get votes between given dates", response = Iterable.class)
     @GetMapping("/filter")

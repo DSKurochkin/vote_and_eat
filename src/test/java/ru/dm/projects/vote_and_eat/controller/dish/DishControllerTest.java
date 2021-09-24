@@ -22,7 +22,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.dm.projects.vote_and_eat.controller.dish.AbstractDishController.DISH_URL;
-import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
+import static ru.dm.projects.vote_and_eat.controller.dish.AdminDishController.ADMIN_DISH_URL;
+import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.AUTH_URL;
 import static ru.dm.projects.vote_and_eat.test_data.DateTimeTestData.*;
 import static ru.dm.projects.vote_and_eat.test_data.DishTestData.*;
 import static ru.dm.projects.vote_and_eat.test_data.RestaurantTestData.restaurant1;
@@ -34,8 +35,6 @@ import static ru.dm.projects.vote_and_eat.util.json.JsonUtil.readFromJson;
 import static ru.dm.projects.vote_and_eat.util.json.JsonUtil.writeValue;
 
 public class DishControllerTest extends AbstractControllerTest {
-    private final String ADMIN_DISH_URL = ADMIN_URL + "/dishes";
-    private final String USER_DISH_URL = "/dishes";
 
     @Autowired
     private DishService dishService;
@@ -151,7 +150,7 @@ public class DishControllerTest extends AbstractControllerTest {
     @Test
     void dishesForToday() throws Exception {
         useMockTime(dbTestDateTime);
-        ResultActions actions = perform(MockMvcRequestBuilders.get(DISH_URL)
+        ResultActions actions = perform(MockMvcRequestBuilders.get(AUTH_URL + DISH_URL)
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

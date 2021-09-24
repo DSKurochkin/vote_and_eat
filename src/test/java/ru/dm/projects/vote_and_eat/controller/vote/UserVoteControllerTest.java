@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.dm.projects.vote_and_eat.controller.vote.AbstractVoteController.VOTE_URL;
+import static ru.dm.projects.vote_and_eat.controller.vote.UserVoteController.USER_VOTE_URL;
 import static ru.dm.projects.vote_and_eat.test_data.DateTimeTestData.*;
 import static ru.dm.projects.vote_and_eat.test_data.RestaurantTestData.assertRestaurant;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.setPassToActual;
@@ -39,7 +39,7 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
     void toVote() throws Exception {
         useMockTime(goodTestTimeToVote);
         VoteTo voteTo = new VoteTo(1L);
-        ResultActions action = perform(MockMvcRequestBuilders.post(VOTE_URL)
+        ResultActions action = perform(MockMvcRequestBuilders.post(USER_VOTE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(voteTo))
                 .with(userHttpBasic(user1)));
@@ -53,7 +53,10 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
 
     @Test
     void toVoteUnAuth() throws Exception {
-        perform(MockMvcRequestBuilders.post(VOTE_URL))
+        VoteTo voteTo = new VoteTo(2L);
+        perform(MockMvcRequestBuilders.post(USER_VOTE_URL)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(JsonUtil.writeValue(voteTo)))
                 .andExpect(status().isUnauthorized());
     }
 
@@ -61,7 +64,7 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
     void voteAfterPermittedTime() throws Exception {
         useMockTime(lateTestTime);
         VoteTo newVote = new VoteTo(1L);
-        perform(MockMvcRequestBuilders.post(VOTE_URL)
+        perform(MockMvcRequestBuilders.post(USER_VOTE_URL)
                 .with(userHttpBasic(user1))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newVote)))
@@ -73,7 +76,7 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
     void getResult() throws Exception {
         populateVote();
         useMockTime(goodTestTimeToLookResult);
-        perform(MockMvcRequestBuilders.get(VOTE_URL + "/result")
+        perform(MockMvcRequestBuilders.get(USER_VOTE_URL + "/result")
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -83,7 +86,7 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
     @Test
     void getResultBeforeEndOfVote() throws Exception {
         populateVote();
-        perform(MockMvcRequestBuilders.get(VOTE_URL + "/result")
+        perform(MockMvcRequestBuilders.get(USER_VOTE_URL + "/result")
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(errorType(OPERATION_TIME_ERROR));
@@ -94,14 +97,14 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
         int numberOfVotes = voteService.getAll().size();
         useMockTime(goodTestTimeToVote);
         VoteTo firstVote = new VoteTo(1L);
-        perform(MockMvcRequestBuilders.post(VOTE_URL)
+        perform(MockMvcRequestBuilders.post(USER_VOTE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(firstVote))
                 .with(userHttpBasic(user1)));
         LocalDateTime newDateTime = goodTestTimeToVote.plusMinutes(10);
         useMockTime(newDateTime);
         VoteTo changeMind = new VoteTo(2L);
-        perform(MockMvcRequestBuilders.post(VOTE_URL)
+        perform(MockMvcRequestBuilders.post(USER_VOTE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(changeMind))
                 .with(userHttpBasic(user1)));

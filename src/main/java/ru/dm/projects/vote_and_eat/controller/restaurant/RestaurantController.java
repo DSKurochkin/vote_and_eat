@@ -18,12 +18,13 @@ import java.net.URI;
 import java.util.List;
 
 import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
+import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.AUTH_URL;
 
 @RestController
 @RequestMapping(value = RestaurantController.RESTAURANT_URL
         , produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestaurantController {
-    static final String RESTAURANT_URL = ADMIN_URL + "/restaurants";
+    static final String RESTAURANT_URL = AUTH_URL + ADMIN_URL + "/restaurants";
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired

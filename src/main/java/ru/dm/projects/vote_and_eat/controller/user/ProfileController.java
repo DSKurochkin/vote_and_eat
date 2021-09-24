@@ -19,12 +19,11 @@ import static ru.dm.projects.vote_and_eat.security.SecurityUtil.authUserId;
 import static ru.dm.projects.vote_and_eat.util.UserUtil.asTo;
 
 @RestController
-@RequestMapping(value = ProfileController.PROFILE_URL)
 public class ProfileController extends AbstractUserController {
-    static final String PROFILE_URL = "/profile";
+    static final String PROFILE_URL = AUTH_URL + "/profile";
 
     @ApiOperation(value = "registration and creation of a new user", response = User.class)
-    @PutMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = PROFILE_URL, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@Valid @RequestBody UserTo userTo) throws Exception {
         Long toId = userTo.getId();
@@ -38,7 +37,7 @@ public class ProfileController extends AbstractUserController {
     }
 
     @ApiOperation(value = "get user own profile", response = UserTo.class)
-    @GetMapping
+    @GetMapping(value = AUTH_URL + PROFILE_URL)
     public UserTo get() throws Exception {
         Long id = authUserId();
         log.info("get user with id = {}", id);
@@ -52,7 +51,7 @@ public class ProfileController extends AbstractUserController {
         log.info("create user = {} ", userTo);
         User created = userService.create(UserUtil.createNewFromTo(userTo));
         URI uriOfNewResource = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path(PROFILE_URL).build().toUri();
+                .path(AUTH_URL + PROFILE_URL).build().toUri();
         return ResponseEntity.created(uriOfNewResource).body(created);
     }
 }

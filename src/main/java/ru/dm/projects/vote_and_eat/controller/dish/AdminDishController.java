@@ -18,18 +18,19 @@ import ru.dm.projects.vote_and_eat.util.DishUtil;
 import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDate;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import static ru.dm.projects.vote_and_eat.controller.dish.AbstractDishController.DISH_URL;
+import static ru.dm.projects.vote_and_eat.controller.dish.AdminDishController.ADMIN_DISH_URL;
 import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
+import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.AUTH_URL;
 import static ru.dm.projects.vote_and_eat.util.DishUtil.createNewFromTo;
 
 @RestController
-@RequestMapping(value = ADMIN_URL + DISH_URL)
+@RequestMapping(value = ADMIN_DISH_URL)
 public class AdminDishController extends AbstractDishController {
+
+    static final String ADMIN_DISH_URL = AUTH_URL + ADMIN_URL + DISH_URL;
+
     @Autowired
     RestaurantService restaurantService;
 

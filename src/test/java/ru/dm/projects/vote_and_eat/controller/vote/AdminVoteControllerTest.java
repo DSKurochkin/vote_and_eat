@@ -7,8 +7,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
-import static ru.dm.projects.vote_and_eat.controller.vote.AbstractVoteController.VOTE_URL;
+import static ru.dm.projects.vote_and_eat.controller.vote.AdminVoteController.ADMIN_VOTE_URL;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.admin;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.user1;
 import static ru.dm.projects.vote_and_eat.test_data.VoteTestData.*;
@@ -17,8 +16,6 @@ import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
 import static ru.dm.projects.vote_and_eat.util.TestUtil.*;
 
 public class AdminVoteControllerTest extends AbstractVoteControllerTest {
-
-    private final String ADMIN_VOTE_URL = ADMIN_URL + VOTE_URL;
 
     @Test
     void getBetween() throws Exception {

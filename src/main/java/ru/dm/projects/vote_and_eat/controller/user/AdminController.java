@@ -13,11 +13,14 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
+import static ru.dm.projects.vote_and_eat.controller.user.AdminController.ADMIN_USERS_URL;
+
 
 @RestController
-@RequestMapping(value = AdminController.ADMIN_USERS_URL)
+@RequestMapping(value = ADMIN_USERS_URL)
 public class AdminController extends AbstractUserController {
-    static final String ADMIN_USERS_URL = "/admin/users";
+
+    static final String ADMIN_USERS_URL = AUTH_URL + ADMIN_URL + USER_URL;
 
     @ApiOperation(value = "create user", response = User.class)
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

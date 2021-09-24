@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
+import static ru.dm.projects.vote_and_eat.controller.restaurant.RestaurantController.RESTAURANT_URL;
 import static ru.dm.projects.vote_and_eat.test_data.RestaurantTestData.*;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.admin;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.user1;
@@ -25,7 +25,6 @@ import static ru.dm.projects.vote_and_eat.util.json.JsonUtil.writeValue;
 
 
 public class RestaurantControllerTest extends AbstractControllerTest {
-    private final String RESTAURANT_URL = ADMIN_URL + "/restaurants";
 
     @Autowired
     private RestaurantService restaurantService;

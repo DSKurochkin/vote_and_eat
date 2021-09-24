@@ -17,7 +17,8 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.Map;
 
-import static ru.dm.projects.vote_and_eat.controller.vote.AbstractVoteController.VOTE_URL;
+import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.AUTH_URL;
+import static ru.dm.projects.vote_and_eat.controller.vote.UserVoteController.USER_VOTE_URL;
 import static ru.dm.projects.vote_and_eat.security.SecurityUtil.get;
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.now;
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
@@ -25,8 +26,10 @@ import static ru.dm.projects.vote_and_eat.util.UserUtil.createFromTo;
 import static ru.dm.projects.vote_and_eat.util.VoteUtil.checkVoteTime;
 
 @RestController
-@RequestMapping(value = VOTE_URL)
+@RequestMapping(value = USER_VOTE_URL)
 public class UserVoteController extends AbstractVoteController {
+
+    static final String USER_VOTE_URL = AUTH_URL + VOTE_URL;
 
     @Autowired
     RestaurantService restaurantService;

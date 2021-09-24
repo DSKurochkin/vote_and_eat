@@ -10,7 +10,6 @@ import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.ADMIN_URL;
 import static ru.dm.projects.vote_and_eat.controller.user.ProfileController.PROFILE_URL;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.*;
 import static ru.dm.projects.vote_and_eat.util.TestUtil.userHttpBasic;
@@ -20,12 +19,11 @@ import static ru.dm.projects.vote_and_eat.util.json.JsonUtil.readFromJson;
 
 public class ProfileControllerTest extends AbstractUserControllerTest {
 
-
     @Test
     void create() throws Exception {
         UserTo newTo = getNewTo();
         User newUser = createNewFromTo(newTo);
-        ResultActions action = perform(MockMvcRequestBuilders.post(PROFILE_URL + "/register")
+        ResultActions action = perform(MockMvcRequestBuilders.post("/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(newTo)))
                 .andDo(print())
@@ -62,7 +60,7 @@ public class ProfileControllerTest extends AbstractUserControllerTest {
 
     @Test
     void getUnAuth() throws Exception {
-        perform(MockMvcRequestBuilders.get(ADMIN_URL))
+        perform(MockMvcRequestBuilders.get(PROFILE_URL))
                 .andExpect(status().isUnauthorized());
     }
 }
