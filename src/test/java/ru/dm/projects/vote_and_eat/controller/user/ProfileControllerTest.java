@@ -12,6 +12,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.dm.projects.vote_and_eat.controller.user.ProfileController.PROFILE_URL;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.*;
+import static ru.dm.projects.vote_and_eat.util.TestUtil.assertEntity;
 import static ru.dm.projects.vote_and_eat.util.TestUtil.userHttpBasic;
 import static ru.dm.projects.vote_and_eat.util.UserUtil.createNewFromTo;
 import static ru.dm.projects.vote_and_eat.util.UserUtil.updateFromTo;
@@ -32,7 +33,7 @@ public class ProfileControllerTest extends AbstractUserControllerTest {
         User created = readFromJson(action, User.class);
         Long newId = created.getId();
         newUser.setId(newId);
-        assertUser(newUser, userService.get(newId));
+        assertEntity(newUser, userService.get(newId));
     }
 
     @Test
@@ -43,7 +44,7 @@ public class ProfileControllerTest extends AbstractUserControllerTest {
                 .with(userHttpBasic(user1))
                 .content(JsonUtil.writeValue(toForUpdate)))
                 .andExpect(status().isNoContent());
-        assertUser(userService.get(FIRST_USER_ID), updateFromTo(new User(user1), toForUpdate));
+        assertEntity(userService.get(FIRST_USER_ID), updateFromTo(new User(user1), toForUpdate));
 
     }
 

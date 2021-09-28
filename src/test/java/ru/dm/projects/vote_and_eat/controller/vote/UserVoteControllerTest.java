@@ -1,7 +1,6 @@
 package ru.dm.projects.vote_and_eat.controller.vote;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
@@ -11,19 +10,19 @@ import ru.dm.projects.vote_and_eat.to.VoteTo;
 import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.dm.projects.vote_and_eat.controller.vote.UserVoteController.USER_VOTE_URL;
 import static ru.dm.projects.vote_and_eat.test_data.DateTimeTestData.*;
-import static ru.dm.projects.vote_and_eat.test_data.RestaurantTestData.assertRestaurant;
-import static ru.dm.projects.vote_and_eat.test_data.UserTestData.setPassToActual;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.user1;
-import static ru.dm.projects.vote_and_eat.test_data.VoteTestData.*;
+import static ru.dm.projects.vote_and_eat.test_data.VoteTestData.restaurantTo1;
+import static ru.dm.projects.vote_and_eat.test_data.VoteTestData.restaurantTo2;
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.useMockTime;
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.useSystemDefaultClock;
-import static ru.dm.projects.vote_and_eat.util.TestUtil.assertMvcResult;
-import static ru.dm.projects.vote_and_eat.util.TestUtil.userHttpBasic;
+import static ru.dm.projects.vote_and_eat.util.TestUtil.*;
 import static ru.dm.projects.vote_and_eat.util.exception.ErrorType.OPERATION_TIME_ERROR;
 import static ru.dm.projects.vote_and_eat.util.json.JsonUtil.readFromJson;
 
@@ -45,10 +44,7 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
                 .with(userHttpBasic(user1)));
         Vote created = readFromJson(action, Vote.class);
         Vote fromDb = voteService.get(created.getId());
-        assertVote(created, fromDb);
-        assertRestaurant(created.getRestaurant(), fromDb.getRestaurant());
-        setPassToActual(created.getUser(), fromDb.getUser());
-        assertUser(created.getUser(), fromDb.getUser());
+        assertEntity(created, fromDb);
     }
 
     @Test
@@ -80,7 +76,7 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(assertMvcResult(resultMap));
+                .andExpect(assertMvcResult(Map.of(restaurantTo1, 2, restaurantTo2, 1)));
     }
 
     @Test
@@ -108,9 +104,14 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(changeMind))
                 .with(userHttpBasic(user1)));
-        Assertions.assertEquals(numberOfVotes + 1, voteService.getAll().size());
+        assertEquals(numberOfVotes + 1, voteService.getAll().size());
         Long idOfLastVote = voteService.getAll().get(numberOfVotes).getId();
-        Assertions.assertEquals(newDateTime.toLocalTime(), voteService.get(idOfLastVote).getTime());
+        assertEquals(newDateTime.toLocalTime(), voteService.get(idOfLastVote).getTime());
+    }
+
+    @Test
+    void test() {
+
     }
 
 }

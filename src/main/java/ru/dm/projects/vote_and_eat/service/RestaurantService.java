@@ -8,6 +8,7 @@ import ru.dm.projects.vote_and_eat.repository.RestaurantRepository;
 import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
 
 import java.util.List;
+import java.util.Set;
 
 import static ru.dm.projects.vote_and_eat.util.ValidationUtil.*;
 
@@ -40,4 +41,9 @@ public class RestaurantService {
     public void delete(Long id) throws Exception {
         repository.delete(get(id));
     }
+
+    public Set<Long> getIds() {
+        return repository.getAllIds();
+    }
+
 }

@@ -19,7 +19,7 @@ public class RestaurantTestData {
     }
 
     public static <T> void assertRestaurant(T actual, T expected) {
-        assertThat(actual).usingRecursiveComparison().ignoringFields("dishes", "votes").isEqualTo(expected);
+        assertThat(actual).usingRecursiveComparison().ignoringFields("dishes").isEqualTo(expected);
     }
 
 

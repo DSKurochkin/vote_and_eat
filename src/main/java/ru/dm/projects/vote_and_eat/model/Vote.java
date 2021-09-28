@@ -4,8 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import io.swagger.annotations.ApiModelProperty;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -15,43 +16,50 @@ import java.time.LocalTime;
 public class Vote extends AbstractBaseEntity {
 
     @ApiModelProperty(notes = "voting date")
-    @Column(name = "date", nullable = false)
-    @NotNull
+    @Column(name = "date")
     private LocalDate date;
 
     @ApiModelProperty(notes = "voting time")
-    @NotNull
-    @Column(name = "time", nullable = false)
+    @Column(name = "time")
     private LocalTime time;
 
-    @ApiModelProperty(notes = "The restaurant for which the vote was cast")
-    @JoinColumn(name = "restaurant_id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Restaurant restaurant;
+    @ApiModelProperty(notes = "Restaurant's id")
+    @Column(name = "restaurant_id")
+    private Long restaurantId;
 
-    @ApiModelProperty(notes = "Voted user ")
-    @JoinColumn(name = "user_id")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private User user;
+    @ApiModelProperty(notes = "Restaurant's name")
+    @Column(name = "restaurant_name")
+    private String restaurantName;
 
+    @ApiModelProperty(notes = "User's id")
+    @Column(name = "user_id")
+    private Long userId;
+
+    @ApiModelProperty(notes = "User's email")
+    @Column(name = "user_email")
+    private String userEmail;
 
     public Vote() {
+    }
+
+    public Vote(Long id, LocalDate date, LocalTime time, Long restaurantId, String restaurantName, Long userId, String userEmail) {
+        super(id);
+        this.date = date;
+        this.time = time;
+        this.restaurantId = restaurantId;
+        this.restaurantName = restaurantName;
+        this.userId = userId;
+        this.userEmail = userEmail;
     }
 
     public Vote(Long id, LocalDate date, LocalTime time, Restaurant restaurant, User user) {
         super(id);
         this.date = date;
         this.time = time;
-        this.restaurant = restaurant;
-        this.user = user;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.restaurantId = restaurant.getId();
+        this.restaurantName = restaurant.getName();
+        this.userId = user.getId();
+        this.userEmail = user.getEmail();
     }
 
     public LocalDate getDate() {
@@ -70,28 +78,47 @@ public class Vote extends AbstractBaseEntity {
         this.time = time;
     }
 
-    public Restaurant getRestaurant() {
-        return restaurant;
+    public Long getRestaurantId() {
+        return restaurantId;
     }
 
-    public void setRestaurant(Restaurant restaurant) {
-        this.restaurant = restaurant;
+    public void setRestaurantId(Long restaurantId) {
+        this.restaurantId = restaurantId;
     }
 
-    public User getUser() {
-        return user;
+    public String getRestaurantName() {
+        return restaurantName;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setRestaurantName(String restaurantName) {
+        this.restaurantName = restaurantName;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     @Override
     public String toString() {
         return "Vote{" +
-                "id=" + id +
-                ", date=" + date +
+                "date=" + date +
                 ", time=" + time +
+                ", restaurantId=" + restaurantId +
+                ", restaurantName='" + restaurantName + '\'' +
+                ", userId=" + userId +
+                ", userEmail='" + userEmail + '\'' +
                 '}';
     }
 }

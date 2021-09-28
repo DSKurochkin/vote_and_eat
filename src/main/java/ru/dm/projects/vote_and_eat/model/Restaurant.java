@@ -19,11 +19,6 @@ public class Restaurant extends AbstractNamedEntity {
     @JsonIgnore
     private List<Dish> dishes;
 
-    @ApiModelProperty(notes = "restaurant votes list")
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private List<Vote> votes;
-
     public Restaurant() {
     }
 
@@ -40,21 +35,12 @@ public class Restaurant extends AbstractNamedEntity {
         this.dishes = dishes;
     }
 
-    public List<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(List<Vote> votes) {
-        this.votes = votes;
-    }
-
     @Override
     public String toString() {
         return "Restaurant{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", dishes=" + dishes +
-                ", votes=" + votes +
                 '}';
     }
 }

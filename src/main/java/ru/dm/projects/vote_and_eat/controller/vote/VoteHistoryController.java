@@ -3,8 +3,8 @@ package ru.dm.projects.vote_and_eat.controller.vote;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
-import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.model.Vote;
+import ru.dm.projects.vote_and_eat.to.RestaurantTo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,10 +14,10 @@ import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController
 import static ru.dm.projects.vote_and_eat.controller.user.AbstractUserController.AUTH_URL;
 
 @RestController
-@RequestMapping(value = AdminVoteController.ADMIN_VOTE_URL)
-public class AdminVoteController extends AbstractVoteController {
+@RequestMapping(value = VoteHistoryController.HISTORY_URL)
+public class VoteHistoryController extends AbstractVoteController {
 
-    static final String ADMIN_VOTE_URL = AUTH_URL + ADMIN_URL + VOTE_URL;
+    static final String HISTORY_URL = AUTH_URL + ADMIN_URL + VOTE_URL;
 
     @ApiOperation(value = "get votes between given dates", response = Iterable.class)
     @GetMapping("/filter")
@@ -27,12 +27,16 @@ public class AdminVoteController extends AbstractVoteController {
         return voteService.getBetween(dateTimeUtil.checkStartDate(start), dateTimeUtil.checkEndDate(end));
     }
 
-    @ApiOperation(value = "get rating of restaurants for an interval as map, key - restaurant, value count of votes", response = Map.class)
+    @ApiOperation(value = "get rating of restaurants for an interval as map" +
+            ", key - restaurantTo, value - count of votes, group by count"
+            , response = Map.class)
     @GetMapping("/rating")
-    public Map<Restaurant, Integer> getRatingForAnInterval(@Nullable @RequestParam LocalDate start,
-                                                           @Nullable @RequestParam LocalDate end) {
+    public Map<RestaurantTo, Integer> getRatingForAnInterval(@Nullable @RequestParam LocalDate start,
+                                                             @Nullable @RequestParam LocalDate end) throws Exception {
         log.info("getRatingForAnInterval - {} and {}", start, end);
-        return voteService.getRating(start, end);
+        Map<RestaurantTo, Integer> result = voteService.getRating(dateTimeUtil.checkStartDate(start), dateTimeUtil.checkEndDate(end));
+        voteService.checkForExist(result.keySet());
+        return result;
     }
 
     @ApiOperation(value = "get vote by id", response = Vote.class)

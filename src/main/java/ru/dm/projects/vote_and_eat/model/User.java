@@ -1,6 +1,5 @@
 package ru.dm.projects.vote_and_eat.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.OnDelete;
@@ -29,11 +28,6 @@ public class User extends AbstractNamedEntity {
     @Size(min = 5, max = 30)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-
-    @ApiModelProperty(notes = "user votes list")
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
-    @JsonIgnore
-    private Set<Vote> votes;
 
     @ApiModelProperty(notes = "sign of service availability for the user")
     @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
@@ -83,14 +77,6 @@ public class User extends AbstractNamedEntity {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public Set<Vote> getVotes() {
-        return votes;
-    }
-
-    public void setVotes(Set<Vote> votes) {
-        this.votes = votes;
     }
 
     public boolean isEnabled() {

@@ -9,6 +9,7 @@ import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 
 import java.util.List;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class TestUtil {
@@ -34,5 +35,9 @@ public class TestUtil {
 
     public static RequestPostProcessor userHttpBasic(User user) {
         return SecurityMockMvcRequestPostProcessors.httpBasic(user.getEmail(), user.getPassword());
+    }
+
+    public static <T> void assertEntity(T actual, T expected) {
+        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
     }
 }

@@ -11,12 +11,12 @@
       "description": "End time of voting."
     },
     {
-      "name": "datetime.startAppDate",
+      "name": "datetime.startAppDateTime",
       "type": "java.lang.String",
       "description": "Extreme min app date."
     },
     {
-      "name": "datetime.endAppDate",
+      "name": "datetime.endAppDateTime",
       "type": "java.lang.String",
       "description": "Extreme max app date."
     },

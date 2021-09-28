@@ -16,8 +16,9 @@ public class UserTestData {
     public static final User admin = new User(ADMIN_ID, "Admin", "admin@vote.com", "admin", Role.ADMIN);
     public static final User user1 = new User(FIRST_USER_ID, "User1", "user1@vote.com", "user1", Role.USER);
     public static final User user2 = new User(FIRST_USER_ID + 1, "User2", "user2@vote.com", "user2", Role.USER);
+    public static final User user3 = new User(FIRST_USER_ID + 2, "User3", "user3@vote.com", "user3", Role.USER);
 
-    public static List<User> restaurants = List.of(admin, user1, user2);
+    public static List<User> users = List.of(admin, user1, user2, user3);
 
     public static User getNew() {
         return new User(null, "Testuser", "testuser@vote.com", "testuser@vote.com", Role.USER);
@@ -27,7 +28,7 @@ public class UserTestData {
         return new UserTo(null, "Testuser", "testuser@vote.com", "testuser@vote.com");
     }
 
-    public static <T> void assertUser(T actual, T expected) {
+    public static <User> void assertUser(User actual, User expected) {
         assertThat(actual).usingRecursiveComparison().ignoringFields("votes").isEqualTo(expected);
     }
 

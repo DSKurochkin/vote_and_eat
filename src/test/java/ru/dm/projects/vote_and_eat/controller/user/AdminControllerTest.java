@@ -9,7 +9,6 @@ import ru.dm.projects.vote_and_eat.model.User;
 import ru.dm.projects.vote_and_eat.util.exception.ErrorType;
 import ru.dm.projects.vote_and_eat.util.exception.NotFoundException;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -31,7 +30,7 @@ public class AdminControllerTest extends AbstractUserControllerTest {
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(assertMvcResult(List.of(admin, user1, user2)));
+                .andExpect(assertMvcResult(users));
     }
 
 
@@ -55,8 +54,8 @@ public class AdminControllerTest extends AbstractUserControllerTest {
         Long newId = db.getId();
         db.setPassword(newUser.getPassword());
         newUser.setId(newId);
-        assertUser(newUser, userService.get(newId));
-        assertUser(db, userService.get(newId));
+        assertEntity(newUser, userService.get(newId));
+        assertEntity(db, userService.get(newId));
     }
 
     @Test
@@ -77,7 +76,7 @@ public class AdminControllerTest extends AbstractUserControllerTest {
                 .with(userHttpBasic(admin))
                 .content(jsonWithPassword(updated, "testuser@vote.com")))
                 .andExpect(status().isNoContent());
-        assertUser(userService.get(FIRST_USER_ID), updated);
+        assertEntity(userService.get(FIRST_USER_ID), updated);
 
     }
 
