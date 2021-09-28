@@ -1,5 +1,5 @@
 This REST API - voting system for deciding where to have lunch.
-* 2 types of users: admin and regular users
+* 2 types of users: admin and regular users. Basic authorization.
 * Admin can input a restaurant and it's lunch menu of the day (dish name and price)
 * Menu changes each day (admins do the updates)
 * Admins can perform crud operations with users, restaurants and dishes. Admins can request some voting history reports.
