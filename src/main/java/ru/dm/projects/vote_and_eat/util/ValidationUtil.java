@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.stream.Collectors;
 
 public class ValidationUtil {
-    public static String notFoundMessage(Long i) {
-        return "Not found entity with id = " + i;
+    public static String notFoundMessage(Long i, String className) {
+        return "Not found " + className + " with id = " + i;
     }
 
     public static void assureIdConsistent(HasId bean, long id) {

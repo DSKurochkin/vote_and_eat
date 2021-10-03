@@ -24,7 +24,7 @@ public class DishService {
     DishRepository repository;
 
     public Dish get(Long id) throws Exception {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException(notFoundMessage(id)));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(notFoundMessage(id, "Dish")));
     }
 
     public List<Dish> getAll() {

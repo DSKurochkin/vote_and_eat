@@ -9,9 +9,10 @@ import javax.persistence.*;
 @Access(AccessType.FIELD)
 public class AbstractBaseEntity implements HasId {
 
-
+    public static final int START_SEQ = 1000;
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(name = "GENERAL_SEQ", sequenceName = "GENERAL_SEQ", allocationSize = 1, initialValue = START_SEQ)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "GENERAL_SEQ")
     @ApiModelProperty(notes = "the unique id of the entity")
     protected Long id;
 

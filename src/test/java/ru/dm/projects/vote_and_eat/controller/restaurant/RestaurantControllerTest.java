@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.dm.projects.vote_and_eat.controller.AbstractControllerTest;
 import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.service.RestaurantService;
@@ -28,7 +30,6 @@ public class RestaurantControllerTest extends AbstractControllerTest {
 
     @Autowired
     private RestaurantService restaurantService;
-
 
     @Test
     void get() throws Exception {
@@ -57,6 +58,7 @@ public class RestaurantControllerTest extends AbstractControllerTest {
                 .andExpect(assertMvcResult(restaurants));
     }
 
+
     @Test
     void create() throws Exception {
         Restaurant newRestaurant = getNew();
@@ -64,7 +66,6 @@ public class RestaurantControllerTest extends AbstractControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(writeValue(newRestaurant))
                 .with(userHttpBasic(admin)));
-
         Restaurant created = readFromJson(action, Restaurant.class);
         Long newId = created.getId();
         newRestaurant.setId(newId);
@@ -132,6 +133,7 @@ public class RestaurantControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.NEVER)
     void createDuplicateName() throws Exception {
         Restaurant duplicate = new Restaurant(null, restaurant1.getName());
         perform(MockMvcRequestBuilders.post(RESTAURANT_URL)

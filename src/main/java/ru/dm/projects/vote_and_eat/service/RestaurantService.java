@@ -19,7 +19,7 @@ public class RestaurantService {
     RestaurantRepository repository;
 
     public Restaurant get(Long id) throws Exception {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException(notFoundMessage(id)));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(notFoundMessage(id, "Restaurant")));
     }
 
     public List<Restaurant> getAll() {

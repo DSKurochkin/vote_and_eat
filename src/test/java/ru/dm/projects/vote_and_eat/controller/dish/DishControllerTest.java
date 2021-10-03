@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.dm.projects.vote_and_eat.controller.AbstractControllerTest;
 import ru.dm.projects.vote_and_eat.model.Dish;
 import ru.dm.projects.vote_and_eat.service.DishService;
@@ -66,11 +68,11 @@ public class DishControllerTest extends AbstractControllerTest {
     @Test
     void create() throws Exception {
         useMockTime(goodTestTimeToChangeDish);
+        DishTo to = getDishTo();
         ResultActions action = perform(MockMvcRequestBuilders.post(ADMIN_DISH_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(writeValue(getDishTo()))
+                .content(writeValue(to))
                 .with(userHttpBasic(admin)));
-
         Dish created = readFromJson(action, Dish.class);
         Long newId = created.getId();
         Dish newDish = createFromTo(getDishTo(), restaurant1);
@@ -90,6 +92,7 @@ public class DishControllerTest extends AbstractControllerTest {
         assertDish(dishService.get(FIRST_DISH_ID), DishUtil.updateFromTo(dish1, updated));
 
     }
+
 
     @Test
     void delete() throws Exception {
@@ -184,9 +187,10 @@ public class DishControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.NEVER)
     void createDuplicateName() throws Exception {
         Dish first = new Dish(null, "Duplicate", today().plusDays(1), 33, restaurant1);
-        DishTo duplicate = new DishTo(null, "Duplicate", today().plusDays(1), 66, 1L);
+        DishTo duplicate = new DishTo(null, "Duplicate", today().plusDays(1), 66, restaurant1.id());
         dishService.create(first);
         perform(MockMvcRequestBuilders.post(ADMIN_DISH_URL)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -195,6 +199,5 @@ public class DishControllerTest extends AbstractControllerTest {
                 .andExpect(status().isConflict())
                 .andExpect(errorType(ErrorType.VALIDATION_ERROR))
                 .andExpect(checkDetailMessage("exception.dish.duplicateDate"));
-
     }
 }

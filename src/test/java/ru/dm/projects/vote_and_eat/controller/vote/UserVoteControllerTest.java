@@ -6,10 +6,12 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.dm.projects.vote_and_eat.model.Vote;
+import ru.dm.projects.vote_and_eat.to.RestaurantTo;
 import ru.dm.projects.vote_and_eat.to.VoteTo;
 import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,7 +39,7 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
     @Test
     void toVote() throws Exception {
         useMockTime(goodTestTimeToVote);
-        VoteTo voteTo = new VoteTo(1L);
+        VoteTo voteTo = new VoteTo(restaurantTo1.getId());
         ResultActions action = perform(MockMvcRequestBuilders.post(USER_VOTE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(voteTo))
@@ -59,7 +61,7 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
     @Test
     void voteAfterPermittedTime() throws Exception {
         useMockTime(lateTestTime);
-        VoteTo newVote = new VoteTo(1L);
+        VoteTo newVote = new VoteTo(restaurantTo1.getId());
         perform(MockMvcRequestBuilders.post(USER_VOTE_URL)
                 .with(userHttpBasic(user1))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -72,11 +74,14 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
     void getResult() throws Exception {
         populateVote();
         useMockTime(goodTestTimeToLookResult);
+        Map<RestaurantTo, Integer> expected = new LinkedHashMap<>();
+        expected.put(restaurantTo1, 2);
+        expected.put(restaurantTo2, 1);
         perform(MockMvcRequestBuilders.get(USER_VOTE_URL + "/result")
                 .with(userHttpBasic(user1)))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(assertMvcResult(Map.of(restaurantTo1, 2, restaurantTo2, 1)));
+                .andExpect(assertMvcResult(expected));
     }
 
     @Test
@@ -92,14 +97,14 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
     void shouldBeLastVoteWhenUserChangeMind() throws Exception {
         int numberOfVotes = voteService.getAll().size();
         useMockTime(goodTestTimeToVote);
-        VoteTo firstVote = new VoteTo(1L);
+        VoteTo firstVote = new VoteTo(restaurantTo1.getId());
         perform(MockMvcRequestBuilders.post(USER_VOTE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(firstVote))
                 .with(userHttpBasic(user1)));
         LocalDateTime newDateTime = goodTestTimeToVote.plusMinutes(10);
         useMockTime(newDateTime);
-        VoteTo changeMind = new VoteTo(2L);
+        VoteTo changeMind = new VoteTo(restaurantTo2.getId());
         perform(MockMvcRequestBuilders.post(USER_VOTE_URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(changeMind))
@@ -109,10 +114,6 @@ public class UserVoteControllerTest extends AbstractVoteControllerTest {
         assertEquals(newDateTime.toLocalTime(), voteService.get(idOfLastVote).getTime());
     }
 
-    @Test
-    void test() {
-
-    }
 
 }
 

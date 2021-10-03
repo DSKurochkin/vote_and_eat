@@ -25,7 +25,7 @@ public class VoteService {
     private VoteRepository repository;
 
     public Vote get(Long id) throws Exception {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException(notFoundMessage(id)));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException(notFoundMessage(id, "Vote")));
     }
 
     public List<Vote> getAll() {

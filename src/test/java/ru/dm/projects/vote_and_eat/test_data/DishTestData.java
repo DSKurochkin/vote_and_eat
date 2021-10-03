@@ -9,13 +9,14 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.dm.projects.vote_and_eat.model.AbstractBaseEntity.START_SEQ;
 import static ru.dm.projects.vote_and_eat.test_data.RestaurantTestData.*;
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.getDate;
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
 import static ru.dm.projects.vote_and_eat.util.DishUtil.asTo;
 
 public class DishTestData {
-    public static final Long FIRST_DISH_ID = 1L;
+    public static final long FIRST_DISH_ID = START_SEQ + 6;
     public static final Dish dish1
             = new Dish(FIRST_DISH_ID, "A_dish first", getDate("2021-09-01"), 80, restaurant1);
     public static final Dish dish2
@@ -33,7 +34,7 @@ public class DishTestData {
             = new Dish(FIRST_DISH_ID + 6, "A_2nd Sep", getDate("2021-09-02"), 98, restaurant2);
     public static final Dish dish8
             = new Dish(FIRST_DISH_ID + 7, "B_2nd Sep", getDate("2021-09-02"), 99, restaurant2);
-    private static final DishTo dishTo = new DishTo(null, "Test Dish", today(), 50, 1L);
+    private static final DishTo dishTo = new DishTo(null, "Test Dish", today(), 50, restaurant1.id());
     public static DishTo updated = new DishTo(FIRST_DISH_ID, "Test Dish", today(), 10, FIRST_RESTAURANT_ID);
     public static Map<String, List<DishTo>> testMenu = new TreeMap<>();
 

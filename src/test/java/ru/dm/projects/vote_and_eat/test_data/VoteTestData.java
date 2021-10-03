@@ -8,6 +8,7 @@ import ru.dm.projects.vote_and_eat.to.RestaurantTo;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.dm.projects.vote_and_eat.model.AbstractBaseEntity.START_SEQ;
 import static ru.dm.projects.vote_and_eat.test_data.RestaurantTestData.restaurant1;
 import static ru.dm.projects.vote_and_eat.test_data.RestaurantTestData.restaurant2;
 import static ru.dm.projects.vote_and_eat.test_data.UserTestData.*;
@@ -15,7 +16,7 @@ import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.*;
 
 
 public class VoteTestData {
-    public static final Long FIRST_VOTE_ID = 1L;
+    public static final long FIRST_VOTE_ID = START_SEQ + 14;
 
     public static final Vote vote1
             = new Vote(FIRST_VOTE_ID, getDate("2021-09-01"), getTime("09:00:00"), restaurant1, user1);

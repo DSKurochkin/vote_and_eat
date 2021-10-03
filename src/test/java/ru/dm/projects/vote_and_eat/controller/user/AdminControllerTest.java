@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import ru.dm.projects.vote_and_eat.model.Role;
 import ru.dm.projects.vote_and_eat.model.User;
 import ru.dm.projects.vote_and_eat.util.exception.ErrorType;
@@ -116,6 +118,7 @@ public class AdminControllerTest extends AbstractUserControllerTest {
     }
 
     @Test
+    @Transactional(propagation = Propagation.NEVER)
     void createDuplicateEmail() throws Exception {
         User duplicate = new User(null, "TestName", "user1@vote.com", "password", true, Set.of(Role.USER));
         perform(MockMvcRequestBuilders.post(ADMIN_USERS_URL)

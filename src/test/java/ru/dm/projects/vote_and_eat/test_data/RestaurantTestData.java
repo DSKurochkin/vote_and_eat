@@ -5,10 +5,11 @@ import ru.dm.projects.vote_and_eat.model.Restaurant;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.dm.projects.vote_and_eat.model.AbstractBaseEntity.START_SEQ;
 
 public class RestaurantTestData {
 
-    public static final Long FIRST_RESTAURANT_ID = 1L;
+    public static final long FIRST_RESTAURANT_ID = START_SEQ + 4;
     public static final Restaurant restaurant1 = new Restaurant(FIRST_RESTAURANT_ID, "RestaurantA");
     public static final Restaurant restaurant2 = new Restaurant(FIRST_RESTAURANT_ID + 1, "RestaurantB");
 

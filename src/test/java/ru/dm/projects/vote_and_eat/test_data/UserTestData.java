@@ -8,10 +8,11 @@ import ru.dm.projects.vote_and_eat.util.json.JsonUtil;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static ru.dm.projects.vote_and_eat.model.AbstractBaseEntity.START_SEQ;
 
 public class UserTestData {
-    public static final Long ADMIN_ID = 1L;
-    public static final Long FIRST_USER_ID = 2L;
+    public static final long ADMIN_ID = START_SEQ;
+    public static final long FIRST_USER_ID = START_SEQ + 1;
 
     public static final User admin = new User(ADMIN_ID, "Admin", "admin@vote.com", "admin", Role.ADMIN);
     public static final User user1 = new User(FIRST_USER_ID, "User1", "user1@vote.com", "user1", Role.USER);
