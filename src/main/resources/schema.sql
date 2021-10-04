@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS ADMINS;
 CREATE SEQUENCE GENERAL_SEQ START WITH 1000;
 CREATE TABLE USERS
 (
-    id       INTEGER DEFAULT GENERAL_SEQ.nextval,
+    id       INTEGER PRIMARY KEY DEFAULT nextval('GENERAL_SEQ'),
     name     VARCHAR(255)         NOT NULL,
     email    VARCHAR(255)         NOT NULL,
     password VARCHAR(255)         NOT NULL,
@@ -29,7 +29,7 @@ CREATE UNIQUE INDEX users_unique_email_idx
 
 CREATE TABLE RESTAURANTS
 (
-    id   INTEGER DEFAULT GENERAL_SEQ.nextval,
+    id    INTEGER PRIMARY KEY DEFAULT nextval('GENERAL_SEQ'),
     name VARCHAR(255) NOT NULL
 );
 CREATE UNIQUE INDEX restaurants_unique_name
@@ -37,7 +37,7 @@ CREATE UNIQUE INDEX restaurants_unique_name
 
 CREATE TABLE DISHES
 (
-    id            INTEGER DEFAULT GENERAL_SEQ.nextval,
+    id             INTEGER PRIMARY KEY DEFAULT nextval('GENERAL_SEQ'),
     name          VARCHAR(255) NOT NULL,
     date          DATE         NOT NULL,
     price         INTEGER      NOT NULL,
@@ -49,7 +49,7 @@ CREATE UNIQUE INDEX dishes_unique_date_name
 
 CREATE TABLE VOTES
 (
-    id              INTEGER DEFAULT GENERAL_SEQ.nextval,
+    id               INTEGER PRIMARY KEY DEFAULT nextval('GENERAL_SEQ'),
     date            DATE         NOT NULL,
     time            TIME         NOT NULL,
     restaurant_id   INTEGER      NOT NULL,

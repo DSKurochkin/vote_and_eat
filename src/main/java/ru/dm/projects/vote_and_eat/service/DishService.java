@@ -2,6 +2,7 @@ package ru.dm.projects.vote_and_eat.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.dm.projects.vote_and_eat.model.Dish;
 import ru.dm.projects.vote_and_eat.repository.DishRepository;
@@ -18,6 +19,7 @@ import java.util.TreeMap;
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
 import static ru.dm.projects.vote_and_eat.util.ValidationUtil.*;
 
+@Transactional(readOnly = true)
 @Service
 public class DishService {
     @Autowired
@@ -31,18 +33,21 @@ public class DishService {
         return repository.findAll();
     }
 
+    @Transactional
     public Dish create(Dish dish) {
         Assert.notNull(dish, "dish must not be null");
         checkNew(dish);
         return repository.save(dish);
     }
 
+    @Transactional
     public Dish update(Dish dish, long id) {
         Assert.notNull(dish, "dish must not be null");
         assureIdConsistent(dish, id);
         return repository.save(dish);
     }
 
+    @Transactional
     public void delete(Long id) throws Exception {
         repository.delete(get(id));
     }

@@ -2,6 +2,7 @@ package ru.dm.projects.vote_and_eat.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.dm.projects.vote_and_eat.model.Vote;
 import ru.dm.projects.vote_and_eat.repository.VoteRepository;
@@ -17,6 +18,7 @@ import java.util.Set;
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
 import static ru.dm.projects.vote_and_eat.util.ValidationUtil.notFoundMessage;
 
+@Transactional
 @Service
 public class VoteService {
     @Autowired
@@ -32,11 +34,13 @@ public class VoteService {
         return repository.findAll();
     }
 
+    @Transactional
     public Vote createOrUpdate(Vote vote) {
         Assert.notNull(vote, "vote must not be null");
         return repository.save(vote);
     }
 
+    @Transactional
     public void delete(Long id) throws Exception {
         repository.delete(get(id));
     }

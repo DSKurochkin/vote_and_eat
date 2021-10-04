@@ -5,6 +5,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.dm.projects.vote_and_eat.model.User;
 import ru.dm.projects.vote_and_eat.repository.UserRepository;
@@ -15,6 +16,7 @@ import java.util.List;
 
 import static ru.dm.projects.vote_and_eat.util.ValidationUtil.*;
 
+@Transactional(readOnly = true)
 @Service("userService")
 public class UserService implements UserDetailsService {
     @Autowired
@@ -28,18 +30,21 @@ public class UserService implements UserDetailsService {
         return repository.findAll();
     }
 
+    @Transactional
     public User create(User user) {
         Assert.notNull(user, "user must not be null");
         checkNew(user);
         return repository.save(user);
     }
 
+    @Transactional
     public User update(User user, long id) {
         Assert.notNull(user, "user must not be null");
         assureIdConsistent(user, id);
         return repository.save(user);
     }
 
+    @Transactional
     public void delete(Long id) throws Exception {
         repository.delete(get(id));
     }

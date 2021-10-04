@@ -2,6 +2,7 @@ package ru.dm.projects.vote_and_eat.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 import ru.dm.projects.vote_and_eat.model.Restaurant;
 import ru.dm.projects.vote_and_eat.repository.RestaurantRepository;
@@ -12,6 +13,7 @@ import java.util.Set;
 
 import static ru.dm.projects.vote_and_eat.util.ValidationUtil.*;
 
+@Transactional(readOnly = true)
 @Service
 public class RestaurantService {
 
@@ -26,18 +28,21 @@ public class RestaurantService {
         return repository.findAll();
     }
 
+    @Transactional
     public Restaurant create(Restaurant restaurant) {
         Assert.notNull(restaurant, "restaurant must not be null");
         checkNew(restaurant);
         return repository.save(restaurant);
     }
 
+    @Transactional
     public Restaurant update(Restaurant restaurant, long id) {
         Assert.notNull(restaurant, "restaurant must not be null");
         assureIdConsistent(restaurant, id);
         return repository.save(restaurant);
     }
 
+    @Transactional
     public void delete(Long id) throws Exception {
         repository.delete(get(id));
     }
