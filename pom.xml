@@ -13,9 +13,9 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>vote_and_eat</name>
     <description>training project</description>
-    <properties>
-        <java.version>15</java.version>
-    </properties>
+<!--    <properties>-->
+<!--        <java.version>15</java.version>-->
+<!--    </properties>-->
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
