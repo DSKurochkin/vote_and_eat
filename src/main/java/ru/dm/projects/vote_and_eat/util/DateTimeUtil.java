@@ -15,10 +15,10 @@ public class DateTimeUtil {
 
     private static Clock CLOCK = Clock.systemDefaultZone();
     @Value("${datetime.startOfVote}")
-    private LocalTime startOfVote;
+    private String startOfVote;
 
     @Value("${datetime.endOfVote}")
-    private LocalTime endOfVote;
+    private String endOfVote;
 
     @Value("${datetime.startAppDate}")
     private String startAppDate;
@@ -60,11 +60,11 @@ public class DateTimeUtil {
     }
 
     public LocalTime getStartOfVote() {
-        return startOfVote;
+        return getTime(startOfVote);
     }
 
     public LocalTime getEndOfVote() {
-        return endOfVote;
+        return getTime(endOfVote);
     }
 
     public LocalDate getStartAppDate() {

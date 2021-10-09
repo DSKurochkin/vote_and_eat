@@ -37,7 +37,7 @@ CREATE UNIQUE INDEX restaurants_unique_name
 
 CREATE TABLE DISHES
 (
-    id             INTEGER PRIMARY KEY DEFAULT nextval('GENERAL_SEQ'),
+    id            INTEGER PRIMARY KEY DEFAULT nextval('GENERAL_SEQ'),
     name          VARCHAR(255) NOT NULL,
     date          DATE         NOT NULL,
     price         INTEGER      NOT NULL,

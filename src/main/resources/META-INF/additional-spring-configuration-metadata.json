@@ -11,19 +11,14 @@
       "description": "End time of voting."
     },
     {
-      "name": "datetime.startAppDateTime",
+      "name": "datetime.startAppDate",
       "type": "java.lang.String",
-      "description": "Extreme min app date."
+      "description": "Description for datetime.startAppDate."
     },
     {
-      "name": "datetime.endAppDateTime",
+      "name": "datetime.endAppDate",
       "type": "java.lang.String",
-      "description": "Extreme max app date."
-    },
-    {
-      "name": "spring.datasource.test-on-borrow",
-      "type": "java.lang.String",
-      "description": "Description for spring.datasource.test-on-borrow."
+      "description": "Description for datetime.endAppDate."
     }
   ]
 }

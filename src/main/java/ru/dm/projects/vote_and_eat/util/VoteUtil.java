@@ -12,12 +12,15 @@ import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
 
 public class VoteUtil {
 
-    public static void checkVoteTime(Vote vote, LocalTime getEndOfVote) {
+    public static void checkVoteTime(Vote vote, LocalTime getStartOfVote, LocalTime getEndOfVote) {
         if (vote.getTime().isAfter(getEndOfVote)) {
             throw new UnsupportedTimeOperationException("it's to late to vote, try again tomorrow");
         }
+        if (vote.getTime().isBefore(getStartOfVote)) {
+            throw new UnsupportedTimeOperationException("Voting has not started yet");
+        }
         if (!vote.getDate().equals(today())) {
-            throw new UnsupportedTimeOperationException("unsupported date of vote");
+            throw new UnsupportedTimeOperationException("Unsupported date of vote");
         }
     }
 

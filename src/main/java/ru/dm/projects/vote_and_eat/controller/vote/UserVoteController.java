@@ -44,7 +44,7 @@ public class UserVoteController extends AbstractVoteController {
                 , restaurantService.get(voteTo.getRestaurant_id()).getName()
                 , get().getId()
                 , get().getUserTo().getEmail());
-        checkVoteTime(vote, dateTimeUtil.getEndOfVote());
+        checkVoteTime(vote, dateTimeUtil.getStartOfVote(), dateTimeUtil.getEndOfVote());
         vote = voteService.createOrUpdate(vote);
         URI uriOfResource = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path(VOTE_URL + "{id}")
