@@ -10,6 +10,6 @@ import java.io.IOException;
 public class RootController {
     @GetMapping()
     public void redirect(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/v4e/swagger-ui.html");
+        response.sendRedirect("/swagger-ui.html");
     }
 }
