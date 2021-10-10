@@ -11,4 +11,7 @@ This REST API - voting system for deciding where to have lunch.
     
 Swagger API documentation
 
-      http://localhost:8080/v4e/swagger-ui.html#/
+      https://v4e.herokuapp.com
+
+credentials:
+admin@vote.com:admin / user1@vote.com:user1
