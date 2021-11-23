@@ -5,7 +5,8 @@ import ru.dm.projects.vote_and_eat.to.RestaurantTo;
 import ru.dm.projects.vote_and_eat.util.exception.UnsupportedTimeOperationException;
 
 import java.time.LocalTime;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static ru.dm.projects.vote_and_eat.util.DateTimeUtil.today;
@@ -21,17 +22,10 @@ public class VoteUtil {
         }
     }
 
-    public static Map<RestaurantTo, Integer> getRatingOfRestaurants(List<Vote> votes) {
-        Map<Long, Integer> result = new HashMap<>();
-        votes.forEach(v -> result.merge(v.getRestaurantId(), 1, Integer::sum));
-        return result.entrySet().stream().sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-                .collect(Collectors.toMap(i -> new RestaurantTo(i.getKey(), getRestaurantNameById(i.getKey(), votes)), Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
-
+    public static Map<RestaurantTo, Integer> getRatingOfRestaurants(List<List<String>> response) {
+        return response.stream().collect(Collectors
+                .toMap(l -> new RestaurantTo(Long.parseLong(l.get(0)), l.get(1))
+                        , l -> Integer.parseInt(l.get(2))));
     }
-
-    private static String getRestaurantNameById(Long id, List<Vote> votes) {
-        return votes.stream().filter((v) -> v.getRestaurantId().equals(id)).collect(Collectors.toList()).get(0).getRestaurantName();
-    }
-
 
 }

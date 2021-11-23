@@ -20,7 +20,10 @@ public interface VoteRepository extends JpaRepository<Vote, Long> {
     @Query("SELECT v FROM Vote v WHERE v.userId=?1 AND v.date=?2")
     Vote getIfTodayVoteExist(Long id, LocalDate date);
 
-    @Query("SELECT v.restaurantId, v.restaurantName, COUNT(v.restaurantId) FROM Vote v GROUP BY v.restaurantId, v.restaurantName")
-    List<List<String>> getReport();
+    @Query("SELECT v.restaurantId, v.restaurantName, COUNT(v.restaurantId) as c " +
+            "FROM Vote v " +
+            "WHERE v.date>=?1 AND v.date <=?2 " +
+            "GROUP BY v.restaurantId, v.restaurantName ORDER BY c DESC")
+    List<List<String>> getReport(LocalDate start, LocalDate end);
 
 }

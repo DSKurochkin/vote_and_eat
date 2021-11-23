@@ -46,7 +46,7 @@ public class VoteService {
     }
 
     public Map<RestaurantTo, Integer> getRating(LocalDate start, LocalDate end) {
-        return VoteUtil.getRatingOfRestaurants(repository.getBetween(start, end));
+        return VoteUtil.getRatingOfRestaurants(repository.getReport(start, end));
     }
 
     public Long getIdIfTodayVoteExist(Long id) {
@@ -54,14 +54,9 @@ public class VoteService {
         return vote == null ? null : vote.getId();
     }
 
-    public void checkForExist(Set<RestaurantTo> tos) throws Exception {
+    public void checkForExist(Set<RestaurantTo> tos) {
         Set<Long> existIds = restaurantService.getIds();
-        for (RestaurantTo to : tos) {
-            if (!existIds.contains(to.getId())) {
-                to.setExist(false);
-            }
-        }
-
+        tos.stream().filter(to->!existIds.contains(to.getId())).forEach(to->to.setExist(false));
     }
 
 }
