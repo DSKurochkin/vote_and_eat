@@ -5,6 +5,7 @@ import ru.dm.projects.vote_and_eat.to.RestaurantTo;
 import ru.dm.projects.vote_and_eat.util.exception.UnsupportedTimeOperationException;
 
 import java.time.LocalTime;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,7 +26,9 @@ public class VoteUtil {
     public static Map<RestaurantTo, Integer> getRatingOfRestaurants(List<List<String>> response) {
         return response.stream().collect(Collectors
                 .toMap(l -> new RestaurantTo(Long.parseLong(l.get(0)), l.get(1))
-                        , l -> Integer.parseInt(l.get(2))));
+                        , l -> Integer.parseInt(l.get(2))
+                        , (a, b) -> b
+                        , LinkedHashMap::new));
     }
 
 }

@@ -1,6 +1,5 @@
 package ru.dm.projects.vote_and_eat.util;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.*;
@@ -14,17 +13,17 @@ public class DateTimeUtil {
 
 
     private static Clock CLOCK = Clock.systemDefaultZone();
-    @Value("${datetime.startOfVote}")
-    private LocalTime startOfVote;
+    //    @Value("${datetime.startOfVote}")
+    private final LocalTime startOfVote = getTime("07:00");
 
-    @Value("${datetime.endOfVote}")
-    private LocalTime endOfVote;
+    //    @Value("${datetime.endOfVote}")
+    private final LocalTime endOfVote = getTime("11:00");
 
-    @Value("${datetime.startAppDate}")
-    private String startAppDate;
+    //    @Value("${datetime.startAppDate}")
+    private final LocalDate startAppDate = getDate("2021-01-01");
 
-    @Value("${datetime.endAppDate}")
-    private String endAppDate;
+    //    @Value("${datetime.endAppDate}")
+    private final LocalDate endAppDate = getDate("3021-01-01");
 
     public static LocalDate getDate(String date) {
         return LocalDate.parse(date);
@@ -68,11 +67,11 @@ public class DateTimeUtil {
     }
 
     public LocalDate getStartAppDate() {
-        return getDate(startAppDate);
+        return startAppDate;
     }
 
     public LocalDate getEndAppDate() {
-        return getDate(endAppDate);
+        return endAppDate;
     }
 
     public LocalDate checkStartDate(LocalDate start) {

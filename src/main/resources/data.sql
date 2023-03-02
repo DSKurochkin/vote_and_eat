@@ -12,11 +12,6 @@ VALUES ('Admin', 'admin@vote.com', '$2a$12$3SylX11BsbC2icIbTsnYUuBxdiw2F.mGB5a9c
        ('User1', 'user1@vote.com', '$2a$12$yFwzAoaFJ3jNUNbZAeG/ku.aa9w581whoIuNHf4o6c5NDxFrUuXqa', true),
        ('User2', 'user2@vote.com', '$2a$12$sydiGyh.FIiQi5bcGh3ElOC6W849SF7Pi/d6keEvegZvS1aiYiiAa', true),
        ('User3', 'user3@vote.com', '$2a$12$J317cm3lG.Kw1gMnmDUM1.SHNf8JliJAEOA.mhKomAOznrY2Tv4xm', true);
--- pass--
--- admin
--- user1
--- user2
--- user4
 
 INSERT INTO USER_ROLES(role, user_id)
 values ('ADMIN', 1000),
