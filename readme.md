@@ -11,7 +11,7 @@ This REST API - voting system for deciding where to have lunch.
     
 Swagger API documentation
 
-      https://voteandeat-kurochkindm.b4a.run
+      https://voteandeat-kurochkindm.b4a.run/v4e
 
 credentials:
 admin@vote.com:admin / user1@vote.com:user1
