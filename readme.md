@@ -12,6 +12,6 @@ This REST API - voting system for deciding where to have lunch.
 Swagger API documentation
 
       https://voteandeat-kurochkindm.b4a.run/v4e
-
+      *The application is deployed on Back4App. Startup takes about 2 minutes
 credentials:
-admin@vote.com:admin / user1@vote.com:user1
+login - admin@vote.com  pas - admin / login - user1@vote.com  pas - user1
